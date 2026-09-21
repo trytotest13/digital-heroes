@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/*
+  Digital Heroes design tokens.
+  Deliberately not a "golf course" palette — warm paper, deep pine green
+  and a single warm amber accent, echoing the PRD's own editorial style.
+*/
+@theme {
+  --color-cream: #f5f3ec;
+  --color-ink: #101514;
+  --color-pine: #173d35;
+  --color-pine-deep: #102b25;
+  --color-sage: #8fae9b;
+  --color-mist: #dce7df;
+  --color-amber: #d8a15d;
+  --color-body: #18201d;
+  --color-muted: #6b746f;
+  --color-line: #d7dad4;
+  --color-danger: #b84c4c;
+
+  --font-display: "DM Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream font-sans text-body antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display text-ink;
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: #dce7df;
+  }
+}
+
+@layer components {
+  /* Buttons — 10px radius, 150–250ms ease-out transitions, no pills. */
+  .btn {
+    @apply inline-flex h-10 cursor-pointer select-none items-center justify-center gap-2 rounded-[10px] px-4 text-[14px] font-semibold transition duration-200 ease-out disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-sm { @apply h-8 px-3 text-[13px]; }
+  .btn-primary { @apply bg-pine text-cream hover:bg-pine-deep active:translate-y-px; }
+  .btn-amber { @apply bg-amber text-ink hover:brightness-95 active:translate-y-px; }
+  .btn-outline { @apply border border-line bg-transparent text-body hover:border-pine hover:text-pine; }
+  .btn-ghost { @apply text-pine hover:bg-mist/70; }
+  .btn-danger { @apply bg-danger text-white hover:brightness-95; }
+
+  .card { @apply rounded-2xl border border-line bg-white; }
+  .input {
+    @apply h-10 w-full rounded-[10px] border border-line bg-white px-3 text-[15px] outline-none transition focus:border-pine focus:ring-4 focus:ring-pine/10;
+  }
+  .label { @apply mb-1.5 block text-[13px] font-semibold text-body; }
+  .kicker { @apply font-mono text-[11px] uppercase tracking-[0.18em] text-muted; }
+  .badge { @apply inline-flex h-6 items-center rounded-md px-2 font-mono text-[11px] uppercase tracking-wide; }
+  .badge-green { @apply badge bg-mist text-pine; }
+  .badge-amber { @apply badge bg-amber/20 text-[#8a5f27]; }
+  .badge-red { @apply badge bg-danger/10 text-danger; }
+  .badge-gray { @apply badge bg-[#edebe3] text-muted; }
+
+  .th { @apply px-4 py-3 text-left font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-muted; }
+  .td { @apply px-4 py-3 align-middle text-[14px]; }
+  .chip { @apply inline-flex h-9 w-9 items-center justify-center rounded-[10px] bg-mist font-display text-[15px] font-bold text-pine; }
+}
