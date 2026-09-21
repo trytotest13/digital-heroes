@@ -15,6 +15,8 @@ const tiers = [
   { match: "3-number match", pct: TIER_PCT[3], note: "Split equally between winners" },
 ];
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const charities = await featuredCharities(3);
 
