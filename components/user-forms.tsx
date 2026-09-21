@@ -222,8 +222,8 @@ export function DonationForm({ charityId, charityName }: { charityId?: string; c
     <form action={action} className="space-y-3">
       <input type="hidden" name="charity_id" value={charityId ?? ""} />
       <div>
-        <label className="label" htmlFor="amount">Amount (£)</label>
-        <input id="amount" name="amount" type="number" min={1} step="0.01" required className="input" placeholder="10.00" />
+        <label className="label" htmlFor="amount">Amount (₹)</label>
+        <input id="amount" name="amount" type="number" min={1} step="1" required className="input" placeholder="500" />
       </div>
       <p className="text-[13px] text-muted">
         A one-off gift{charityName ? ` to ${charityName}` : ""}, separate from your subscription. Recorded in test mode.

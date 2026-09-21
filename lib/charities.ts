@@ -19,7 +19,7 @@ export const FALLBACK_CHARITIES: Charity[] = [
     name: "Hope Foundation",
     category: "Children",
     tagline: "Safe homes and schooling for over a thousand children.",
-    description: "Hope Foundation runs family shelters, after-school tutoring and holiday programmes across twelve cities. Every pound goes into keeping children housed, fed and in school.",
+    description: "Hope Foundation runs family shelters, after-school tutoring and holiday programmes across twelve cities. Every rupee goes into keeping children housed, fed and in school.",
     website_url: "https://example.org/hope",
     featured: true,
     active: true,

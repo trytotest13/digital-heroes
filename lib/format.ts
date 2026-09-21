@@ -9,9 +9,16 @@ export const TIER_LABEL: Record<number, string> = {
 export const CONTRIBUTION_STEPS = [10, 15, 20, 25, 30];
 export const CHARITY_CATEGORIES = ["Health", "Children", "Environment", "Community"] as const;
 
-export function gbp(pence: number): string {
-  return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(pence / 100);
+export function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 2,
+  }).format(amount / 100);
 }
+
+export const inr = formatCurrency;
+export const gbp = formatCurrency;
 
 export function fmtDate(value: string | Date | null | undefined): string {
   if (!value) return "—";

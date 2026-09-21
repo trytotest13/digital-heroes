@@ -11,9 +11,9 @@ export const metadata = { title: "Admin overview" };
 
 export default async function AdminOverviewPage() {
   let stats = { total: 2, active: 2, admins: 1 };
-  let pool = 4000;
-  let jackpot = 10000;
-  let charity = { estimated_monthly: 1200 };
+  let pool = 400000;
+  let jackpot = 1000000;
+  let charity = { estimated_monthly: 120000 };
   let draw: any = null;
   let winners: any[] = [];
 

@@ -58,9 +58,9 @@ export function monthlyContributionPence(
 export async function recordDonation(userId: string, charityId: string | null, amountInput: unknown) {
   const pence = Math.round(Number(amountInput) * 100);
   if (!Number.isFinite(pence) || pence < 100) {
-    return { error: "Donation must be at least £1." };
+    return { error: "Donation must be at least ₹1." };
   }
-  if (pence > 1_000_000) return { error: "For this demo, donations are capped at £10,000." };
+  if (pence > 10_000_000) return { error: "For this demo, donations are capped at ₹1,00,000." };
   await sql`
     insert into donations (user_id, charity_id, amount_pence)
     values (${userId}, ${charityId}, ${pence})`;

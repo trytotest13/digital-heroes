@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import sql from "@/lib/db";
-import { fmtDate } from "@/lib/format";
+import { fmtDate, gbp } from "@/lib/format";
 import { SubStatusForm } from "@/components/admin-forms";
 
 export const metadata = { title: "Admin · Subscriptions" };
@@ -29,7 +29,7 @@ export default async function AdminSubscriptionsPage() {
         full_name: "Demo Player 1",
         plan: "monthly",
         status: "active",
-        price_pence: 999,
+        price_pence: 49900,
         renewal_date: "2026-10-21",
         updated_at: new Date(),
       },
@@ -39,7 +39,7 @@ export default async function AdminSubscriptionsPage() {
         full_name: "Demo Player 2",
         plan: "yearly",
         status: "active",
-        price_pence: 9999,
+        price_pence: 499900,
         renewal_date: "2027-09-21",
         updated_at: new Date(),
       },
@@ -94,7 +94,7 @@ export default async function AdminSubscriptionsPage() {
                       <p className="text-[12px] text-muted">{s.email}</p>
                     </td>
                     <td className="td capitalize">{s.plan ?? "—"}</td>
-                    <td className="td">£{(s.price_pence / 100).toFixed(2)}</td>
+                    <td className="td">{gbp(s.price_pence)}</td>
                     <td className="td text-muted">{s.renewal_date ? fmtDate(s.renewal_date) : "—"}</td>
                     <td className="td"><SubStatusForm userId={s.user_id} status={s.status} /></td>
                   </tr>

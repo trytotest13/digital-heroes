@@ -188,7 +188,7 @@ export default async function HomePage() {
           <Link href="/how-it-works" className="btn btn-outline h-12 px-8 text-[15px]">How it works</Link>
         </div>
         <p className="mt-4 text-[13px] text-muted">
-          Plans from {gbp(999)} a month · cancel anytime.
+          Plans from {gbp(49900)} a month · cancel anytime.
         </p>
       </section>
     </div>

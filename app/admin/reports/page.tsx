@@ -9,7 +9,7 @@ export const metadata = { title: "Admin · Reports" };
 export default async function AdminReportsPage() {
   let userStats: { total: number }[] = [{ total: 2 }];
   let prizeTotals: { awarded: number; outstanding: number }[] = [{ awarded: 0, outstanding: 0 }];
-  let charity = { estimated_monthly: 1200, donations_total: 0, donations_count: 0 };
+  let charity = { estimated_monthly: 120000, donations_total: 0, donations_count: 0 };
   let byCharity: any[] = [];
   let stats: any[] = [];
 

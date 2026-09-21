@@ -14,8 +14,8 @@ export type AppSettings = {
 };
 
 const DEFAULTS: AppSettings = {
-  monthly_price_pence: 999,
-  yearly_price_pence: 9999,
+  monthly_price_pence: 49900,
+  yearly_price_pence: 499900,
   prize_pool_percent: 40,
 };
 
