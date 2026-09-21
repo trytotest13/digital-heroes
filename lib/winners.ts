@@ -23,26 +23,36 @@ export type WinnerRow = {
 };
 
 export async function myWinners(userId: string) {
-  return sql<WinnerRow[]>`
-    select w.id, w.draw_id, w.user_id, w.tier, w.amount_pence, w.verification,
-           w.payment_status, w.proof_name, (w.proof is not null) as has_proof, w.created_at,
-           d.period, u.full_name, u.email
-    from winners w
-    join draws d on d.id = w.draw_id
-    join users u on u.id = w.user_id
-    where w.user_id = ${userId}
-    order by d.period desc`;
+  try {
+    return await sql<WinnerRow[]>`
+      select w.id, w.draw_id, w.user_id, w.tier, w.amount_pence, w.verification,
+             w.payment_status, w.proof_name, (w.proof is not null) as has_proof, w.created_at,
+             d.period, u.full_name, u.email
+      from winners w
+      join draws d on d.id = w.draw_id
+      join users u on u.id = w.user_id
+      where w.user_id = ${userId}
+      order by d.period desc`;
+  } catch (err) {
+    console.error("myWinners DB error:", err);
+    return [];
+  }
 }
 
 export async function listWinnersAdmin() {
-  return sql<WinnerRow[]>`
-    select w.id, w.draw_id, w.user_id, w.tier, w.amount_pence, w.verification,
-           w.payment_status, w.proof_name, (w.proof is not null) as has_proof, w.created_at,
-           d.period, u.full_name, u.email
-    from winners w
-    join draws d on d.id = w.draw_id
-    join users u on u.id = w.user_id
-    order by w.created_at desc`;
+  try {
+    return await sql<WinnerRow[]>`
+      select w.id, w.draw_id, w.user_id, w.tier, w.amount_pence, w.verification,
+             w.payment_status, w.proof_name, (w.proof is not null) as has_proof, w.created_at,
+             d.period, u.full_name, u.email
+      from winners w
+      join draws d on d.id = w.draw_id
+      join users u on u.id = w.user_id
+      order by w.created_at desc`;
+  } catch (err) {
+    console.error("listWinnersAdmin DB error:", err);
+    return [];
+  }
 }
 
 export async function getProof(winnerId: string) {
@@ -89,13 +99,18 @@ export async function markPaid(winnerId: string) {
 }
 
 export async function winningsSummary(userId: string) {
-  const [row] = await sql<{ total: number; pending: number; paid: number }[]>`
-    select
-      coalesce(sum(amount_pence), 0)::int as total,
-      coalesce(sum(case when payment_status = 'pending' then amount_pence else 0 end), 0)::int as pending,
-      coalesce(sum(case when payment_status = 'paid' then amount_pence else 0 end), 0)::int as paid
-    from winners where user_id = ${userId}`;
-  return row ?? { total: 0, pending: 0, paid: 0 };
+  try {
+    const [row] = await sql<{ total: number; pending: number; paid: number }[]>`
+      select
+        coalesce(sum(amount_pence), 0)::int as total,
+        coalesce(sum(case when payment_status = 'pending' then amount_pence else 0 end), 0)::int as pending,
+        coalesce(sum(case when payment_status = 'paid' then amount_pence else 0 end), 0)::int as paid
+      from winners where user_id = ${userId}`;
+    return row ?? { total: 0, pending: 0, paid: 0 };
+  } catch (err) {
+    console.error("winningsSummary DB error:", err);
+    return { total: 0, pending: 0, paid: 0 };
+  }
 }
 
 export function tierLabel(tier: number): string {

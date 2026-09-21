@@ -20,9 +20,14 @@ const DEFAULTS: AppSettings = {
 };
 
 export async function getSettings(): Promise<AppSettings> {
-  const [row] = await sql<{ value: Partial<AppSettings> }[]>`
-    select value from settings where key = 'app' limit 1`;
-  return { ...DEFAULTS, ...(row?.value ?? {}) };
+  try {
+    const [row] = await sql<{ value: Partial<AppSettings> }[]>`
+      select value from settings where key = 'app' limit 1`;
+    return { ...DEFAULTS, ...(row?.value ?? {}) };
+  } catch (err) {
+    console.error("getSettings DB error:", err);
+    return DEFAULTS;
+  }
 }
 
 export async function updateSettings(patch: Partial<AppSettings>) {

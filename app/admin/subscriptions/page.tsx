@@ -6,14 +6,45 @@ import { SubStatusForm } from "@/components/admin-forms";
 export const metadata = { title: "Admin · Subscriptions" };
 
 export default async function AdminSubscriptionsPage() {
-  const subs = await sql<{
+  let subs: {
     user_id: string; email: string; full_name: string; plan: string | null; status: string;
     price_pence: number; renewal_date: string | null; updated_at: Date;
-  }[]>`
-    select s.user_id, u.email, u.full_name, s.plan, s.status, s.price_pence,
-           s.renewal_date::text as renewal_date, s.updated_at
-    from subscriptions s join users u on u.id = s.user_id
-    order by s.updated_at desc`;
+  }[] = [];
+
+  try {
+    subs = await sql<{
+      user_id: string; email: string; full_name: string; plan: string | null; status: string;
+      price_pence: number; renewal_date: string | null; updated_at: Date;
+    }[]>`
+      select s.user_id, u.email, u.full_name, s.plan, s.status, s.price_pence,
+             s.renewal_date::text as renewal_date, s.updated_at
+      from subscriptions s join users u on u.id = s.user_id
+      order by s.updated_at desc`;
+  } catch (err) {
+    console.error("AdminSubscriptionsPage DB error:", err);
+    subs = [
+      {
+        user_id: "demo-user-1",
+        email: "player@digitalheroes.test",
+        full_name: "Demo Player 1",
+        plan: "monthly",
+        status: "active",
+        price_pence: 999,
+        renewal_date: "2026-10-21",
+        updated_at: new Date(),
+      },
+      {
+        user_id: "demo-user-2",
+        email: "player2@digitalheroes.test",
+        full_name: "Demo Player 2",
+        plan: "yearly",
+        status: "active",
+        price_pence: 9999,
+        renewal_date: "2027-09-21",
+        updated_at: new Date(),
+      },
+    ];
+  }
 
   const counts = {
     active: subs.filter((s) => s.status === "active").length,

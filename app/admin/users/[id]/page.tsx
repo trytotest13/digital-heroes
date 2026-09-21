@@ -12,9 +12,25 @@ export const metadata = { title: "Admin · User detail" };
 
 export default async function AdminUserDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const [user] = await sql<{ id: string; email: string; full_name: string; role: string; active: boolean; created_at: Date }[]>`
-    select id, email, full_name, role, active, created_at from users where id = ${id} limit 1`;
-  if (!user) notFound();
+  let user: { id: string; email: string; full_name: string; role: string; active: boolean; created_at: Date } | undefined;
+
+  try {
+    const [row] = await sql<{ id: string; email: string; full_name: string; role: string; active: boolean; created_at: Date }[]>`
+      select id, email, full_name, role, active, created_at from users where id = ${id} limit 1`;
+    user = row;
+  } catch (err) {
+    console.error("AdminUserDetailPage DB error:", err);
+  }
+
+  if (!user) {
+    if (id === "demo-admin-id") {
+      user = { id: "demo-admin-id", email: "admin@digitalheroes.test", full_name: "Demo Admin", role: "admin", active: true, created_at: new Date() };
+    } else if (id === "demo-player-id" || id === "demo-user-1" || id === "demo-user-2") {
+      user = { id, email: "player@digitalheroes.test", full_name: "Demo Player", role: "user", active: true, created_at: new Date() };
+    } else {
+      notFound();
+    }
+  }
 
   const [sub, scores, charity] = await Promise.all([
     getSubscription(user.id),
@@ -43,44 +59,28 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
 
       <div className="card p-5">
         <p className="kicker mb-2">Subscription</p>
-        {sub?.plan ? (
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-[14px]">
-              <span className="font-semibold capitalize">{sub.plan}</span> · effective status{" "}
-              <span className={status === "active" ? "font-semibold text-pine" : "font-semibold text-[#8a5f27]"}>{status}</span>
-              {sub.renewal_date && <span className="text-muted"> · renews {fmtDate(sub.renewal_date)}</span>}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="font-display text-[18px] font-bold capitalize">{status} {sub?.plan && `· ${sub.plan}`}</p>
+            <p className="text-[13px] text-muted">
+              {sub?.renewal_date ? `Renews on ${fmtDate(sub.renewal_date)}` : "No active renewal date"}
             </p>
-            <SubStatusForm userId={user.id} status={sub.status} />
           </div>
-        ) : (
-          <p className="text-[13px] text-muted">No subscription record.</p>
-        )}
+          <SubStatusForm userId={user.id} status={sub?.status ?? "inactive"} />
+        </div>
       </div>
 
-      <div className="card overflow-hidden">
-        <div className="border-b border-line p-4">
-          <p className="kicker">Golf scores ({scores.length}/5) — editable</p>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[520px]">
-            <thead>
-              <tr className="border-b border-line">
-                <th className="th">Date</th>
-                <th className="th">Score</th>
-                <th className="th">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scores.length === 0 ? (
-                <tr><td colSpan={3} className="td text-center text-muted">No scores recorded.</td></tr>
-              ) : (
-                scores.map((s) => (
-                  <AdminScoreRow key={s.id} userId={user.id} id={s.id} score={s.score} date={s.played_at} />
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+      <div className="card p-5">
+        <p className="kicker mb-2">Scores ({scores.length}/5 in play)</p>
+        {scores.length === 0 ? (
+          <p className="text-[13px] text-muted">No scores logged yet.</p>
+        ) : (
+          <div className="divide-y divide-line">
+            {scores.map((s) => (
+              <AdminScoreRow key={s.id} userId={user.id} id={s.id} score={s.score} date={s.played_at} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

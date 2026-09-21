@@ -14,7 +14,13 @@ declare global {
 const rawUrl =
   process.env.DATABASE_POSTGRES_URL ||
   process.env.POSTGRES_URL ||
-  process.env.DATABASE_URL;
+  process.env.DATABASE_URL ||
+  process.env.data_POSTGRES_URL ||
+  process.env.data_DATABASE_URL ||
+  Object.entries(process.env).find(
+    ([k]) => (k.endsWith("POSTGRES_URL") || k.endsWith("DATABASE_URL")) && !k.includes("PRISMA_DATABASE_URL")
+  )?.[1] ||
+  process.env.data_PRISMA_DATABASE_URL;
 
 const connectionString = rawUrl?.replace(/^prisma\+postgres:/, "postgres:");
 const isLocal = !connectionString || connectionString.includes("127.0.0.1") || connectionString.includes("localhost");

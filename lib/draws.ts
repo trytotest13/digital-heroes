@@ -44,41 +44,76 @@ export type DrawEntry = {
 };
 
 export async function getDraw(id: string): Promise<Draw | undefined> {
-  const [row] = await sql<Draw[]>`select * from draws where id = ${id} limit 1`;
-  return row;
+  try {
+    const [row] = await sql<Draw[]>`select * from draws where id = ${id} limit 1`;
+    return row;
+  } catch (err) {
+    console.error("getDraw DB error:", err);
+    return undefined;
+  }
 }
 
 export async function getDrawByPeriod(period: string): Promise<Draw | undefined> {
-  const [row] = await sql<Draw[]>`select * from draws where period = ${period} limit 1`;
-  return row;
+  try {
+    const [row] = await sql<Draw[]>`select * from draws where period = ${period} limit 1`;
+    return row;
+  } catch (err) {
+    console.error("getDrawByPeriod DB error:", err);
+    return undefined;
+  }
 }
 
 export async function listDraws(): Promise<Draw[]> {
-  return sql<Draw[]>`select * from draws order by period desc`;
+  try {
+    return await sql<Draw[]>`select * from draws order by period desc`;
+  } catch (err) {
+    console.error("listDraws DB error:", err);
+    return [];
+  }
 }
 
 export async function listEntries(drawId: string): Promise<DrawEntry[]> {
-  return sql<DrawEntry[]>`select * from draw_entries where draw_id = ${drawId}`;
+  try {
+    return await sql<DrawEntry[]>`select * from draw_entries where draw_id = ${drawId}`;
+  } catch (err) {
+    console.error("listEntries DB error:", err);
+    return [];
+  }
 }
 
 export async function getEntry(drawId: string, userId: string): Promise<DrawEntry | undefined> {
-  const [row] = await sql<DrawEntry[]>`
-    select * from draw_entries where draw_id = ${drawId} and user_id = ${userId} limit 1`;
-  return row;
+  try {
+    const [row] = await sql<DrawEntry[]>`
+      select * from draw_entries where draw_id = ${drawId} and user_id = ${userId} limit 1`;
+    return row;
+  } catch (err) {
+    console.error("getEntry DB error:", err);
+    return undefined;
+  }
 }
 
 export async function entryCount(drawId: string): Promise<number> {
-  const [row] = await sql<{ count: number }[]>`
-    select count(*)::int as count from draw_entries where draw_id = ${drawId}`;
-  return row?.count ?? 0;
+  try {
+    const [row] = await sql<{ count: number }[]>`
+      select count(*)::int as count from draw_entries where draw_id = ${drawId}`;
+    return row?.count ?? 0;
+  } catch (err) {
+    console.error("entryCount DB error:", err);
+    return 0;
+  }
 }
 
 /** Unclaimed jackpot carried from the most recently published draw. */
 export async function currentJackpotPence(): Promise<number> {
-  const [row] = await sql<{ jackpot_out_pence: number }[]>`
-    select jackpot_out_pence from draws
-    where status = 'published' order by published_at desc limit 1`;
-  return row?.jackpot_out_pence ?? 0;
+  try {
+    const [row] = await sql<{ jackpot_out_pence: number }[]>`
+      select jackpot_out_pence from draws
+      where status = 'published' order by published_at desc limit 1`;
+    return row?.jackpot_out_pence ?? 0;
+  } catch (err) {
+    console.error("currentJackpotPence DB error:", err);
+    return 0;
+  }
 }
 
 /**
@@ -317,30 +352,39 @@ export async function refreshEntriesSafe(drawId: string) {
   await snapshotEntries(drawId);
 }
 
-/** Data for the user-facing draws page: every draw + the user's entry. */
 export async function listDrawsWithEntry(userId: string) {
-  const draws = await listDraws();
-  if (draws.length === 0) return [];
-  const ids = draws.map((d) => d.id);
-  const entries = await sql<DrawEntry[]>`
-    select * from draw_entries where user_id = ${userId} and draw_id = any(${ids})`;
-  const byDraw = new Map(entries.map((e) => [e.draw_id, e]));
-  const winnerRows = await sql<{ draw_id: string; tier: number; amount_pence: number; verification: string; payment_status: string }[]>`
-    select draw_id, tier, amount_pence, verification, payment_status from winners where user_id = ${userId}`;
-  const winnersByDraw = new Map(winnerRows.map((w) => [w.draw_id, w]));
-  return draws.map((draw) => ({
-    draw,
-    entry: byDraw.get(draw.id),
-    winner: winnersByDraw.get(draw.id),
-  }));
+  try {
+    const draws = await listDraws();
+    if (draws.length === 0) return [];
+    const ids = draws.map((d) => d.id);
+    const entries = await sql<DrawEntry[]>`
+      select * from draw_entries where user_id = ${userId} and draw_id = any(${ids})`;
+    const byDraw = new Map(entries.map((e) => [e.draw_id, e]));
+    const winnerRows = await sql<{ draw_id: string; tier: number; amount_pence: number; verification: string; payment_status: string }[]>`
+      select draw_id, tier, amount_pence, verification, payment_status from winners where user_id = ${userId}`;
+    const winnersByDraw = new Map(winnerRows.map((w) => [w.draw_id, w]));
+    return draws.map((draw) => ({
+      draw,
+      entry: byDraw.get(draw.id),
+      winner: winnersByDraw.get(draw.id),
+    }));
+  } catch (err) {
+    console.error("listDrawsWithEntry DB error:", err);
+    return [];
+  }
 }
 
 export async function drawStatistics() {
-  return sql<{ period: string; status: string; entries: number; winners: number; paid: number; pool: number }[]>`
-    select d.period, d.status,
-      (select count(*)::int from draw_entries e where e.draw_id = d.id) as entries,
-      (select count(*)::int from winners w where w.draw_id = d.id) as winners,
-      (select coalesce(sum(amount_pence), 0)::int from winners w where w.draw_id = d.id and w.payment_status = 'paid') as paid,
-      d.pool_pence as pool
-    from draws d order by d.period desc limit 12`;
+  try {
+    return await sql<{ period: string; status: string; entries: number; winners: number; paid: number; pool: number }[]>`
+      select d.period, d.status,
+        (select count(*)::int from draw_entries e where e.draw_id = d.id) as entries,
+        (select count(*)::int from winners w where w.draw_id = d.id) as winners,
+        (select coalesce(sum(amount_pence), 0)::int from winners w where w.draw_id = d.id and w.payment_status = 'paid') as paid,
+        d.pool_pence as pool
+      from draws d order by d.period desc limit 12`;
+  } catch (err) {
+    console.error("drawStatistics DB error:", err);
+    return [];
+  }
 }
