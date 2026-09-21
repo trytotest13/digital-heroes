@@ -12,6 +12,8 @@ const items = [
   { href: "/admin/reports", label: "Reports" },
 ];
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   await requireAdmin();
   return (
