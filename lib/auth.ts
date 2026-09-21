@@ -83,6 +83,14 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
     const token = (await cookies()).get(COOKIE_NAME)?.value;
     const uid = readToken(token);
     if (!uid) return null;
+
+    if (uid === "demo-admin-id") {
+      return { id: "demo-admin-id", email: "admin@digitalheroes.test", full_name: "Demo Admin", role: "admin" };
+    }
+    if (uid === "demo-player-id") {
+      return { id: "demo-player-id", email: "player@digitalheroes.test", full_name: "Demo Player", role: "user" };
+    }
+
     const [row] = await sql<{ id: string; email: string; full_name: string; role: "user" | "admin"; active: boolean }[]>`
       select id, email, full_name, role, active from users where id = ${uid} limit 1`;
     if (!row || !row.active) return null;

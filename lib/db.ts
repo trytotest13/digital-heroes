@@ -11,7 +11,12 @@ declare global {
   var __dhSql: postgres.Sql | undefined;
 }
 
-const connectionString = process.env.DATABASE_URL;
+const rawUrl =
+  process.env.DATABASE_POSTGRES_URL ||
+  process.env.POSTGRES_URL ||
+  process.env.DATABASE_URL;
+
+const connectionString = rawUrl?.replace(/^prisma\+postgres:/, "postgres:");
 const isLocal = !connectionString || connectionString.includes("127.0.0.1") || connectionString.includes("localhost");
 
 export const sql =

@@ -9,12 +9,20 @@ import { SubmitButton } from "@/components/bits";
 export const metadata = { title: "Admin · Draws" };
 
 export default async function AdminDrawsPage() {
-  const draws = await listDraws();
-  const counts = await Promise.all(draws.map((d) => entryCount(d.id)));
-  const winnerCounts = await sql<{ draw_id: string; count: number; paid: number }[]>`
-    select draw_id, count(*)::int as count, coalesce(sum(amount_pence) filter (where payment_status = 'paid'), 0)::int as paid
-    from winners group by draw_id`;
-  const winnersByDraw = new Map(winnerCounts.map((w) => [w.draw_id, w]));
+  let draws: any[] = [];
+  let counts: number[] = [];
+  let winnersByDraw = new Map();
+
+  try {
+    draws = await listDraws();
+    counts = await Promise.all(draws.map((d) => entryCount(d.id)));
+    const winnerCounts = await sql<{ draw_id: string; count: number; paid: number }[]>`
+      select draw_id, count(*)::int as count, coalesce(sum(amount_pence) filter (where payment_status = 'paid'), 0)::int as paid
+      from winners group by draw_id`;
+    winnersByDraw = new Map(winnerCounts.map((w) => [w.draw_id, w]));
+  } catch (err) {
+    console.error("AdminDrawsPage DB error:", err);
+  }
 
   return (
     <div className="space-y-4">
@@ -41,7 +49,7 @@ export default async function AdminDrawsPage() {
                   <p className="font-display text-[18px] font-bold">{fmtMonth(draw.period)}</p>
                   <p className="text-[13px] text-muted">
                     {draw.draw_type} logic · pool {gbp(draw.pool_pence + draw.jackpot_in_pence)}
-                    {draw.jackpot_in_pence > 0 && ` (rollover ${gbp(draw.jackpot_in_pence)})`} · {counts[i]} entries
+                    {draw.jackpot_in_pence > 0 && ` (rollover ${gbp(draw.jackpot_in_pence)})`} · {counts[i] ?? 0} entries
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -59,7 +67,7 @@ export default async function AdminDrawsPage() {
                 <div className="mt-4 border-t border-line pt-4">
                   <p className="kicker mb-2">Winning numbers</p>
                   <div className="flex flex-wrap gap-2">
-                    {(draw.winning_numbers ?? []).map((n) => (
+                    {(draw.winning_numbers ?? []).map((n: number) => (
                       <span key={n} className="chip bg-pine text-cream">{n}</span>
                     ))}
                   </div>
