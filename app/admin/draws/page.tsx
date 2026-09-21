@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import sql from "@/lib/db";
 import { listDraws, entryCount } from "@/lib/draws";
 import { fmtMonth, gbp, TIER_PCT } from "@/lib/format";

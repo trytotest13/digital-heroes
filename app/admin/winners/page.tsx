@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { listWinnersAdmin, tierLabel } from "@/lib/winners";
 import { fmtMonth, gbp } from "@/lib/format";
 import { MarkPaidButton, VerifyButtons } from "@/components/admin-forms";

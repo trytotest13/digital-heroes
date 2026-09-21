@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { listAllCharitiesAdmin } from "@/lib/charities";
 import { CharityAddForm, CharityEditRow } from "@/components/admin-forms";
 import { adminDeleteCharityAction } from "@/actions/admin";

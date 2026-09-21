@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { listCharities } from "@/lib/charities";
 import { CHARITY_CATEGORIES } from "@/lib/format";

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth";
 import { effectiveStatus, getSubscription } from "@/lib/subscriptions";
 import { fmtDate, gbp } from "@/lib/format";

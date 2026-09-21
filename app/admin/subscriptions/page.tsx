@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import sql from "@/lib/db";
 import { fmtDate } from "@/lib/format";
 import { SubStatusForm } from "@/components/admin-forms";

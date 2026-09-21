@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 import sql from "@/lib/db";
 import { currentJackpotPence, getDrawByPeriod } from "@/lib/draws";

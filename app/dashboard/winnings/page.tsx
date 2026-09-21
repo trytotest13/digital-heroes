@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth";
 import { myWinners, tierLabel, winningsSummary } from "@/lib/winners";
 import { fmtDate, fmtMonth, gbp } from "@/lib/format";

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth";
 import { listCharities } from "@/lib/charities";
 import { getUserCharity, listDonations, monthlyContributionPence } from "@/lib/charity-user";
