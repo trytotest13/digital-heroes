@@ -1,26 +1,13 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /*
   Digital Heroes design tokens.
   Deliberately not a "golf course" palette — warm paper, deep pine green
   and a single warm amber accent, echoing the PRD's own editorial style.
+  Colors and fonts are defined in tailwind.config.js.
 */
-@theme {
-  --color-cream: #f5f3ec;
-  --color-ink: #101514;
-  --color-pine: #173d35;
-  --color-pine-deep: #102b25;
-  --color-sage: #8fae9b;
-  --color-mist: #dce7df;
-  --color-amber: #d8a15d;
-  --color-body: #18201d;
-  --color-muted: #6b746f;
-  --color-line: #d7dad4;
-  --color-danger: #b84c4c;
-
-  --font-display: "DM Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-}
 
 @layer base {
   html {
