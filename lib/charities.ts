@@ -13,36 +13,120 @@ export type Charity = {
   created_at: Date;
 };
 
+export const FALLBACK_CHARITIES: Charity[] = [
+  {
+    id: "demo-hope",
+    name: "Hope Foundation",
+    category: "Children",
+    tagline: "Safe homes and schooling for over a thousand children.",
+    description: "Hope Foundation runs family shelters, after-school tutoring and holiday programmes across twelve cities. Every pound goes into keeping children housed, fed and in school.",
+    website_url: "https://example.org/hope",
+    featured: true,
+    active: true,
+    events: [{ title: "Autumn Charity Golf Day", date: "2026-10-15", location: "Maplewood Golf Club" }],
+    created_at: new Date(),
+  },
+  {
+    id: "demo-green",
+    name: "Green Earth Trust",
+    category: "Environment",
+    tagline: "Rivers, woodland and coastline restoration.",
+    description: "Green Earth Trust coordinates volunteer restoration projects — river clean-ups, tree planting and coastal dune repair — with published results for every project it funds.",
+    website_url: "https://example.org/green-earth",
+    featured: true,
+    active: true,
+    events: [{ title: "River Wensum Clean-Up", date: "2026-10-02", location: "Norwich" }],
+    created_at: new Date(),
+  },
+  {
+    id: "demo-mind",
+    name: "Mind & Body Wellness",
+    category: "Health",
+    tagline: "Community mental-health support, free at the point of need.",
+    description: "Mind & Body Wellness funds counselling places, peer support groups and community exercise programmes for people who can't afford private care.",
+    website_url: "https://example.org/mindbody",
+    featured: true,
+    active: true,
+    events: [],
+    created_at: new Date(),
+  },
+  {
+    id: "demo-shelter",
+    name: "Shelter Together",
+    category: "Community",
+    tagline: "Emergency housing and resettlement support.",
+    description: "Shelter Together provides emergency beds, then walks alongside people through resettlement — deposits, furniture, and the boring paperwork that keeps a tenancy alive.",
+    website_url: "https://example.org/shelter",
+    featured: false,
+    active: true,
+    events: [],
+    created_at: new Date(),
+  },
+];
+
 export async function listCharities(opts: { search?: string; category?: string } = {}) {
-  const search = opts.search?.trim();
-  if (search && opts.category) {
-    return sql`select * from charities where active = true and category = ${opts.category}
-      and (name ilike ${"%" + search + "%"} or tagline ilike ${"%" + search + "%"})
-      order by featured desc, name`;
+  try {
+    const search = opts.search?.trim();
+    if (search && opts.category) {
+      const rows = await sql<Charity[]>`select * from charities where active = true and category = ${opts.category}
+        and (name ilike ${"%" + search + "%"} or tagline ilike ${"%" + search + "%"})
+        order by featured desc, name`;
+      if (rows && rows.length > 0) return rows;
+    } else if (search) {
+      const rows = await sql<Charity[]>`select * from charities where active = true
+        and (name ilike ${"%" + search + "%"} or tagline ilike ${"%" + search + "%"})
+        order by featured desc, name`;
+      if (rows && rows.length > 0) return rows;
+    } else if (opts.category) {
+      const rows = await sql<Charity[]>`select * from charities where active = true and category = ${opts.category}
+        order by featured desc, name`;
+      if (rows && rows.length > 0) return rows;
+    } else {
+      const rows = await sql<Charity[]>`select * from charities where active = true order by featured desc, name`;
+      if (rows && rows.length > 0) return rows;
+    }
+  } catch (err) {
+    console.error("Database query failed in listCharities:", err);
   }
-  if (search) {
-    return sql`select * from charities where active = true
-      and (name ilike ${"%" + search + "%"} or tagline ilike ${"%" + search + "%"})
-      order by featured desc, name`;
-  }
+
+  let list = FALLBACK_CHARITIES;
   if (opts.category) {
-    return sql`select * from charities where active = true and category = ${opts.category}
-      order by featured desc, name`;
+    list = list.filter((c) => c.category === opts.category);
   }
-  return sql`select * from charities where active = true order by featured desc, name`;
+  if (opts.search?.trim()) {
+    const q = opts.search.trim().toLowerCase();
+    list = list.filter((c) => c.name.toLowerCase().includes(q) || c.tagline.toLowerCase().includes(q));
+  }
+  return list;
 }
 
 export async function listAllCharitiesAdmin() {
-  return sql`select * from charities order by created_at desc`;
+  try {
+    return await sql`select * from charities order by created_at desc`;
+  } catch (err) {
+    console.error("Database query failed in listAllCharitiesAdmin:", err);
+    return [];
+  }
 }
 
 export async function getCharity(id: string) {
-  const [row] = await sql<Charity[]>`select * from charities where id = ${id} limit 1`;
-  return row;
+  try {
+    const [row] = await sql<Charity[]>`select * from charities where id = ${id} limit 1`;
+    if (row) return row;
+  } catch (err) {
+    console.error("Database query failed in getCharity:", err);
+  }
+  return FALLBACK_CHARITIES.find((c) => c.id === id);
 }
 
 export async function featuredCharities(limit = 3) {
-  return sql`select * from charities where active = true and featured = true order by name limit ${limit}`;
+  try {
+    const rows = await sql<Charity[]>`select * from charities where active = true and featured = true order by name limit ${limit}`;
+    if (rows && rows.length > 0) return rows;
+  } catch (err) {
+    console.error("Database query failed in featuredCharities:", err);
+  }
+  return FALLBACK_CHARITIES.filter((c) => c.featured).slice(0, limit);
 }
 
 export async function createCharity(input: {

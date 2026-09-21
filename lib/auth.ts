@@ -79,13 +79,18 @@ export type SessionUser = {
 
 /** Resolves the signed-in user (or null). Checked on every request. */
 export async function getCurrentUser(): Promise<SessionUser | null> {
-  const token = (await cookies()).get(COOKIE_NAME)?.value;
-  const uid = readToken(token);
-  if (!uid) return null;
-  const [row] = await sql<{ id: string; email: string; full_name: string; role: "user" | "admin"; active: boolean }[]>`
-    select id, email, full_name, role, active from users where id = ${uid} limit 1`;
-  if (!row || !row.active) return null;
-  return { id: row.id, email: row.email, full_name: row.full_name, role: row.role };
+  try {
+    const token = (await cookies()).get(COOKIE_NAME)?.value;
+    const uid = readToken(token);
+    if (!uid) return null;
+    const [row] = await sql<{ id: string; email: string; full_name: string; role: "user" | "admin"; active: boolean }[]>`
+      select id, email, full_name, role, active from users where id = ${uid} limit 1`;
+    if (!row || !row.active) return null;
+    return { id: row.id, email: row.email, full_name: row.full_name, role: row.role };
+  } catch (err) {
+    console.error("getCurrentUser error:", err);
+    return null;
+  }
 }
 
 export async function requireUser(): Promise<SessionUser> {

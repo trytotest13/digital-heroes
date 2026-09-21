@@ -11,11 +11,17 @@ declare global {
   var __dhSql: postgres.Sql | undefined;
 }
 
+const connectionString = process.env.DATABASE_URL;
+const isLocal = !connectionString || connectionString.includes("127.0.0.1") || connectionString.includes("localhost");
+
 export const sql =
   globalThis.__dhSql ??
-  postgres(process.env.DATABASE_URL ?? "postgres://postgres:postgres@127.0.0.1:54329/postgres", {
+  postgres(connectionString || "postgres://postgres:postgres@127.0.0.1:54329/postgres", {
     prepare: false,
     max: 10,
+    ssl: isLocal ? false : "require",
+    connect_timeout: 10,
+    idle_timeout: 20,
   });
 
 if (process.env.NODE_ENV !== "production") globalThis.__dhSql = sql;
