@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { requireAdmin } from "@/lib/auth";
 import { DashNav } from "@/components/dash-nav";
 import { LogoutButton } from "@/components/user-forms";
@@ -24,8 +25,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <header className="border-b border-line bg-ink">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-3">
-            <Link href="/" className="font-display text-[15px] font-bold text-cream transition hover:opacity-90">
-              digital.<span className="text-pine-muted">HEROES.</span>
+            <Link href="/" className="flex items-center gap-2.5 transition hover:opacity-90">
+              <div className="rounded-md bg-white/95 px-2 py-0.5 shadow-xs">
+                <Image
+                  src="/logo.png"
+                  alt="digital.HEROES."
+                  width={100}
+                  height={38}
+                  className="h-6 w-auto object-contain"
+                  priority
+                />
+              </div>
             </Link>
             <span className="badge-amber">Admin</span>
           </div>

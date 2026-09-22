@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   // Winner proof screenshots are uploaded through server actions,
   // so the request body limit needs to exceed the default 1 MB.
   experimental: {

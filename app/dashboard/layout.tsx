@@ -3,6 +3,7 @@ import { DashNav } from "@/components/dash-nav";
 import { LogoutButton } from "@/components/user-forms";
 import { PageFade } from "@/components/page-fade";
 import { BackButton } from "@/components/back-button";
+import { Logo } from "@/components/logo";
 
 const items = [
   { href: "/dashboard", label: "Overview" },
@@ -19,10 +20,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const user = await requireUser();
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="kicker">Your dashboard</p>
-          <p className="mt-1 font-display text-[18px] font-bold text-ink">{user.full_name}</p>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <Logo href="/" size="sm" />
+          <div className="border-l border-line pl-3.5">
+            <p className="kicker">Your dashboard</p>
+            <p className="mt-0.5 font-display text-[17px] font-bold text-ink">{user.full_name}</p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <BackButton href="/" label="Back to site" variant="button" />

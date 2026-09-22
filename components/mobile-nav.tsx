@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Logo } from "@/components/logo";
 
 export function MobileNav({ user }: { user: { role: string } | null }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,6 +61,9 @@ export function MobileNav({ user }: { user: { role: string } | null }) {
         }`}
       >
         <div className="flex flex-col space-y-3">
+          <div className="border-b border-line/60 pb-2">
+            <Logo href="/" size="sm" />
+          </div>
           <Link
             href="/"
             className={`rounded-lg px-3 py-2.5 text-[15px] font-semibold transition ${

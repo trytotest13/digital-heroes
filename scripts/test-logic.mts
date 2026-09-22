@@ -180,6 +180,7 @@ check("rollover booked iff 5-tier unclaimed", roll === (fiveUnclaimed ? Math.rou
 const nextDate = new Date();
 nextDate.setUTCMonth(nextDate.getUTCMonth() + 1);
 const nextPeriod = nextDate.toISOString().slice(0, 7);
+await sql`delete from draws where period = ${nextPeriod}`;
 const next = await createDraw(nextPeriod, "algorithmic");
 check("next draw created", !next.error, next.error ?? "");
 const nextId = next.drawId!;

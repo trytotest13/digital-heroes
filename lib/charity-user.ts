@@ -79,10 +79,15 @@ export async function recordDonation(userId: string, charityId: string | null, a
 }
 
 export async function listDonations(userId: string) {
-  return sql<{ id: string; amount_pence: number; created_at: Date; charity_name: string | null }[]>`
-    select d.id, d.amount_pence, d.created_at, c.name as charity_name
-    from donations d left join charities c on c.id = d.charity_id
-    where d.user_id = ${userId} order by d.created_at desc limit 10`;
+  try {
+    return await sql<{ id: string; amount_pence: number; created_at: Date; charity_name: string | null }[]>`
+      select d.id, d.amount_pence, d.created_at, c.name as charity_name
+      from donations d left join charities c on c.id = d.charity_id
+      where d.user_id = ${userId} order by d.created_at desc limit 10`;
+  } catch (err) {
+    console.error("listDonations DB error:", err);
+    return [];
+  }
 }
 
 /** Platform-wide charity totals for admin reporting. */

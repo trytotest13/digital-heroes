@@ -22,6 +22,8 @@ module.exports = {
         gold: "#c9952a",
         "gold-light": "#dbab4a",
         "gold-pale": "#f0dfa8",
+        amber: "#c9952a",
+        sage: "#2d5e4a",
         
         // Secondary — slate blue (for contrast categories)
         ocean: "#2a5a7a",
