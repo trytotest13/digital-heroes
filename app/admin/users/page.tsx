@@ -3,6 +3,7 @@ import Link from "next/link";
 import sql from "@/lib/db";
 import { fmtDate } from "@/lib/format";
 import { SuspendButton } from "@/components/admin-forms";
+import { DEMO_USERS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · Users" };
 
@@ -28,32 +29,7 @@ export default async function AdminUsersPage() {
       order by u.created_at desc`;
   } catch (err) {
     console.error("AdminUsersPage DB error:", err);
-    users = [
-      {
-        id: "demo-admin-id",
-        email: "admin@digitalheroes.test",
-        full_name: "Demo Admin",
-        role: "admin",
-        active: true,
-        created_at: new Date(),
-        plan: "yearly",
-        status: "active",
-        charity_name: "Hope Foundation",
-        scores: 5,
-      },
-      {
-        id: "demo-player-id",
-        email: "player@digitalheroes.test",
-        full_name: "Demo Player",
-        role: "user",
-        active: true,
-        created_at: new Date(),
-        plan: "monthly",
-        status: "active",
-        charity_name: "Green Earth Trust",
-        scores: 5,
-      },
-    ];
+    users = DEMO_USERS;
   }
 
   return (

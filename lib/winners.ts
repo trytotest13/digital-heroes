@@ -1,5 +1,6 @@
 import sql from "./db";
 import { TIER_LABEL } from "./format";
+import { DEMO_WINNERS } from "./demo-data";
 
 /**
  * Winner verification: winners upload a screenshot of their scores as
@@ -51,7 +52,7 @@ export async function listWinnersAdmin() {
       order by w.created_at desc`;
   } catch (err) {
     console.error("listWinnersAdmin DB error:", err);
-    return [];
+    return DEMO_WINNERS;
   }
 }
 

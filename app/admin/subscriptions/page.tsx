@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 import sql from "@/lib/db";
 import { fmtDate, inr } from "@/lib/format";
 import { SubStatusForm } from "@/components/admin-forms";
+import { DEMO_SUBSCRIPTIONS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · Subscriptions" };
 
@@ -22,28 +23,7 @@ export default async function AdminSubscriptionsPage() {
       order by s.updated_at desc`;
   } catch (err) {
     console.error("AdminSubscriptionsPage DB error:", err);
-    subs = [
-      {
-        user_id: "demo-user-1",
-        email: "player@digitalheroes.test",
-        full_name: "Demo Player 1",
-        plan: "monthly",
-        status: "active",
-        price_pence: 49900,
-        renewal_date: "2026-10-21",
-        updated_at: new Date(),
-      },
-      {
-        user_id: "demo-user-2",
-        email: "player2@digitalheroes.test",
-        full_name: "Demo Player 2",
-        plan: "yearly",
-        status: "active",
-        price_pence: 499900,
-        renewal_date: "2027-09-21",
-        updated_at: new Date(),
-      },
-    ];
+    subs = DEMO_SUBSCRIPTIONS;
   }
 
   const counts = {

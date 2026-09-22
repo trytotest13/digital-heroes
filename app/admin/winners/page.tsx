@@ -11,8 +11,11 @@ const verificationBadge: Record<string, string> = {
   rejected: "badge-red",
 };
 
+import { DEMO_WINNERS } from "@/lib/demo-data";
+
 export default async function AdminWinnersPage() {
-  const winners = await listWinnersAdmin();
+  const winnersRes = await listWinnersAdmin();
+  const winners = winnersRes.length > 0 ? winnersRes : DEMO_WINNERS;
 
   return (
     <div className="space-y-4">

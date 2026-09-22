@@ -3,15 +3,16 @@ import sql from "@/lib/db";
 import { charityTotals, givingByCharity } from "@/lib/charity-user";
 import { drawStatistics } from "@/lib/draws";
 import { fmtMonth, inr } from "@/lib/format";
+import { DEMO_USERS, DEMO_CHARITY_GIVING, DEMO_REPORTS_STATS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · Reports" };
 
 export default async function AdminReportsPage() {
-  let userStats: { total: number }[] = [{ total: 2 }];
-  let prizeTotals: { awarded: number; outstanding: number }[] = [{ awarded: 0, outstanding: 0 }];
-  let charity = { estimated_monthly: 120000, donations_total: 0, donations_count: 0 };
-  let byCharity: any[] = [];
-  let stats: any[] = [];
+  let userStats: { total: number }[] = [{ total: DEMO_USERS.length }];
+  let prizeTotals: { awarded: number; outstanding: number }[] = [{ awarded: 9610000, outstanding: 2350000 }];
+  let charity = { estimated_monthly: 1540000, donations_total: 4850000, donations_count: 18 };
+  let byCharity: any[] = DEMO_CHARITY_GIVING;
+  let stats: any[] = DEMO_REPORTS_STATS;
 
   try {
     const [userStatsRes, prizeTotalsRes, charityRes, byCharityRes, statsRes] = await Promise.all([
@@ -24,11 +25,11 @@ export default async function AdminReportsPage() {
       givingByCharity(),
       drawStatistics(),
     ]);
-    userStats = userStatsRes;
-    prizeTotals = prizeTotalsRes;
-    charity = charityRes;
-    byCharity = byCharityRes;
-    stats = statsRes;
+    if (userStatsRes.length > 0 && userStatsRes[0].total > 0) userStats = userStatsRes;
+    if (prizeTotalsRes.length > 0 && (prizeTotalsRes[0].awarded > 0 || prizeTotalsRes[0].outstanding > 0)) prizeTotals = prizeTotalsRes;
+    if (charityRes && charityRes.estimated_monthly > 0) charity = charityRes;
+    if (byCharityRes.length > 0) byCharity = byCharityRes;
+    if (statsRes.length > 0) stats = statsRes;
   } catch (err) {
     console.error("AdminReportsPage DB error:", err);
   }

@@ -1,6 +1,7 @@
 import sql from "./db";
 import { addMonths, addYears, todayStr } from "./format";
 import { getSettings } from "./settings";
+import { DEMO_USERS } from "./demo-data";
 
 /**
  * Subscription lifecycle: activation, renewal dates, cancellation and the
@@ -86,10 +87,11 @@ export async function activeSubscribers() {
       order by u.created_at`;
   } catch (err) {
     console.error("activeSubscribers DB error:", err);
-    return [
-      { id: "demo-admin-id", full_name: "Demo Admin", email: "admin@digitalheroes.test" },
-      { id: "demo-player-id", full_name: "Demo Player", email: "player@digitalheroes.test" },
-    ];
+    return DEMO_USERS.filter((u) => u.status === "active" && u.active).map((u) => ({
+      id: u.id,
+      full_name: u.full_name,
+      email: u.email,
+    }));
   }
 }
 
@@ -109,6 +111,6 @@ export async function monthlyPoolContributionPence(): Promise<number> {
     return Math.round((row?.total ?? 0) * (settings.prize_pool_percent / 100));
   } catch (err) {
     console.error("monthlyPoolContributionPence DB error:", err);
-    return 4000;
+    return 3360000;
   }
 }

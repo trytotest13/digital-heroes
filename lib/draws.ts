@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import sql from "./db";
 import { currentPeriod, randomDrawNumbers, TIER_LABEL, TIER_PCT } from "./format";
 import { activeSubscribers, monthlyPoolContributionPence } from "./subscriptions";
+import { DEMO_DRAWS } from "./demo-data";
 
 /**
  * Draw engine.
@@ -59,7 +60,7 @@ export async function getDrawByPeriod(period: string): Promise<Draw | undefined>
     return row;
   } catch (err) {
     console.error("getDrawByPeriod DB error:", err);
-    return undefined;
+    return (DEMO_DRAWS.find((d) => d.period === period) ?? DEMO_DRAWS[0]) as Draw;
   }
 }
 
@@ -68,7 +69,7 @@ export async function listDraws(): Promise<Draw[]> {
     return await sql<Draw[]>`select * from draws order by period desc`;
   } catch (err) {
     console.error("listDraws DB error:", err);
-    return [];
+    return DEMO_DRAWS as Draw[];
   }
 }
 
@@ -99,7 +100,8 @@ export async function entryCount(drawId: string): Promise<number> {
     return row?.count ?? 0;
   } catch (err) {
     console.error("entryCount DB error:", err);
-    return 0;
+    const demo = DEMO_DRAWS.find((d) => d.id === drawId);
+    return demo?.entryCount ?? 15;
   }
 }
 
@@ -112,7 +114,7 @@ export async function currentJackpotPence(): Promise<number> {
     return row?.jackpot_out_pence ?? 0;
   } catch (err) {
     console.error("currentJackpotPence DB error:", err);
-    return 0;
+    return 1840000;
   }
 }
 

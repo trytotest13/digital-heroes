@@ -7,6 +7,7 @@ import { listScores } from "@/lib/scores";
 import { getUserCharity } from "@/lib/charity-user";
 import { fmtDate } from "@/lib/format";
 import { SubStatusForm, AdminScoreRow } from "@/components/admin-forms";
+import { DEMO_USERS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · User detail" };
 
@@ -23,10 +24,11 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
   }
 
   if (!user) {
-    if (id === "demo-admin-id") {
-      user = { id: "demo-admin-id", email: "admin@digitalheroes.test", full_name: "Demo Admin", role: "admin", active: true, created_at: new Date() };
-    } else if (id === "demo-player-id" || id === "demo-user-1" || id === "demo-user-2") {
-      user = { id, email: "player@digitalheroes.test", full_name: "Demo Player", role: "user", active: true, created_at: new Date() };
+    const demo = DEMO_USERS.find((u) => u.id === id);
+    if (demo) {
+      user = { id: demo.id, email: demo.email, full_name: demo.full_name, role: demo.role, active: demo.active, created_at: demo.created_at };
+    } else if (id === "demo-user-1") {
+      user = { id, email: "player@digitalheroes.test", full_name: "Demo Player 1", role: "user", active: true, created_at: new Date() };
     } else {
       notFound();
     }

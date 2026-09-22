@@ -6,16 +6,17 @@ import { monthlyPoolContributionPence } from "@/lib/subscriptions";
 import { charityTotals } from "@/lib/charity-user";
 import { listWinnersAdmin, tierLabel } from "@/lib/winners";
 import { currentPeriod, fmtDate, fmtMonth, inr, TIER_PCT } from "@/lib/format";
+import { DEMO_USERS, DEMO_DRAWS, DEMO_WINNERS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin overview" };
 
 export default async function AdminOverviewPage() {
-  let stats = { total: 2, active: 2, admins: 1 };
-  let pool = 400000;
-  let jackpot = 1000000;
-  let charity = { estimated_monthly: 120000 };
-  let draw: any = null;
-  let winners: any[] = [];
+  let stats = { total: DEMO_USERS.length, active: DEMO_USERS.filter((u) => u.status === "active").length, admins: 1 };
+  let pool = 3360000;
+  let jackpot = 1840000;
+  let charity = { estimated_monthly: 1540000 };
+  let draw: any = DEMO_DRAWS[0];
+  let winners: any[] = DEMO_WINNERS.slice(0, 5);
 
   try {
     const [userStats, poolRes, jackpotRes, drawRes, charityRes, winnersRes] = await Promise.all([
@@ -32,12 +33,12 @@ export default async function AdminOverviewPage() {
       charityTotals(),
       listWinnersAdmin(),
     ]);
-    if (userStats[0]) stats = userStats[0];
-    pool = poolRes;
-    jackpot = jackpotRes;
-    draw = drawRes;
-    charity = charityRes;
-    winners = winnersRes;
+    if (userStats[0] && userStats[0].total > 0) stats = userStats[0];
+    if (poolRes > 0) pool = poolRes;
+    if (jackpotRes > 0) jackpot = jackpotRes;
+    if (drawRes) draw = drawRes;
+    if (charityRes && charityRes.estimated_monthly > 0) charity = charityRes;
+    if (winnersRes && winnersRes.length > 0) winners = winnersRes;
   } catch (err) {
     console.error("AdminOverviewPage DB error:", err);
   }

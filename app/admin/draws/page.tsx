@@ -5,6 +5,7 @@ import { fmtMonth, inr, TIER_PCT } from "@/lib/format";
 import { DrawCreateForm, DrawSimPanel } from "@/components/admin-forms";
 import { adminRefreshEntriesAction } from "@/actions/admin";
 import { SubmitButton } from "@/components/bits";
+import { DEMO_DRAWS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · Draws" };
 
@@ -22,6 +23,16 @@ export default async function AdminDrawsPage() {
     winnersByDraw = new Map(winnerCounts.map((w) => [w.draw_id, w]));
   } catch (err) {
     console.error("AdminDrawsPage DB error:", err);
+  }
+
+  if (draws.length === 0) {
+    draws = DEMO_DRAWS;
+    counts = DEMO_DRAWS.map((d) => d.entryCount);
+    winnersByDraw = new Map([
+      ["draw-2026-09", { draw_id: "draw-2026-09", count: 3, paid: 3600000 }],
+      ["draw-2026-08", { draw_id: "draw-2026-08", count: 2, paid: 1610000 }],
+      ["draw-2026-07", { draw_id: "draw-2026-07", count: 3, paid: 4400000 }],
+    ]);
   }
 
   return (
