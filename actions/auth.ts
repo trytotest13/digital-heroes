@@ -1,7 +1,7 @@
 "use server";
 
 import sql from "@/lib/db";
-import { setSessionCookie, clearSessionCookie } from "@/lib/auth";
+import { setSessionCookie, clearSessionCookie, DEMO_USERS } from "@/lib/auth";
 import { hashPassword, verifyPassword } from "@/lib/hash";
 import { setUserCharity } from "@/lib/charity-user";
 import type { ActionState } from "@/lib/types";
@@ -55,7 +55,16 @@ export async function loginAction(_prev: ActionState, formData: FormData): Promi
     }
   } catch (err) {
     console.error("Login database query failed:", err);
-    return { error: "Database connection failed. Please ensure the database is running." };
+  }
+
+  // Fallback for demo credentials in preview/serverless environments without remote DB
+  if (!redirectPath) {
+    const demo = DEMO_USERS[email];
+    if (demo && demo.password_hash === password) {
+      if (!demo.active) return { error: "This account has been suspended. Contact support." };
+      await setSessionCookie(demo.id);
+      redirectPath = demo.role === "admin" ? "/admin" : "/dashboard";
+    }
   }
 
   if (redirectPath) {

@@ -31,6 +31,17 @@ export async function getSubscription(userId: string): Promise<Subscription | un
   } catch (err) {
     console.error("getSubscription DB error:", err);
   }
+  if (userId === "demo-player-id") {
+    return {
+      id: "demo-player-sub",
+      user_id: "demo-player-id",
+      plan: "monthly",
+      status: "active",
+      price_pence: 49900,
+      renewal_date: "2026-10-22",
+      stripe_subscription_id: null,
+    };
+  }
   return undefined;
 }
 

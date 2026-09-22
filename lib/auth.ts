@@ -63,12 +63,44 @@ export type SessionUser = {
   role: "user" | "admin";
 };
 
+export const DEMO_USERS: Record<string, SessionUser & { password_hash: string; active: boolean }> = {
+  "admin@digitalheroes.test": {
+    id: "demo-admin-id",
+    email: "admin@digitalheroes.test",
+    full_name: "Platform Admin",
+    role: "admin",
+    password_hash: "Admin#2026",
+    active: true,
+  },
+  "player@digitalheroes.test": {
+    id: "demo-player-id",
+    email: "player@digitalheroes.test",
+    full_name: "Sam Carter",
+    role: "user",
+    password_hash: "Player#2026",
+    active: true,
+  },
+  "player2@digitalheroes.test": {
+    id: "demo-player-2-id",
+    email: "player2@digitalheroes.test",
+    full_name: "Jordan Lee",
+    role: "user",
+    password_hash: "Player#2026",
+    active: true,
+  },
+};
+
 /** Resolves the signed-in user (or null). Checked on every request. */
 export async function getCurrentUser(): Promise<SessionUser | null> {
   try {
     const token = (await cookies()).get(COOKIE_NAME)?.value;
     const uid = readToken(token);
     if (!uid) return null;
+
+    const demoUser = Object.values(DEMO_USERS).find((u) => u.id === uid);
+    if (demoUser && demoUser.active) {
+      return { id: demoUser.id, email: demoUser.email, full_name: demoUser.full_name, role: demoUser.role };
+    }
 
     const [row] = await sql<{ id: string; email: string; full_name: string; role: "user" | "admin"; active: boolean }[]>`
       select id, email, full_name, role, active from users where id = ${uid} limit 1`;

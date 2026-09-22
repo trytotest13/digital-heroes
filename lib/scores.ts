@@ -20,6 +20,15 @@ export async function listScores(userId: string): Promise<ScoreRow[]> {
   } catch (err) {
     console.error("listScores DB error:", err);
   }
+  if (userId === "demo-player-id") {
+    return [
+      { id: "demo-score-1", score: 42, played_at: "2026-09-18" },
+      { id: "demo-score-2", score: 38, played_at: "2026-09-14" },
+      { id: "demo-score-3", score: 41, played_at: "2026-09-10" },
+      { id: "demo-score-4", score: 35, played_at: "2026-09-06" },
+      { id: "demo-score-5", score: 40, played_at: "2026-09-02" },
+    ];
+  }
   return [];
 }
 

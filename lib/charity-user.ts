@@ -26,6 +26,15 @@ export async function getUserCharity(userId: string): Promise<UserCharity | unde
   } catch (err) {
     console.error("getUserCharity DB error:", err);
   }
+  if (userId === "demo-player-id") {
+    return {
+      charity_id: "demo-charity-hope",
+      contribution_pct: 20,
+      name: "Hope Foundation",
+      category: "Children",
+      tagline: "Safe homes and schooling for over a thousand children.",
+    };
+  }
   return undefined;
 }
 
