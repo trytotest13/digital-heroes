@@ -2,9 +2,9 @@
  * Seed script — idempotent. Safe to run against the local dev database or a
  * fresh Supabase project (it also applies the schema first).
  *
- * Creates: 12 demo charities, an admin account, twelve demo players
+ * Creates: 18 demo charities, an admin account, 24 demo players
  * (mixed plans and statuses, with scores and charity selections),
- * a handful of independent donations, two published historical draws
+ * independent donations, four published historical draws
  * (with entries + winners in every verification state), and opens the
  * current month's draw.
  *
@@ -12,7 +12,7 @@
  *   admin@digitalheroes.test  / Admin#2026
  *   player@digitalheroes.test / Player#2026
  *   player2@digitalheroes.test / Player#2026
- *   player3@digitalheroes.test … player12@digitalheroes.test / Player#2026
+ *   player3@digitalheroes.test … player24@digitalheroes.test / Player#2026
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -59,6 +59,14 @@ const charities = [
   ["Family Health Fund", "Health", "Grants for families facing medical bills.", "Family Health Fund makes fast, no-forms grants for travel to hospital, prescriptions and time off work during treatment.", "https://example.org/family-health", false, []],
   ["Little Readers", "Children", "Books and reading volunteers for primary schools.", "Little Readers stocks school libraries and trains reading volunteers — every child gets a book to keep each term.", "https://example.org/readers", false,
     [{ title: "Read-a-thon", date: daysAgoStr(-45), location: "Leeds" }]],
+  ["Fair Play Sports", "Community", "Free weekend sports clubs for teenagers.", "Fair Play Sports runs free weekend football, cricket and athletics clubs with volunteer coaches in six boroughs.", "https://example.org/fair-play", true,
+    [{ title: "Summer Tournament", date: daysAgoStr(-12), location: "Birmingham" }]],
+  ["Warm Homes Project", "Community", "Winter fuel grants and insulation help.", "Warm Homes Project pays emergency fuel top-ups and funds draught-proofing for pensioners in fuel poverty.", "https://example.org/warm-homes", false, []],
+  ["Wildlife Corridors", "Environment", "Hedges and ponds linking fragmented habitats.", "Wildlife Corridors pays farmers to plant hedgerows and dig ponds that reconnect habitats for hedgehogs, newts and bees.", "https://example.org/corridors", false, []],
+  ["First Steps Nutrition", "Health", "Healthy-start meals for under-5s.", "First Steps Nutrition funds breakfast clubs and vitamin parcels for nurseries in low-income neighbourhoods.", "https://example.org/first-steps", false, []],
+  ["Girls Into Golf", "Children", "Clubs, coaching and kit for junior girls.", "Girls Into Golf pays club memberships, lessons and second-hand kit so cost is never the reason a girl stops playing.", "https://example.org/girls-golf", true,
+    [{ title: "Junior Open Day", date: daysAgoStr(-5), location: "St Andrews" }]],
+  ["Night Shelter Network", "Community", "Beds and breakfast all winter.", "Night Shelter Network coordinates church-hall shelters, hot meals and morning casework every winter night.", "https://example.org/night-shelter", false, []],
 ] as const;
 
 for (const [name, category, tagline, description, website, featured, events] of charities) {
@@ -94,6 +102,18 @@ for (const [email, name] of [
   ["player10@digitalheroes.test", "Hana Sato"],
   ["player11@digitalheroes.test", "Ravi Patel"],
   ["player12@digitalheroes.test", "Elena Rossi"],
+  ["player13@digitalheroes.test", "Sophie Turner"],
+  ["player14@digitalheroes.test", "Liam Walker"],
+  ["player15@digitalheroes.test", "Aisha Khan"],
+  ["player16@digitalheroes.test", "Marco Silva"],
+  ["player17@digitalheroes.test", "Yuki Tanaka"],
+  ["player18@digitalheroes.test", "Omar Haddad"],
+  ["player19@digitalheroes.test", "Chloe Dubois"],
+  ["player20@digitalheroes.test", "Vikram Singh"],
+  ["player21@digitalheroes.test", "Anna Novak"],
+  ["player22@digitalheroes.test", "Kwame Mensah"],
+  ["player23@digitalheroes.test", "Lucia Ferrari"],
+  ["player24@digitalheroes.test", "Noah Williams"],
 ] as const) {
   extraPlayers[email] = await upsertUser(email, "Player#2026", name, "user");
 }
@@ -107,6 +127,18 @@ const p9 = extraPlayers["player9@digitalheroes.test"];
 const p10 = extraPlayers["player10@digitalheroes.test"];
 const p11 = extraPlayers["player11@digitalheroes.test"];
 const p12 = extraPlayers["player12@digitalheroes.test"];
+const p13 = extraPlayers["player13@digitalheroes.test"];
+const p14 = extraPlayers["player14@digitalheroes.test"];
+const p15 = extraPlayers["player15@digitalheroes.test"];
+const p16 = extraPlayers["player16@digitalheroes.test"];
+const p17 = extraPlayers["player17@digitalheroes.test"];
+const p18 = extraPlayers["player18@digitalheroes.test"];
+const p19 = extraPlayers["player19@digitalheroes.test"];
+const p20 = extraPlayers["player20@digitalheroes.test"];
+const p21 = extraPlayers["player21@digitalheroes.test"];
+const p22 = extraPlayers["player22@digitalheroes.test"];
+const p23 = extraPlayers["player23@digitalheroes.test"];
+const p24 = extraPlayers["player24@digitalheroes.test"];
 
 async function ensureSubscribed(
   userId: string,
@@ -136,6 +168,18 @@ await ensureSubscribed(p9, "monthly", 1);
 await ensureSubscribed(p10, "monthly", -1, "cancelled");
 await ensureSubscribed(p11, "monthly", 0, "past_due");
 // p12 never subscribes — exercises the "no plan" dashboard state.
+await ensureSubscribed(p13, "monthly", 1);
+await ensureSubscribed(p14, "yearly", 8);
+await ensureSubscribed(p15, "monthly", 2);
+await ensureSubscribed(p16, "monthly", 1);
+await ensureSubscribed(p17, "yearly", 7);
+await ensureSubscribed(p18, "monthly", 1);
+await ensureSubscribed(p19, "monthly", 3);
+await ensureSubscribed(p20, "yearly", 6);
+await ensureSubscribed(p21, "monthly", 1);
+await ensureSubscribed(p22, "monthly", -2, "cancelled");
+await ensureSubscribed(p23, "monthly", 0, "past_due");
+// p24 never subscribes — second "no plan" dashboard case.
 
 async function setCharity(userId: string, charityName: string, pct: number) {
   await sql`
@@ -157,6 +201,18 @@ await setCharity(p9, "Green Earth Trust", 20);
 await setCharity(p10, "Mind & Body Wellness", 10);
 await setCharity(p11, "Ocean Guardians", 15);
 await setCharity(p12, "Little Readers", 10);
+await setCharity(p13, "Girls Into Golf", 20);
+await setCharity(p14, "Fair Play Sports", 15);
+await setCharity(p15, "First Steps Nutrition", 25);
+await setCharity(p16, "Wildlife Corridors", 10);
+await setCharity(p17, "Warm Homes Project", 30);
+await setCharity(p18, "Night Shelter Network", 15);
+await setCharity(p19, "Girls Into Golf", 10);
+await setCharity(p20, "Ocean Guardians", 20);
+await setCharity(p21, "Hope Foundation", 15);
+await setCharity(p22, "City Mentors", 10);
+await setCharity(p23, "Clean Rivers Initiative", 20);
+await setCharity(p24, "Fair Play Sports", 10);
 
 async function ensureScores(userId: string, scores: number[]) {
   for (let i = 0; i < scores.length; i++) {
@@ -179,10 +235,22 @@ await ensureScores(p9, [7, 15, 21, 28, 35]);
 await ensureScores(p10, [9, 18, 24, 32, 43]);
 await ensureScores(p11, [6, 13, 20, 27, 34]);
 await ensureScores(p12, [4, 16, 25, 33, 42]);
+await ensureScores(p13, [10, 19, 26, 33, 41]);
+await ensureScores(p14, [2, 11, 21, 29, 37]);
+await ensureScores(p15, [5, 14, 24, 31, 40]);
+await ensureScores(p16, [7, 16, 22, 30, 38]);
+await ensureScores(p17, [4, 12, 20, 28, 36]);
+await ensureScores(p18, [6, 17, 23, 32, 44]);
+await ensureScores(p19, [9, 15, 25, 34, 43]);
+await ensureScores(p20, [3, 13, 22, 31, 39]);
+await ensureScores(p21, [8, 18, 27, 35, 45]);
+await ensureScores(p22, [5, 15, 26, 33, 41]);
+await ensureScores(p23, [7, 14, 24, 32, 40]);
+await ensureScores(p24, [11, 20, 28, 36, 44]);
 
 console.log("Seeding donations…");
 const [{ count: donationCount }] = await sql<{ count: string }[]>`select count(*)::text as count from donations`;
-if (Number(donationCount) < 6) {
+if (Number(donationCount) < 16) {
   const donations: [string, string, number, number][] = [
     // [userId, charityName, amountPence, daysAgo]
     [p3, "Shelter Together", 2500, 6],
@@ -191,6 +259,16 @@ if (Number(donationCount) < 6) {
     [p8, "Hope Foundation", 1000, 9],
     [player, "Green Earth Trust", 750, 15],
     [p9, "Neighbourhood Kitchen", 500, 2],
+    [p13, "Girls Into Golf", 3000, 4],
+    [p14, "Fair Play Sports", 1500, 8],
+    [p15, "First Steps Nutrition", 2000, 11],
+    [p17, "Warm Homes Project", 4500, 18],
+    [p18, "Night Shelter Network", 800, 5],
+    [p20, "Ocean Guardians", 2200, 21],
+    [p21, "Hope Foundation", 1750, 7],
+    [player2, "Green Earth Trust", 6000, 25],
+    [p5, "Wildlife Corridors", 950, 13],
+    [p19, "Little Readers", 1100, 30],
   ];
   for (const [userId, charityName, pence, ago] of donations) {
     const d = new Date();
@@ -201,7 +279,7 @@ if (Number(donationCount) < 6) {
   }
 }
 
-// Two published historical draws so reports, winners and draw history
+// Four published historical draws so reports, winners and draw history
 // have something to show. Amounts follow the fixed tier split
 // (40/35/25) with equal sharing inside each tier.
 console.log("Seeding historical draws…");
@@ -238,9 +316,44 @@ async function ensurePublishedDraw(
   }
 }
 
+// Four months ago: clean jackpot claim, small field.
+await ensurePublishedDraw(
+  monthStr(4), "random", [2, 11, 21, 29, 37], 44000, 0, 0,
+  [
+    { userId: p14, numbers: [2, 11, 21, 29, 37], matches: 5 },
+    { userId: p15, numbers: [2, 11, 21, 29, 36], matches: 4 },
+    { userId: p16, numbers: [2, 11, 21, 30, 38], matches: 3 },
+    { userId: p13, numbers: [1, 3, 5, 7, 9], matches: 0 },
+    { userId: p17, numbers: [12, 13, 14, 15, 16], matches: 0 },
+    { userId: p18, numbers: [18, 19, 20, 22, 24], matches: 0 },
+  ],
+  [
+    { userId: p14, tier: 5, amount: 17600, verification: "approved", paid: true, proof: true },
+    { userId: p15, tier: 4, amount: 15400, verification: "approved", paid: true, proof: true },
+    { userId: p16, tier: 3, amount: 11000, verification: "approved", paid: false, proof: true },
+  ],
+);
+
+// Three months ago: rollover month, tier-5 unclaimed.
+await ensurePublishedDraw(
+  monthStr(3), "algorithmic", [4, 12, 20, 28, 36], 46000, 0, 18400,
+  [
+    { userId: p17, numbers: [4, 12, 20, 28, 35], matches: 4 },
+    { userId: p19, numbers: [4, 12, 20, 34, 43], matches: 3 },
+    { userId: p20, numbers: [3, 13, 22, 31, 39], matches: 0 },
+    { userId: p21, numbers: [8, 18, 27, 35, 45], matches: 0 },
+    { userId: p13, numbers: [10, 19, 26, 33, 41], matches: 0 },
+    { userId: p22, numbers: [5, 15, 26, 33, 41], matches: 0 },
+  ],
+  [
+    { userId: p17, tier: 4, amount: 16100, verification: "approved", paid: true, proof: true },
+    { userId: p19, tier: 3, amount: 11500, verification: "pending", paid: false, proof: false },
+  ],
+);
+
 // Two months ago: jackpot claimed (tier-5 winner paid out).
 await ensurePublishedDraw(
-  monthStr(2), "random", [5, 12, 23, 31, 40], 48000, 0, 0,
+  monthStr(2), "random", [5, 12, 23, 31, 40], 48000, 18400, 0,
   [
     { userId: p4, numbers: [5, 12, 23, 31, 40], matches: 5 },
     { userId: p5, numbers: [5, 12, 23, 31, 39], matches: 4 },
@@ -312,6 +425,29 @@ if (!existing.length) {
       select d.id, ${s.id}, ${numbers} from draws d where d.period = ${period}`;
   }
   console.log(`Opened draft draw for ${period} (jackpot in ${jackpotIn}p).`);
+}
+
+// Backfill: active subscribers added since the draft opened still need entries.
+const missing = await sql<{ id: string }[]>`
+  select u.id from users u join subscriptions s on s.user_id = u.id
+  where s.status = 'active' and not exists (
+    select 1 from draw_entries e join draws d on d.id = e.draw_id
+    where d.period = ${period} and e.user_id = u.id)`;
+for (const s of missing) {
+  const rows = await sql<{ score: number }[]>`
+    select score from (
+      select score, row_number() over (partition by user_id order by played_at desc) rn
+      from scores where user_id = ${s.id}
+    ) ranked where rn <= 5`;
+  const unique = [...new Set(rows.map((r) => r.score))].slice(0, 5);
+  const numbers = unique.sort((a, b) => a - b);
+  while (numbers.length < 5) {
+    const n = 1 + Math.floor(Math.random() * 45);
+    if (!numbers.includes(n)) numbers.push(n);
+  }
+  await sql`insert into draw_entries (draw_id, user_id, numbers)
+    select d.id, ${s.id}, ${numbers} from draws d where d.period = ${period}
+    on conflict (draw_id, user_id) do nothing`;
 }
 
 console.log("Seed complete.");
