@@ -71,6 +71,10 @@ module.exports = {
         display: ['"DM Sans"', '"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],
         sans: ['"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],
       },
+      boxShadow: {
+        '2xs': '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
+        'xs': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+      },
       keyframes: {
         "fade-up": {
           "0%": { opacity: "0", transform: "translateY(18px)" },

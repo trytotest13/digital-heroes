@@ -16,7 +16,7 @@ export function DashNav({ items }: { items: { href: string; label: string }[] })
             href={item.href}
             className={`whitespace-nowrap rounded-lg px-3.5 py-2 text-[13.5px] transition duration-150 ${
               active
-                ? "bg-pine font-semibold text-white shadow-2xs"
+                ? "bg-pine font-semibold text-white shadow-sm"
                 : "font-medium text-slate-600 hover:bg-stone-200/60 hover:text-slate-900"
             }`}
           >
