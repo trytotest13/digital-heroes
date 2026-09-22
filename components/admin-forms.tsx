@@ -13,6 +13,7 @@ import {
   adminUpdateScoreAction,
   adminVerifyAction,
   suspendUserAction,
+  adminSeedDatabaseAction,
 } from "@/actions/admin";
 import { Alert, SubmitButton } from "./bits";
 import { CHARITY_CATEGORIES, fmtDate, inr } from "@/lib/format";
@@ -357,3 +358,21 @@ export function MarkPaidButton({ winnerId, verification, paymentStatus }: { winn
     </form>
   );
 }
+
+export function SeedDemoDataButton() {
+  const [state, action] = useActionState(adminSeedDatabaseAction, initial);
+  return (
+    <div className="flex flex-col items-start gap-1">
+      <form action={action}>
+        <SubmitButton
+          className="btn btn-primary h-9 px-4 text-[13px] font-semibold shadow-xs"
+          pendingLabel="Seeding Database…"
+        >
+          🌱 Populate Rich Demo Data (60 Players & Draws)
+        </SubmitButton>
+      </form>
+      <Alert error={state.error} message={state.message} />
+    </div>
+  );
+}
+

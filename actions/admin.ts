@@ -177,3 +177,18 @@ export async function uploadProofAction(_prev: ActionState, formData: FormData):
   revalidatePath("/admin/winners");
   return { message: "Proof uploaded - an admin will review it." };
 }
+
+export async function adminSeedDatabaseAction(): Promise<ActionState> {
+  await requireAdmin();
+  const { runFullSeed } = await import("@/lib/full-seed");
+  await runFullSeed(sql);
+  revalidatePath("/admin");
+  revalidatePath("/admin/users");
+  revalidatePath("/admin/subscriptions");
+  revalidatePath("/admin/draws");
+  revalidatePath("/admin/charities");
+  revalidatePath("/admin/winners");
+  revalidatePath("/admin/reports");
+  return { message: "Successfully populated database with 60 players, 30 charities, scores, draws, and winners!" };
+}
+

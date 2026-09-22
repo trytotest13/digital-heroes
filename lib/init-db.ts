@@ -138,36 +138,11 @@ export async function ensureDbInitialized(): Promise<void> {
           where not exists (select 1 from charities where name = ${name})`;
       }
 
-      // 3. Ensure test accounts exist in database
-      const [adminExists] = await sql<{ id: string }[]>`select id from users where email = 'admin@digitalheroes.test' limit 1`;
-      if (!adminExists) {
-        await sql`
-          insert into users (email, password_hash, full_name, role)
-          values ('admin@digitalheroes.test', ${hashPassword('Admin#2026')}, 'Platform Admin', 'admin')
-          on conflict (email) do nothing`;
-      }
-
-      const [playerExists] = await sql<{ id: string }[]>`select id from users where email = 'player@digitalheroes.test' limit 1`;
-      if (!playerExists) {
-        const [newUser] = await sql<{ id: string }[]>`
-          insert into users (email, password_hash, full_name, role)
-          values ('player@digitalheroes.test', ${hashPassword('Player#2026')}, 'Sam Carter', 'user')
-          on conflict (email) do update set full_name = excluded.full_name
-          returning id`;
-
-        if (newUser) {
-          const d = new Date();
-          d.setUTCMonth(d.getUTCMonth() + 1);
-          await sql`
-            insert into subscriptions (user_id, plan, status, price_pence, renewal_date)
-            values (${newUser.id}, 'monthly', 'active', 999, ${d.toISOString().slice(0, 10)})
-            on conflict (user_id) do nothing`;
-
-          await sql`
-            insert into user_charities (user_id, charity_id, contribution_pct)
-            select ${newUser.id}, c.id, 20 from charities c where c.name = 'Hope Foundation'
-            on conflict (user_id) do nothing`;
-        }
+      // 3. Ensure test accounts & rich demo data exist in database
+      const [userCount] = await sql<{ count: string }[]>`select count(*)::text as count from users`;
+      if (Number(userCount?.count ?? 0) < 10) {
+        const { runFullSeed } = await import("./full-seed");
+        await runFullSeed(sql);
       }
     } catch (err) {
       console.error("ensureDbInitialized notice/error:", err);

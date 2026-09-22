@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import sql from "@/lib/db";
 import { fmtDate } from "@/lib/format";
-import { SuspendButton } from "@/components/admin-forms";
+import { SuspendButton, SeedDemoDataButton } from "@/components/admin-forms";
 import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Admin · Users" };
@@ -33,10 +33,13 @@ export default async function AdminUsersPage() {
 
   return (
     <div className="space-y-4">
-      <div>
-        <BackButton href="/admin" label="Back to overview" className="mb-2" />
-        <h1 className="font-display text-[26px] font-bold">Users</h1>
-        <p className="mt-1 text-[14px] text-muted">{users.length} accounts · open a user to edit their profile, scores and subscription.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <BackButton href="/admin" label="Back to overview" className="mb-2" />
+          <h1 className="font-display text-[26px] font-bold">Users</h1>
+          <p className="mt-1 text-[14px] text-muted">{users.length} accounts · open a user to edit their profile, scores and subscription.</p>
+        </div>
+        <SeedDemoDataButton />
       </div>
 
       <div className="card overflow-hidden">
