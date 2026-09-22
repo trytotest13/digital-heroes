@@ -14,8 +14,10 @@ export function DashNav({ items }: { items: { href: string; label: string }[] })
           <Link
             key={item.href}
             href={item.href}
-            className={`whitespace-nowrap rounded-[10px] px-3 py-2 text-[14px] font-medium transition duration-200 ${
-              active ? "bg-pine text-cream" : "text-body hover:bg-mist/70"
+            className={`whitespace-nowrap rounded-lg px-3.5 py-2 text-[13.5px] transition duration-150 ${
+              active
+                ? "bg-pine font-semibold text-white shadow-2xs"
+                : "font-medium text-slate-600 hover:bg-stone-200/60 hover:text-slate-900"
             }`}
           >
             {item.label}

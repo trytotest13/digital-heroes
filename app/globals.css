@@ -16,8 +16,8 @@
   body {
     @apply bg-cream font-sans text-body antialiased;
     background-image:
-      radial-gradient(at 0% 0%, rgb(30 58 138 / 0.04) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgb(245 158 11 / 0.05) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, rgb(17 56 43 / 0.035) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgb(133 77 14 / 0.025) 0px, transparent 50%);
     background-attachment: fixed;
   }
   h1, h2, h3, h4 {
@@ -36,18 +36,32 @@
 }
 
 @layer components {
-  /* Buttons — 10px radius, 150–250ms ease-out transitions, no pills. */
+  /* Buttons — refined, tactile, premium SaaS feel (Linear / Stripe inspired) */
   .btn {
-    @apply inline-flex h-10 cursor-pointer select-none items-center justify-center gap-2 rounded-[10px] px-4 text-[14px] font-semibold transition duration-200 ease-out disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex h-9.5 cursor-pointer select-none items-center justify-center gap-2 rounded-lg px-4 text-[13.5px] font-semibold transition-all duration-150 ease-out disabled:pointer-events-none disabled:opacity-50;
   }
-  .btn-sm { @apply h-8 px-3 text-[13px]; }
-  .btn-primary { @apply bg-primary-blue text-cream shadow-[0_1px_2px_rgba(16,21,20,0.12)] hover:-translate-y-px hover:bg-primary-blue hover:shadow-[0_8px_20px_-6px_rgba(15,51,40,0.5)]; }
-  .btn-success { @apply bg-primary-green text-white hover:-translate-y-px hover:brightness-95 hover:shadow-[0_6px_16px_-6px_rgba(16,185,129,0.45)]; }
-  .btn-warning { @apply bg-primary-amber text-ink hover:-translate-y-px hover:brightness-95 hover:shadow-[0_6px_16px_-6px_rgba(201,149,42,0.45)]; }
-  .btn-danger { @apply bg-primary-red text-white hover:brightness-95; }
-  .btn-amber { @apply bg-primary-amber text-ink hover:-translate-y-px hover:brightness-95 hover:shadow-[0_6px_16px_-6px_rgba(201,149,42,0.45)]; }
-  .btn-outline { @apply border border-line bg-transparent text-body hover:border-pine hover:text-pine; }
-  .btn-ghost { @apply text-pine hover:bg-mist/70; }
+  .btn-sm { @apply h-7.5 px-3 text-[12.5px] rounded-md; }
+  .btn-primary {
+    @apply bg-[#11382B] text-white border border-[#0A241C] shadow-[0_1px_2px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.12)] hover:bg-[#184D3C] hover:shadow-[0_4px_12px_-2px_rgba(17,56,43,0.3)] active:bg-[#0A241C] active:translate-y-0;
+  }
+  .btn-success {
+    @apply bg-[#15803D] text-white border border-[#166534] shadow-2xs hover:bg-[#166534] active:bg-[#14532D];
+  }
+  .btn-warning {
+    @apply bg-[#B45309] text-white border border-[#92400E] shadow-2xs hover:bg-[#92400E] active:bg-[#78350F];
+  }
+  .btn-danger {
+    @apply bg-[#BE123C] text-white border border-[#9F1239] shadow-2xs hover:bg-[#9F1239] active:bg-[#881337];
+  }
+  .btn-amber {
+    @apply bg-stone-900 text-white border border-stone-800 shadow-2xs hover:bg-stone-800 active:bg-black;
+  }
+  .btn-outline {
+    @apply border border-line bg-white text-stone-700 shadow-2xs hover:bg-stone-50 hover:text-stone-900 hover:border-stone-300 active:bg-stone-100;
+  }
+  .btn-ghost {
+    @apply text-stone-600 hover:bg-stone-100 hover:text-stone-900 active:bg-stone-200/60;
+  }
 
   .card { @apply rounded-2xl border border-line bg-white shadow-[0_1px_3px_rgba(20,24,22,0.04)]; }
   /* Shared hover lift for interactive cards. */
@@ -59,16 +73,23 @@
   }
   .label { @apply mb-1.5 block text-[13px] font-semibold text-body; }
   .kicker { @apply font-mono text-[11px] uppercase tracking-[0.18em] text-muted; }
-  .badge { @apply inline-flex h-6 items-center rounded-md px-2 font-mono text-[11px] uppercase tracking-wide; }
-  .badge-success { @apply badge bg-success-pale text-success; }
-  .badge-warning { @apply badge bg-warning-pale text-warning; }
-  .badge-danger { @apply badge bg-danger-pale text-danger; }
-  .badge-gray { @apply badge bg-sand text-muted; }
-  /* Legacy badge names kept for existing components. */
-  .badge-green { @apply badge bg-success-pale text-success; }
-  .badge-amber { @apply badge bg-warning-pale text-warning; }
-  .badge-red { @apply badge bg-danger-pale text-danger; }
-  .badge-gray { @apply badge bg-sand text-muted; }
+
+  /* Badges — modern micro-tag with subtle tone-on-tone borders */
+  .badge {
+    @apply inline-flex h-5.5 items-center gap-1 rounded-full px-2.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider;
+  }
+  .badge-success, .badge-green {
+    @apply badge bg-emerald-50 text-emerald-800 border border-emerald-200/80;
+  }
+  .badge-warning, .badge-amber {
+    @apply badge bg-amber-50 text-amber-900 border border-amber-200/80;
+  }
+  .badge-danger, .badge-red {
+    @apply badge bg-rose-50 text-rose-800 border border-rose-200/80;
+  }
+  .badge-gray {
+    @apply badge bg-stone-100 text-stone-600 border border-stone-200/70;
+  }
 
   .th { @apply px-4 py-3 text-left font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-muted; }
   .td { @apply px-4 py-3 align-middle text-[14px]; }

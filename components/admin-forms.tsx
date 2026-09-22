@@ -302,7 +302,7 @@ export function VerifyButtons({ winnerId, verification }: { winnerId: string; ve
       <form action={adminVerifyAction} className="inline-block">
         <input type="hidden" name="winner_id" value={winnerId} />
         <input type="hidden" name="value" value="rejected" />
-        <SubmitButton className="btn btn-ghost btn-sm h-6 px-1.5 text-[11px] text-danger hover:underline" pendingLabel="…">
+        <SubmitButton className="text-[12px] font-medium text-stone-500 hover:text-rose-700 hover:underline transition-colors" pendingLabel="…">
           Reject instead
         </SubmitButton>
       </form>
@@ -313,7 +313,7 @@ export function VerifyButtons({ winnerId, verification }: { winnerId: string; ve
       <form action={adminVerifyAction} className="inline-block">
         <input type="hidden" name="winner_id" value={winnerId} />
         <input type="hidden" name="value" value="approved" />
-        <SubmitButton className="btn btn-ghost btn-sm h-6 px-1.5 text-[11px] text-pine hover:underline" pendingLabel="…">
+        <SubmitButton className="text-[12px] font-medium text-emerald-700 hover:text-emerald-900 hover:underline transition-colors" pendingLabel="…">
           Approve instead
         </SubmitButton>
       </form>
@@ -324,14 +324,14 @@ export function VerifyButtons({ winnerId, verification }: { winnerId: string; ve
       <form action={adminVerifyAction}>
         <input type="hidden" name="winner_id" value={winnerId} />
         <input type="hidden" name="value" value="approved" />
-        <SubmitButton className="btn btn-primary btn-sm h-7 whitespace-nowrap px-3 text-[12px]" pendingLabel="…">
+        <SubmitButton className="inline-flex h-7 items-center justify-center rounded-md bg-[#11382B] px-3 text-[12px] font-medium text-white shadow-2xs hover:bg-[#184D3C] transition-all border border-[#0A241C]" pendingLabel="…">
           Approve
         </SubmitButton>
       </form>
       <form action={adminVerifyAction}>
         <input type="hidden" name="winner_id" value={winnerId} />
         <input type="hidden" name="value" value="rejected" />
-        <SubmitButton className="btn btn-ghost btn-sm h-7 whitespace-nowrap px-2 text-[12px] text-danger" pendingLabel="…">
+        <SubmitButton className="inline-flex h-7 items-center justify-center rounded-md px-2.5 text-[12px] font-medium text-stone-500 hover:text-rose-700 hover:bg-rose-50/80 transition-all border border-transparent hover:border-rose-200/60" pendingLabel="…">
           Reject
         </SubmitButton>
       </form>
@@ -349,7 +349,7 @@ export function MarkPaidButton({ winnerId, verification, paymentStatus }: { winn
     <form action={action} className="space-y-1">
       <input type="hidden" name="winner_id" value={winnerId} />
       <SubmitButton
-        className="btn btn-amber btn-sm h-8 whitespace-nowrap px-3.5 text-[13px] font-semibold shadow-xs"
+        className="inline-flex h-7.5 items-center justify-center rounded-md bg-stone-900 px-3.5 text-[12px] font-medium text-white shadow-2xs hover:bg-stone-800 border border-stone-800 transition-all whitespace-nowrap"
         pendingLabel="Saving…"
       >
         Mark paid
@@ -365,10 +365,10 @@ export function SeedDemoDataButton() {
     <div className="flex flex-col items-start gap-1">
       <form action={action}>
         <SubmitButton
-          className="btn btn-primary h-9 px-4 text-[13px] font-semibold shadow-xs"
+          className="btn btn-outline h-9 px-3.5 text-[13px] font-medium text-stone-700 hover:text-stone-900 shadow-2xs gap-1.5"
           pendingLabel="Seeding Database…"
         >
-          🌱 Populate Rich Demo Data (60 Players & Draws)
+          🌱 Populate Rich Demo Data
         </SubmitButton>
       </form>
       <Alert error={state.error} message={state.message} />

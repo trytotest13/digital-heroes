@@ -7,66 +7,65 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Digital Heroes PRD Color Palette
-        // Primary Colors
-        'primary-blue': '#1E3A8A',
-        'primary-red': '#DC2626',
-        'primary-green': '#10B981',
-        'primary-amber': '#F59E0B',
-        'primary-gray': '#6B7280',
+        // Digital Heroes Refined Heritage Golf & Charity Palette
+        // Primary Action & Brand (Augusta / British Racing Pine)
+        'primary-blue': '#11382B',
+        'primary-red': '#B91C1C',
+        'primary-green': '#11382B',
+        'primary-amber': '#854D0E',
+        'primary-gray': '#4B5563',
 
-        // Secondary Colors
-        'secondary-blue': '#3B82F6',
-        'secondary-red': '#EF4444',
-        'secondary-green': '#22C55E',
-        'secondary-orange': '#F97316',
-        'secondary-light-gray': '#E5E7EB',
+        // Secondary & Supporting
+        'secondary-blue': '#1B4D3C',
+        'secondary-red': '#DC2626',
+        'secondary-green': '#1E5844',
+        'secondary-orange': '#C2410C',
+        'secondary-light-gray': '#F3F4F6',
 
-        // Typography Colors
-        'dark-gray': '#111827',
-        'medium-gray': '#374151',
-        'light-gray': '#9CA3AF',
+        // Typography
+        'dark-gray': '#0F172A',
+        'medium-gray': '#334155',
+        'light-gray': '#64748B',
 
-        // Status Colors
-        'success': '#10B981',
-        'success-light': '#22C55E',
-        'success-pale': '#D1FAE5',
-        'danger': '#DC2626',
-        'danger-light': '#EF4444',
-        'danger-pale': '#FECACA',
-        'warning': '#F59E0B',
-        'warning-light': '#F97316',
-        'warning-pale': '#FEF3C7',
+        // Status Colors - Sophisticated, low-saturation
+        'success': '#15803D',
+        'success-light': '#16A34A',
+        'success-pale': '#F0FDF4',
+        'danger': '#BE123C',
+        'danger-light': '#E11D48',
+        'danger-pale': '#FFF1F2',
+        'warning': '#A16207',
+        'warning-light': '#CA8A04',
+        'warning-pale': '#FEFCE8',
 
-        // UI Backgrounds
-        'cream': '#F9FAFB',
-        'mist': '#E5E7EB',
-        'sand': '#F3F4F6',
+        // UI Surfaces & Neutrals
+        'cream': '#FBFBFA',
+        'mist': '#F1F3F2',
+        'sand': '#EAECEB',
         'white': '#FFFFFF',
-        'line': '#E5E7EB',
+        'line': '#E4E7E5',
 
-        // Text Colors
-        'body': '#374151',
-        'text': '#111827',
-        'ink': '#111827',
-        'cream': '#F9FAFB',
-        'ink-surface': '#111827',
-        'muted': '#9CA3AF',
+        // Text Tokens
+        'body': '#334155',
+        'text': '#0F172A',
+        'ink': '#0F172A',
+        'ink-surface': '#0F172A',
+        'muted': '#64748B',
 
-        // Legacy token names for compatibility
-        pine: "#1E3A8A",
-        "pine-light": "#3B82F6",
-        "pine-deep": "#172554",
-        "pine-muted": "#3B82F6",
+        // Brand Pine Tokens (Master Augusta Green)
+        pine: "#11382B",
+        "pine-light": "#1B4D3C",
+        "pine-deep": "#0A241C",
+        "pine-muted": "#2D5F4C",
 
-        gold: "#F59E0B",
-        "gold-pale": "#FEF3C7",
-        amber: "#F59E0B",
-        sage: "#10B981",
+        // Warm Gold / Bronze Accents
+        gold: "#B45309",
+        "gold-pale": "#FEFCE8",
+        amber: "#854D0E",
+        sage: "#1E5844",
 
-        "ink-surface": "#111827",
-        "ink-border": "#1F2937",
-        "ink-muted": "#9CA3AF",
+        "ink-border": "#1E293B",
+        "ink-muted": "#64748B",
       },
       fontFamily: {
         display: ['"DM Sans"', '"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],
