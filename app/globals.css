@@ -79,16 +79,16 @@
     @apply inline-flex h-6 items-center gap-1 rounded-full px-2.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider;
   }
   .badge-success, .badge-green {
-    @apply badge bg-emerald-50 text-emerald-800 border border-emerald-200/80;
+    @apply badge bg-[#F0FDF4] text-[#15803D] border border-[#BBF7D0];
   }
   .badge-warning, .badge-amber {
-    @apply badge bg-amber-50 text-amber-900 border border-amber-200/80;
+    @apply badge bg-[#FEFCE8] text-[#854D0E] border border-[#FEF08A];
   }
   .badge-danger, .badge-red {
-    @apply badge bg-rose-50 text-rose-800 border border-rose-200/80;
+    @apply badge bg-[#FFF1F2] text-[#BE123C] border border-[#FECDD3];
   }
   .badge-gray {
-    @apply badge bg-stone-100 text-stone-600 border border-stone-200/70;
+    @apply badge bg-[#F1F3F2] text-[#64748B] border border-[#E2E8F0];
   }
 
   .th { @apply px-4 py-3 text-left font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-muted; }
