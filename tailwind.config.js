@@ -7,43 +7,64 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Core surface palette — warm paper with richer warmth
-        cream: "#faf8f1",
-        paper: "#f5f2ea",
-        sand: "#e8e2d6",
-        
-        // Primary — deep forest green (richer, more saturated)
-        pine: "#1a4d3e",
-        "pine-light": "#246350",
-        "pine-deep": "#0f3328",
-        "pine-muted": "#2d5e4a",
-        
-        // Accent — warm gold (more luminous)
-        gold: "#c9952a",
-        "gold-pale": "#f0dfa8",
-        amber: "#c9952a",
-        sage: "#2d5e4a",
-        
-        // Neutral text scale
-        ink: "#141816",
-        body: "#2a3330",
-        muted: "#6e7a74",
-        
-        // Surface/border tokens
-        mist: "#dfe9e1",
-        line: "#d8ddd4",
-        white: "#ffffff",
-        
-        // Status colors
-        success: "#2d7a4f",
-        "success-pale": "#d4eddf",
-        danger: "#b84c4c",
-        "danger-pale": "#f0d8d8",
-        
-        // Admin dark surfaces
-        "ink-surface": "#111916",
-        "ink-border": "#1e332a",
-        "ink-muted": "#7a8a82",
+        // Digital Heroes PRD Color Palette
+        // Primary Colors
+        'primary-blue': '#1E3A8A',
+        'primary-red': '#DC2626',
+        'primary-green': '#10B981',
+        'primary-amber': '#F59E0B',
+        'primary-gray': '#6B7280',
+
+        // Secondary Colors
+        'secondary-blue': '#3B82F6',
+        'secondary-red': '#EF4444',
+        'secondary-green': '#22C55E',
+        'secondary-orange': '#F97316',
+        'secondary-light-gray': '#E5E7EB',
+
+        // Typography Colors
+        'dark-gray': '#111827',
+        'medium-gray': '#374151',
+        'light-gray': '#9CA3AF',
+
+        // Status Colors
+        'success': '#10B981',
+        'success-light': '#22C55E',
+        'success-pale': '#D1FAE5',
+        'danger': '#DC2626',
+        'danger-light': '#EF4444',
+        'danger-pale': '#FECACA',
+        'warning': '#F59E0B',
+        'warning-light': '#F97316',
+        'warning-pale': '#FEF3C7',
+
+        // UI Backgrounds
+        'cream': '#F9FAFB',
+        'mist': '#E5E7EB',
+        'sand': '#F3F4F6',
+        'white': '#FFFFFF',
+        'line': '#E5E7EB',
+
+        // Text Colors
+        'body': '#374151',
+        'text': '#111827',
+        'ink': '#111827',
+        'muted': '#9CA3AF',
+
+        // Legacy token names for compatibility
+        pine: "#1E3A8A",
+        "pine-light": "#3B82F6",
+        "pine-deep": "#172554",
+        "pine-muted": "#3B82F6",
+
+        gold: "#F59E0B",
+        "gold-pale": "#FEF3C7",
+        amber: "#F59E0B",
+        sage: "#10B981",
+
+        "ink-surface": "#111827",
+        "ink-border": "#1F2937",
+        "ink-muted": "#9CA3AF",
       },
       fontFamily: {
         display: ['"DM Sans"', '"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],

@@ -51,7 +51,7 @@ export async function getCharity(id: string) {
 
 export async function featuredCharities(limit = 3) {
   try {
-    const rows = await sql<Charity[]>`select * from charities where active = true and featured = true order by name limit ${limit}`;
+    const rows = await sql<Charity[]>`select * from charities where active = true and featured = true order by name limit ${limit}::int`;
     if (rows && rows.length > 0) return rows;
   } catch (err) {
     console.error("Database query failed in featuredCharities:", err);

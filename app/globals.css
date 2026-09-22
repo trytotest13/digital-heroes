@@ -16,16 +16,16 @@
   body {
     @apply bg-cream font-sans text-body antialiased;
     background-image:
-      radial-gradient(at 0% 0%, rgb(26 77 62 / 0.04) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgb(201 149 42 / 0.05) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, rgb(30 58 138 / 0.04) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgb(245 158 11 / 0.05) 0px, transparent 50%);
     background-attachment: fixed;
   }
   h1, h2, h3, h4 {
-    @apply font-display text-ink;
+    @apply font-display text-dark-gray;
     letter-spacing: -0.02em;
   }
   ::selection {
-    background: #dfe9e1;
+    background: #E5E7EB;
     color: #0f3328;
   }
   :focus-visible {
@@ -41,11 +41,13 @@
     @apply inline-flex h-10 cursor-pointer select-none items-center justify-center gap-2 rounded-[10px] px-4 text-[14px] font-semibold transition duration-200 ease-out disabled:pointer-events-none disabled:opacity-50;
   }
   .btn-sm { @apply h-8 px-3 text-[13px]; }
-  .btn-primary { @apply bg-pine text-cream shadow-[0_1px_2px_rgba(16,21,20,0.12)] hover:-translate-y-px hover:bg-pine-deep hover:shadow-[0_8px_20px_-6px_rgba(15,51,40,0.5)]; }
-  .btn-amber { @apply bg-gold text-ink hover:-translate-y-px hover:brightness-95 hover:shadow-[0_6px_16px_-6px_rgba(201,149,42,0.45)]; }
+  .btn-primary { @apply bg-primary-blue text-cream shadow-[0_1px_2px_rgba(16,21,20,0.12)] hover:-translate-y-px hover:bg-primary-blue hover:shadow-[0_8px_20px_-6px_rgba(15,51,40,0.5)]; }
+  .btn-success { @apply bg-primary-green text-white hover:-translate-y-px hover:brightness-95 hover:shadow-[0_6px_16px_-6px_rgba(16,185,129,0.45)]; }
+  .btn-warning { @apply bg-primary-amber text-ink hover:-translate-y-px hover:brightness-95 hover:shadow-[0_6px_16px_-6px_rgba(201,149,42,0.45)]; }
+  .btn-danger { @apply bg-primary-red text-white hover:brightness-95; }
+  .btn-amber { @apply bg-primary-amber text-ink hover:-translate-y-px hover:brightness-95 hover:shadow-[0_6px_16px_-6px_rgba(201,149,42,0.45)]; }
   .btn-outline { @apply border border-line bg-transparent text-body hover:border-pine hover:text-pine; }
   .btn-ghost { @apply text-pine hover:bg-mist/70; }
-  .btn-danger { @apply bg-danger text-white hover:brightness-95; }
 
   .card { @apply rounded-2xl border border-line bg-white shadow-[0_1px_3px_rgba(20,24,22,0.04)]; }
   /* Shared hover lift for interactive cards. */
@@ -58,8 +60,13 @@
   .label { @apply mb-1.5 block text-[13px] font-semibold text-body; }
   .kicker { @apply font-mono text-[11px] uppercase tracking-[0.18em] text-muted; }
   .badge { @apply inline-flex h-6 items-center rounded-md px-2 font-mono text-[11px] uppercase tracking-wide; }
+  .badge-success { @apply badge bg-success-pale text-success; }
+  .badge-warning { @apply badge bg-warning-pale text-warning; }
+  .badge-danger { @apply badge bg-danger-pale text-danger; }
+  .badge-gray { @apply badge bg-sand text-muted; }
+  /* Legacy badge names kept for existing components. */
   .badge-green { @apply badge bg-success-pale text-success; }
-  .badge-amber { @apply badge bg-gold-pale text-gold; }
+  .badge-amber { @apply badge bg-warning-pale text-warning; }
   .badge-red { @apply badge bg-danger-pale text-danger; }
   .badge-gray { @apply badge bg-sand text-muted; }
 
@@ -96,7 +103,7 @@
   }
 
   /* Route + interactive transitions (PageFade replays fade-up per page). */
-  table tbody tr:hover {
+table tbody tr:hover {
     background-color: rgb(223 233 225 / 0.5);
   }
   details > summary {
@@ -119,6 +126,11 @@
   progress, [role="progressbar"] > * {
     transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
+  /* Text colors for PRD palette */
+  .text-gold { color: #F59E0B; }
+  .text-warning { color: #F59E0B; }
+  .text-success { color: #10B981; }
+  .text-danger { color: #DC2626; }
 
   /* Touch-friendly horizontal scroll without ugly scrollbars on mobile */
   .no-scrollbar::-webkit-scrollbar {
@@ -128,6 +140,10 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Dark theme header/footer */
+  .header-bg { @apply bg-white border-b border-line; }
+  .footer-bg { @apply bg-white text-light-gray; }
 }
 
 /* Anyone who prefers reduced motion gets the content, instantly. */

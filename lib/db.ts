@@ -53,7 +53,9 @@ export const sql =
     ? createFallbackSql()
     : postgres(connectionString || "postgres://postgres:postgres@127.0.0.1:54329/postgres", {
         prepare: false,
-        max: 10,
+        // Local dev runs on a single-connection PGlite socket server, which
+        // drops concurrent connections under load; serialize through one link.
+        max: isLocal ? 1 : 10,
         ssl: isLocal ? false : "require",
         connect_timeout: 4,
         idle_timeout: 20,
