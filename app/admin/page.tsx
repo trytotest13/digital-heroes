@@ -85,7 +85,7 @@ export default async function AdminOverviewPage() {
               {draw.status === "published" && draw.winning_numbers && (
                 <div className="mt-3 flex gap-2">
                   {draw.winning_numbers.map((n: number) => (
-                    <span key={n} className="chip bg-pine text-cream">{n}</span>
+                    <span key={n} className="chip bg-pine text-white">{n}</span>
                   ))}
                 </div>
               )}

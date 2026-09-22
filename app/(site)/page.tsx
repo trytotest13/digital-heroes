@@ -203,7 +203,7 @@ export default async function HomePage() {
         <Reveal delay={120}>
           <div className="mt-8 overflow-hidden rounded-3xl border border-line">
             <div className="flex h-16 font-display text-[14px] font-bold">
-              <div className="flex w-2/5 items-center justify-center bg-pine text-cream">Prize pool · 40%</div>
+              <div className="flex w-2/5 items-center justify-center bg-pine text-white">Prize pool · 40%</div>
               <div className="flex w-[30%] items-center justify-center bg-gold text-ink">Your charity · 10%+</div>
               <div className="flex flex-1 items-center justify-center bg-mist text-pine">Platform · the rest</div>
             </div>
@@ -259,11 +259,11 @@ export default async function HomePage() {
       </section>
 
       {/* Draw mechanics — dark section for contrast */}
-      <section className="bg-ink-surface text-cream">
+      <section className="bg-ink-surface text-white">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <Reveal>
             <p className="kicker mb-3 text-pine-muted">The draw</p>
-            <h2 className="font-display text-[28px] font-bold text-cream sm:text-[36px]">One draw. Every month.</h2>
+            <h2 className="font-display text-[28px] font-bold text-white sm:text-[36px]">One draw. Every month.</h2>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
               A fixed portion of every subscription feeds the prize pool. The split between tiers
               is fixed and enforced automatically - and if nobody claims the jackpot, it rolls over.
@@ -274,7 +274,7 @@ export default async function HomePage() {
               <Reveal key={t.match} delay={i * 90}>
                 <div className="h-full rounded-2xl border border-ink-border bg-ink-surface p-6">
                   <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-pine-muted">{t.match}</p>
-                  <p className="mt-3 font-display text-[40px] font-bold text-cream">{Math.round(t.pct * 100)}%</p>
+                  <p className="mt-3 font-display text-[40px] font-bold text-white">{Math.round(t.pct * 100)}%</p>
                   <p className="mt-1 text-[13px] text-ink-muted">{t.note}</p>
                 </div>
               </Reveal>
@@ -282,7 +282,7 @@ export default async function HomePage() {
           </div>
           <Reveal delay={200}>
             <div className="mt-8 rounded-2xl border border-ink-border bg-ink-surface p-5 text-[14px] text-ink-muted">
-              <span className="font-semibold text-cream">Prize splitting:</span> multiple winners in the
+              <span className="font-semibold text-white">Prize splitting:</span> multiple winners in the
               same tier share it equally. Entry, draws and payouts are tracked in your dashboard.
             </div>
           </Reveal>

@@ -70,7 +70,7 @@ export default async function AdminDrawsPage() {
                   <p className="kicker mb-2">Winning numbers</p>
                   <div className="flex flex-wrap gap-2">
                     {(draw.winning_numbers ?? []).map((n: number) => (
-                      <span key={n} className="chip bg-pine text-cream">{n}</span>
+                      <span key={n} className="chip bg-pine text-white">{n}</span>
                     ))}
                   </div>
                   <p className="mt-2 text-[13px] text-muted">

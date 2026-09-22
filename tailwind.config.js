@@ -49,6 +49,8 @@ module.exports = {
         'body': '#374151',
         'text': '#111827',
         'ink': '#111827',
+        'cream': '#F9FAFB',
+        'ink-surface': '#111827',
         'muted': '#9CA3AF',
 
         // Legacy token names for compatibility
