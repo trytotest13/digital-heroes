@@ -36,8 +36,8 @@ export default async function AdminWinnersPage() {
                 <th className="th">Tier</th>
                 <th className="th">Prize</th>
                 <th className="th">Proof</th>
-                <th className="th">Verification</th>
-                <th className="th">Payment</th>
+                <th className="th min-w-[160px]">Verification</th>
+                <th className="th min-w-[140px]">Payment</th>
               </tr>
             </thead>
             <tbody>
@@ -66,13 +66,13 @@ export default async function AdminWinnersPage() {
                         <span className="text-muted">Awaited</span>
                       )}
                     </td>
-                    <td className="td">
-                      <div className="space-y-1.5">
+                    <td className="td align-top">
+                      <div className="flex flex-col items-start gap-1">
                         <span className={verificationBadge[w.verification] ?? "badge-gray"}>{w.verification}</span>
                         {w.payment_status !== "paid" && <VerifyButtons winnerId={w.id} verification={w.verification} />}
                       </div>
                     </td>
-                    <td className="td">
+                    <td className="td align-top">
                       <MarkPaidButton winnerId={w.id} verification={w.verification} paymentStatus={w.payment_status} />
                     </td>
                   </tr>

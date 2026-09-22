@@ -296,17 +296,43 @@ export function DrawSimPanel({ drawId, status }: { drawId: string; status: strin
 /* ---------- winners ---------- */
 
 export function VerifyButtons({ winnerId, verification }: { winnerId: string; verification: string }) {
+  if (verification === "approved") {
+    return (
+      <form action={adminVerifyAction} className="inline-block">
+        <input type="hidden" name="winner_id" value={winnerId} />
+        <input type="hidden" name="value" value="rejected" />
+        <SubmitButton className="btn btn-ghost btn-sm h-6 px-1.5 text-[11px] text-danger hover:underline" pendingLabel="…">
+          Reject instead
+        </SubmitButton>
+      </form>
+    );
+  }
+  if (verification === "rejected") {
+    return (
+      <form action={adminVerifyAction} className="inline-block">
+        <input type="hidden" name="winner_id" value={winnerId} />
+        <input type="hidden" name="value" value="approved" />
+        <SubmitButton className="btn btn-ghost btn-sm h-6 px-1.5 text-[11px] text-pine hover:underline" pendingLabel="…">
+          Approve instead
+        </SubmitButton>
+      </form>
+    );
+  }
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center gap-1.5 pt-1">
       <form action={adminVerifyAction}>
         <input type="hidden" name="winner_id" value={winnerId} />
         <input type="hidden" name="value" value="approved" />
-        <SubmitButton className="btn btn-primary btn-sm" pendingLabel="…">Approve</SubmitButton>
+        <SubmitButton className="btn btn-primary btn-sm h-7 whitespace-nowrap px-3 text-[12px]" pendingLabel="…">
+          Approve
+        </SubmitButton>
       </form>
       <form action={adminVerifyAction}>
         <input type="hidden" name="winner_id" value={winnerId} />
         <input type="hidden" name="value" value="rejected" />
-        <SubmitButton className="btn btn-ghost btn-sm text-danger" pendingLabel="…">Reject</SubmitButton>
+        <SubmitButton className="btn btn-ghost btn-sm h-7 whitespace-nowrap px-2 text-[12px] text-danger" pendingLabel="…">
+          Reject
+        </SubmitButton>
       </form>
     </div>
   );
@@ -314,17 +340,20 @@ export function VerifyButtons({ winnerId, verification }: { winnerId: string; ve
 
 export function MarkPaidButton({ winnerId, verification, paymentStatus }: { winnerId: string; verification: string; paymentStatus: string }) {
   const [state, action] = useActionState(adminMarkPaidAction, initial);
-  if (paymentStatus === "paid") return <span className="badge-green">Paid</span>;
+  if (paymentStatus === "paid") return <span className="badge-green whitespace-nowrap">Paid</span>;
+  if (verification !== "approved") {
+    return <span className="inline-flex items-center text-[12px] text-muted whitespace-nowrap">Awaiting approval</span>;
+  }
   return (
     <form action={action} className="space-y-1">
       <input type="hidden" name="winner_id" value={winnerId} />
       <SubmitButton
-        className={`btn btn-sm ${verification === "approved" ? "btn-amber" : "btn-ghost opacity-40"}`}
-        pendingLabel="…"
+        className="btn btn-amber btn-sm h-8 whitespace-nowrap px-3.5 text-[13px] font-semibold shadow-xs"
+        pendingLabel="Saving…"
       >
         Mark paid
       </SubmitButton>
-      {state.error && <p className="text-[12px] text-danger">{state.error}</p>}
+      {state.error && <p className="text-[12px] text-danger whitespace-nowrap">{state.error}</p>}
     </form>
   );
 }
