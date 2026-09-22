@@ -41,6 +41,8 @@ export async function loginAction(_prev: ActionState, formData: FormData): Promi
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
 
+  let redirectPath: string | null = null;
+
   try {
     const [user] = await sql<
       { id: string; password_hash: string; role: "user" | "admin"; active: boolean }[]
@@ -49,10 +51,15 @@ export async function loginAction(_prev: ActionState, formData: FormData): Promi
     if (user && verifyPassword(password, user.password_hash)) {
       if (!user.active) return { error: "This account has been suspended. Contact support." };
       await setSessionCookie(user.id);
-      redirect(user.role === "admin" ? "/admin" : "/dashboard");
+      redirectPath = user.role === "admin" ? "/admin" : "/dashboard";
     }
   } catch (err) {
     console.error("Login database query failed:", err);
+    return { error: "Database connection failed. Please ensure the database is running." };
+  }
+
+  if (redirectPath) {
+    redirect(redirectPath);
   }
 
   return { error: "Email or password is incorrect." };

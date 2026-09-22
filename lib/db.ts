@@ -51,7 +51,7 @@ export const sql =
   globalThis.__dhSql ??
   (isServerlessWithoutDb
     ? createFallbackSql()
-    : postgres(connectionString || "postgres://postgres:postgres@127.0.0.1:54329/postgres", {
+    : postgres(connectionString || "postgres://postgres:postgres@127.0.0.1:54321/postgres", {
         prepare: false,
         // Local dev runs on a single-connection PGlite socket server, which
         // drops concurrent connections under load; serialize through one link.

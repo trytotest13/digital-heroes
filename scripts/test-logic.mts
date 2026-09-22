@@ -3,15 +3,15 @@
  * Run with the local dev database up:  npm run db:local &  npm test
  */
 import postgres from "postgres";
-import { hashPassword } from "../lib/hash";
-import { addScore, listScores, updateScore, deleteScore } from "../lib/scores";
+import { hashPassword } from "../lib/hash.ts";
+import { addScore, listScores, updateScore, deleteScore } from "../lib/scores.ts";
 import {
   activateSubscription,
   cancelSubscription,
   effectiveStatus,
   getSubscription,
   activeSubscribers,
-} from "../lib/subscriptions";
+} from "../lib/subscriptions.ts";
 import {
   createDraw,
   simulateDraw,
@@ -20,11 +20,11 @@ import {
   getDraw,
   listEntries,
   entryNumbersFromScores,
-} from "../lib/draws";
-import { setUserCharity, getUserCharity, recordDonation, charityTotals } from "../lib/charity-user";
-import { uploadProof, setVerification, markPaid, getProof, winningsSummary } from "../lib/winners";
+} from "../lib/draws.ts";
+import { setUserCharity, getUserCharity, recordDonation, charityTotals } from "../lib/charity-user.ts";
+import { uploadProof, setVerification, markPaid, getProof, winningsSummary } from "../lib/winners.ts";
 
-const sql = postgres(process.env.DATABASE_URL ?? "postgres://postgres:postgres@127.0.0.1:54329/postgres", {
+const sql = postgres(process.env.DATABASE_URL ?? "postgres://postgres:postgres@127.0.0.1:54321/postgres", {
   prepare: false,
 });
 

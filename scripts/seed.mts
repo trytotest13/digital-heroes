@@ -18,11 +18,11 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import postgres from "postgres";
-import { hashPassword } from "../lib/hash";
-import { daysAgoStr } from "../lib/format";
+import { hashPassword } from "../lib/hash.ts";
+import { daysAgoStr } from "../lib/format.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const sql = postgres(process.env.DATABASE_URL ?? "postgres://postgres:postgres@127.0.0.1:54329/postgres", {
+const sql = postgres(process.env.DATABASE_URL ?? "postgres://postgres:postgres@127.0.0.1:54321/postgres", {
   prepare: false,
 });
 
