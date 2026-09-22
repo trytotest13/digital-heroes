@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
-    default: "Digital Heroes — Play with purpose",
+    default: "Digital Heroes - Play with purpose",
     template: "%s · Digital Heroes",
   },
   description:

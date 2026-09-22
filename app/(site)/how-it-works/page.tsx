@@ -9,7 +9,7 @@ const steps = [
   {
     n: "01",
     title: "Subscribe",
-    body: "Pick monthly or yearly. Yearly works out cheaper. Payments run through Stripe in test mode — no real money in this build.",
+    body: "Pick monthly or yearly. Yearly works out cheaper. Payments run through Stripe in test mode - no real money in this build.",
   },
   {
     n: "02",
@@ -19,7 +19,7 @@ const steps = [
   {
     n: "03",
     title: "Add your scores",
-    body: "Enter your Stableford scores — one per date, always the latest five. Your five most recent scores become your draw numbers.",
+    body: "Enter your Stableford scores - one per date, always the latest five. Your five most recent scores become your draw numbers.",
   },
   {
     n: "04",
@@ -29,7 +29,7 @@ const steps = [
   {
     n: "05",
     title: "Check your results",
-    body: "The team runs the draw each month — randomly or weighted by score frequency — simulates it first, then publishes the winning numbers.",
+    body: "The team runs the draw each month - randomly or weighted by score frequency - simulates it first, then publishes the winning numbers.",
   },
   {
     n: "06",

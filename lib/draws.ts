@@ -1,8 +1,8 @@
 import crypto from "node:crypto";
 import sql from "./db";
-import { currentPeriod, randomDrawNumbers, TIER_LABEL, TIER_PCT } from "./format";
+import { currentPeriod, randomDrawNumbers, TIER_PCT } from "./format";
+import { tierLabel } from "./winners";
 import { activeSubscribers, monthlyPoolContributionPence } from "./subscriptions";
-import { DEMO_DRAWS, DEMO_PLAYER_DRAWS_WITH_ENTRY } from "./demo-data";
 
 /**
  * Draw engine.
@@ -60,7 +60,7 @@ export async function getDrawByPeriod(period: string): Promise<Draw | undefined>
     return row;
   } catch (err) {
     console.error("getDrawByPeriod DB error:", err);
-    return (DEMO_DRAWS.find((d) => d.period === period) ?? DEMO_DRAWS[0]) as Draw;
+    return undefined;
   }
 }
 
@@ -69,7 +69,7 @@ export async function listDraws(): Promise<Draw[]> {
     return await sql<Draw[]>`select * from draws order by period desc`;
   } catch (err) {
     console.error("listDraws DB error:", err);
-    return DEMO_DRAWS as Draw[];
+    return [];
   }
 }
 
@@ -82,17 +82,6 @@ export async function listEntries(drawId: string): Promise<DrawEntry[]> {
   }
 }
 
-export async function getEntry(drawId: string, userId: string): Promise<DrawEntry | undefined> {
-  try {
-    const [row] = await sql<DrawEntry[]>`
-      select * from draw_entries where draw_id = ${drawId} and user_id = ${userId} limit 1`;
-    return row;
-  } catch (err) {
-    console.error("getEntry DB error:", err);
-    return undefined;
-  }
-}
-
 export async function entryCount(drawId: string): Promise<number> {
   try {
     const [row] = await sql<{ count: number }[]>`
@@ -100,8 +89,7 @@ export async function entryCount(drawId: string): Promise<number> {
     return row?.count ?? 0;
   } catch (err) {
     console.error("entryCount DB error:", err);
-    const demo = DEMO_DRAWS.find((d) => d.id === drawId);
-    return demo?.entryCount ?? 15;
+    return 0;
   }
 }
 
@@ -114,7 +102,7 @@ export async function currentJackpotPence(): Promise<number> {
     return row?.jackpot_out_pence ?? 0;
   } catch (err) {
     console.error("currentJackpotPence DB error:", err);
-    return 1840000;
+    return 0;
   }
 }
 
@@ -273,7 +261,7 @@ export async function simulateDraw(drawId: string): Promise<SimulationResult | {
     jackpotInPence: draw.jackpot_in_pence,
     tiers: [5, 4, 3].map((tier) => ({
       tier,
-      label: TIER_LABEL[tier],
+      label: tierLabel(tier),
       winners: perTier[tier],
       tierTotalPence: amounts[tier].tierTotal,
       eachPence: amounts[tier].each,
@@ -340,7 +328,7 @@ export async function publishDraw(drawId: string): Promise<SimulationResult | { 
     jackpotInPence: draw.jackpot_in_pence,
     tiers: [5, 4, 3].map((tier) => ({
       tier,
-      label: TIER_LABEL[tier],
+      label: tierLabel(tier),
       winners: perTier[tier].length,
       tierTotalPence: amounts[tier].tierTotal,
       eachPence: amounts[tier].each,
@@ -349,20 +337,10 @@ export async function publishDraw(drawId: string): Promise<SimulationResult | { 
   };
 }
 
-/** Re-snapshot entries (draft draws only) — picks up newer scores/subscribers. */
-export async function refreshEntriesSafe(drawId: string) {
-  await snapshotEntries(drawId);
-}
-
 export async function listDrawsWithEntry(userId: string) {
   try {
     const draws = await listDraws();
-    if (draws.length === 0) {
-      if (userId === "demo-player-id" || userId.startsWith("demo-")) {
-        return DEMO_PLAYER_DRAWS_WITH_ENTRY;
-      }
-      return [];
-    }
+    if (draws.length === 0) return [];
     const ids = draws.map((d) => d.id);
     const entries = await sql<DrawEntry[]>`
       select * from draw_entries where user_id = ${userId} and draw_id = any(${ids})`;
@@ -375,15 +353,9 @@ export async function listDrawsWithEntry(userId: string) {
       entry: byDraw.get(draw.id),
       winner: winnersByDraw.get(draw.id),
     }));
-    if ((userId === "demo-player-id" || userId.startsWith("demo-")) && entries.length === 0) {
-      return DEMO_PLAYER_DRAWS_WITH_ENTRY;
-    }
     return result;
   } catch (err) {
     console.error("listDrawsWithEntry DB error:", err);
-    if (userId === "demo-player-id" || userId.startsWith("demo-")) {
-      return DEMO_PLAYER_DRAWS_WITH_ENTRY;
-    }
     return [];
   }
 }

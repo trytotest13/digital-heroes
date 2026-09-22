@@ -31,7 +31,7 @@ export default async function SubscribePage() {
       {status === "active" && (
         <div className="card animate-fade-up mt-8 border-pine/30 bg-mist/40 p-5 text-center">
           <p className="text-[14px] font-semibold text-pine">
-            You&apos;re already subscribed ({sub?.plan}) — renews {sub?.renewal_date}.
+            You&apos;re already subscribed ({sub?.plan}) - renews {sub?.renewal_date}.
           </p>
           <Link href="/dashboard" className="btn btn-primary btn-sm mt-3">Go to dashboard</Link>
         </div>
@@ -77,8 +77,8 @@ export default async function SubscribePage() {
             <SubscribeButtons stripeEnabled={Boolean(process.env.STRIPE_SECRET_KEY)} />
             <p className="mt-3 text-center text-[12px] text-muted">
               {process.env.STRIPE_SECRET_KEY
-                ? "Secure checkout via Stripe (test mode — use card 4242 4242 4242 4242)."
-                : "No Stripe key configured — checkout runs in clearly-labelled demo mode and activates your plan instantly."}
+                ? "Secure checkout via Stripe (test mode - use card 4242 4242 4242 4242)."
+                : "No Stripe key configured - checkout runs in clearly-labelled demo mode and activates your plan instantly."}
             </p>
           </div>
         </Reveal>

@@ -16,7 +16,7 @@ import { BentoGrid, BentoCard } from "@/components/lightswind/bento-grid";
  */
 
 const tiers = [
-  { match: "5-number match", pct: TIER_PCT[5], note: "Jackpot — rolls over if unclaimed" },
+  { match: "5-number match", pct: TIER_PCT[5], note: "Jackpot - rolls over if unclaimed" },
   { match: "4-number match", pct: TIER_PCT[4], note: "Split equally between winners" },
   { match: "3-number match", pct: TIER_PCT[3], note: "Split equally between winners" },
 ];
@@ -55,7 +55,7 @@ export default async function HomePage() {
               </Link>
             </div>
             <p className="animate-fade-up [animation-delay:320ms] mt-4 text-[13px] text-muted">
-              Your subscription funds prizes and charitable giving — you choose the cause.
+              Your subscription funds prizes and charitable giving - you choose the cause.
             </p>
           </div>
 
@@ -212,8 +212,8 @@ export default async function HomePage() {
         <div className="mt-5 grid gap-4 md:grid-cols-3">
           {[
             { title: "Prize pool", body: "A fixed share of every fee funds the monthly prize tiers." },
-            { title: "Charity — your choice", body: "Minimum 10% goes to the cause you pick. You can raise it to 30% or more in your dashboard." },
-            { title: "Platform", body: "Keeps the lights on — hosting, payments and running the draws." },
+            { title: "Charity - your choice", body: "Minimum 10% goes to the cause you pick. You can raise it to 30% or more in your dashboard." },
+            { title: "Platform", body: "Keeps the lights on - hosting, payments and running the draws." },
           ].map((c, i) => (
             <Reveal key={c.title} delay={i * 90}>
               <div className="card card-hover h-full p-5">
@@ -225,7 +225,7 @@ export default async function HomePage() {
         </div>
         <Reveal delay={200}>
           <p className="mt-4 text-[12px] text-muted">
-            Example allocation for illustration — the exact split is configurable by the platform team.
+            Example allocation for illustration - the exact split is configurable by the platform team.
           </p>
         </Reveal>
       </section>
@@ -266,7 +266,7 @@ export default async function HomePage() {
             <h2 className="font-display text-[28px] font-bold text-cream sm:text-[36px]">One draw. Every month.</h2>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
               A fixed portion of every subscription feeds the prize pool. The split between tiers
-              is fixed and enforced automatically — and if nobody claims the jackpot, it rolls over.
+              is fixed and enforced automatically - and if nobody claims the jackpot, it rolls over.
             </p>
           </Reveal>
           <div className="mt-8 grid gap-4 sm:grid-cols-3">

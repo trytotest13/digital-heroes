@@ -3,7 +3,8 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { effectiveStatus, getSubscription } from "@/lib/subscriptions";
 import { currentJackpotPence, listDrawsWithEntry } from "@/lib/draws";
-import { fmtMonth, inr, TIER_LABEL, TIER_PCT } from "@/lib/format";
+import { fmtMonth, inr, TIER_PCT } from "@/lib/format";
+import { tierLabel } from "@/lib/winners";
 import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Your draws" };
@@ -47,7 +48,7 @@ export default async function DrawsPage() {
 
           {current.entry ? (
             <div className="mt-4">
-              <p className="kicker mb-2">Your numbers — from your five latest scores</p>
+              <p className="kicker mb-2">Your numbers - from your five latest scores</p>
               <div className="flex flex-wrap gap-2">
                 {current.entry.numbers.map((n) => (
                   <span key={n} className="chip">{n}</span>
@@ -60,7 +61,7 @@ export default async function DrawsPage() {
           ) : (
             <p className="mt-4 text-[13px] text-muted">
               {status === "active"
-                ? "You'll be entered shortly — entries snapshot when the draw opens."
+                ? "You'll be entered shortly - entries snapshot when the draw opens."
                 : "Subscribe to be entered into this draw."}
             </p>
           )}
@@ -68,7 +69,7 @@ export default async function DrawsPage() {
           <div className="mt-4 grid gap-2 border-t border-line pt-4 text-[13px] sm:grid-cols-3">
             {[5, 4, 3].map((t) => (
               <p key={t}>
-                <span className="font-display font-bold text-pine">{Math.round(TIER_PCT[t] * 100)}%</span> · {TIER_LABEL[t]}
+                <span className="font-display font-bold text-pine">{Math.round(TIER_PCT[t] * 100)}%</span> · {tierLabel(t)}
               </p>
             ))}
           </div>
@@ -88,7 +89,7 @@ export default async function DrawsPage() {
         <p className="kicker">Previous draws</p>
         {past.length === 0 ? (
           <div className="card p-6 text-center text-[14px] text-muted">
-            No published draws yet — results will appear here after the first draw.
+            No published draws yet - results will appear here after the first draw.
           </div>
         ) : (
           past.map(({ draw, entry, winner }) => (
@@ -116,7 +117,7 @@ export default async function DrawsPage() {
                 )}
                 {winner && (
                   <div className="ml-auto text-right">
-                    <p className="kicker mb-1.5">{TIER_LABEL[winner.tier]} prize</p>
+                    <p className="kicker mb-1.5">{tierLabel(winner.tier)} prize</p>
                     <p className="font-display text-[18px] font-bold text-pine">{inr(winner.amount_pence)}</p>
                     <p className="text-[12px] text-muted">
                       {winner.payment_status === "paid" ? "Paid" : `Payment ${winner.payment_status}`}

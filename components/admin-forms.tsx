@@ -265,7 +265,7 @@ export function DrawSimPanel({ drawId, status }: { drawId: string; status: strin
       {result?.error && <p className="text-[13px] text-danger">{result.error}</p>}
       {result?.numbers && (
         <div className="rounded-2xl border border-line bg-cream/60 p-4">
-          <p className="kicker mb-2">Simulated winning numbers — preview only</p>
+          <p className="kicker mb-2">Simulated winning numbers - preview only</p>
           <div className="mb-3 flex gap-2">
             {result.numbers.map((n) => <span key={n} className="chip">{n}</span>)}
           </div>
@@ -284,7 +284,7 @@ export function DrawSimPanel({ drawId, status }: { drawId: string; status: strin
           </table>
           {(result.jackpotOutPence ?? 0) > 0 && (
             <p className="mt-2 text-[13px] font-medium text-gold">
-              No 5-number winner — {inr(result.jackpotOutPence ?? 0)} rolls into the next jackpot.
+              No 5-number winner - {inr(result.jackpotOutPence ?? 0)} rolls into the next jackpot.
             </p>
           )}
         </div>

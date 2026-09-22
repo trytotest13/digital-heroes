@@ -6,7 +6,6 @@ import { DrawCreateForm, DrawSimPanel } from "@/components/admin-forms";
 import { adminRefreshEntriesAction } from "@/actions/admin";
 import { SubmitButton } from "@/components/bits";
 import { BackButton } from "@/components/back-button";
-import { DEMO_DRAWS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · Draws" };
 
@@ -26,23 +25,13 @@ export default async function AdminDrawsPage() {
     console.error("AdminDrawsPage DB error:", err);
   }
 
-  if (draws.length === 0) {
-    draws = DEMO_DRAWS;
-    counts = DEMO_DRAWS.map((d) => d.entryCount);
-    winnersByDraw = new Map([
-      ["draw-2026-09", { draw_id: "draw-2026-09", count: 3, paid: 3600000 }],
-      ["draw-2026-08", { draw_id: "draw-2026-08", count: 2, paid: 1610000 }],
-      ["draw-2026-07", { draw_id: "draw-2026-07", count: 3, paid: 4400000 }],
-    ]);
-  }
-
   return (
     <div className="space-y-4">
       <div>
         <BackButton href="/admin" label="Back to overview" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Draw management</h1>
         <p className="mt-1 text-[14px] text-muted">
-          Open a draw, simulate it, then publish. Simulation never writes results — publishing does.
+          Open a draw, simulate it, then publish. Simulation never writes results - publishing does.
         </p>
       </div>
 
@@ -50,7 +39,7 @@ export default async function AdminDrawsPage() {
 
       {draws.length === 0 ? (
         <div className="card p-8 text-center text-[14px] text-muted">
-          No draws yet. Create the first one above — every active subscriber is entered automatically.
+          No draws yet. Create the first one above - every active subscriber is entered automatically.
         </div>
       ) : (
         draws.map((draw, i) => {

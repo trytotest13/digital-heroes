@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth";
 import sql from "@/lib/db";
-import { createDraw, publishDraw, refreshEntriesSafe, simulateDraw } from "@/lib/draws";
+import { createDraw, publishDraw, snapshotEntries, simulateDraw } from "@/lib/draws";
 import { createCharity, deleteCharity, updateCharity } from "@/lib/charities";
 import { setSubscriptionStatus } from "@/lib/subscriptions";
 import { markPaid, setVerification, uploadProof } from "@/lib/winners";
@@ -121,7 +121,7 @@ export async function adminCreateDrawAction(_prev: ActionState, formData: FormDa
 
 export async function adminRefreshEntriesAction(formData: FormData) {
   await requireAdmin();
-  await refreshEntriesSafe(String(formData.get("draw_id") ?? ""));
+  await snapshotEntries(String(formData.get("draw_id") ?? ""));
   revalidatePath("/admin/draws");
   revalidatePath("/dashboard/draws");
 }
@@ -139,7 +139,7 @@ export async function adminPublishAction(_prev: ActionState, formData: FormData)
   revalidatePath("/admin/draws");
   revalidatePath("/dashboard/draws");
   revalidatePath("/admin/winners");
-  return { message: `Published — ${result.tiers.reduce((a, t) => a + t.winners, 0)} winner(s).` };
+  return { message: `Published - ${result.tiers.reduce((a, t) => a + t.winners, 0)} winner(s).` };
 }
 
 /* ------------------- winners ------------------- */
@@ -175,5 +175,5 @@ export async function uploadProofAction(_prev: ActionState, formData: FormData):
   if (result.error) return { error: result.error };
   revalidatePath("/dashboard/winnings");
   revalidatePath("/admin/winners");
-  return { message: "Proof uploaded — an admin will review it." };
+  return { message: "Proof uploaded - an admin will review it." };
 }

@@ -7,7 +7,8 @@ import { getUserCharity, monthlyContributionPence } from "@/lib/charity-user";
 import { currentJackpotPence, getDrawByPeriod } from "@/lib/draws";
 import { winningsSummary } from "@/lib/winners";
 import { getSettings } from "@/lib/settings";
-import { currentPeriod, fmtDate, fmtMonth, inr, TIER_LABEL } from "@/lib/format";
+import { currentPeriod, fmtDate, fmtMonth, inr } from "@/lib/format";
+import { tierLabel } from "@/lib/winners";
 
 export const metadata = { title: "Dashboard" };
 
@@ -70,7 +71,7 @@ export default async function DashboardPage() {
             <Link href="/dashboard/scores" className="text-[13px] font-semibold text-pine hover:underline">Manage →</Link>
           </div>
           {scores.length === 0 ? (
-            <p className="mt-3 text-[13px] text-muted">No scores yet — add your first round to enter the draw.</p>
+            <p className="mt-3 text-[13px] text-muted">No scores yet - add your first round to enter the draw.</p>
           ) : (
             <div className="mt-3 flex flex-wrap gap-2">
               {scores.slice(0, 5).map((s) => (
@@ -112,7 +113,7 @@ export default async function DashboardPage() {
             <>
               <p className="mt-3 font-display text-[20px] font-bold">{fmtMonth(draw.period)}</p>
               <p className="mt-1 text-[13px] text-muted">
-                {status === "active" ? `You're entered · jackpot ${inr(draw.jackpot_in_pence + draw.pool_pence)}` : `Jackpot ${inr(draw.jackpot_in_pence + draw.pool_pence)} — subscribe to enter`}
+                {status === "active" ? `You're entered · jackpot ${inr(draw.jackpot_in_pence + draw.pool_pence)}` : `Jackpot ${inr(draw.jackpot_in_pence + draw.pool_pence)} - subscribe to enter`}
               </p>
             </>
           ) : (
@@ -149,9 +150,9 @@ export default async function DashboardPage() {
       <div className="card p-5">
         <p className="kicker mb-2">How prizes split</p>
         <div className="grid gap-2 text-[14px] sm:grid-cols-3">
-          <p><span className="font-display font-bold text-pine">40%</span> · {TIER_LABEL[5]}</p>
-          <p><span className="font-display font-bold text-pine">35%</span> · {TIER_LABEL[4]}</p>
-          <p><span className="font-display font-bold text-pine">25%</span> · {TIER_LABEL[3]}</p>
+          <p><span className="font-display font-bold text-pine">40%</span> · {tierLabel(5)}</p>
+          <p><span className="font-display font-bold text-pine">35%</span> · {tierLabel(4)}</p>
+          <p><span className="font-display font-bold text-pine">25%</span> · {tierLabel(3)}</p>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
 import { addScoreAction, deleteScoreAction, updateScoreAction } from "@/actions/scores";
 import {
@@ -22,12 +22,6 @@ const initial: ActionState = {};
 
 export function LoginForm() {
   const [state, action] = useActionState(loginAction, initial);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (state.message === "admin") router.replace("/admin");
-    if (state.message === "ok") router.replace("/dashboard");
-  }, [state.message, router]);
 
   return (
     <form action={action} className="space-y-4">
@@ -47,11 +41,6 @@ export function LoginForm() {
 
 export function SignupForm({ charities }: { charities: { id: string; name: string; tagline: string }[] }) {
   const [state, action] = useActionState(signupAction, initial);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (state.message === "ok") router.replace("/subscribe");
-  }, [state.message, router]);
 
   return (
     <form action={action} className="space-y-4">
@@ -111,7 +100,7 @@ export function ScoreAddForm({ oldest, scoreCount }: { oldest?: string; scoreCou
     <form action={action} className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="label" htmlFor="score">Stableford score (1–45)</label>
+          <label className="label" htmlFor="score">Stableford score (1-45)</label>
           <input id="score" name="score" type="number" min={1} max={45} required className="input" placeholder="e.g. 38" />
         </div>
         <div>
@@ -121,7 +110,7 @@ export function ScoreAddForm({ oldest, scoreCount }: { oldest?: string; scoreCou
       </div>
       {scoreCount >= 5 && oldest && (
         <p className="text-[13px] font-medium text-[#8a5f27]">
-          You already have five scores — adding another replaces your oldest entry ({fmtDate(oldest)}).
+          You already have five scores - adding another replaces your oldest entry ({fmtDate(oldest)}).
         </p>
       )}
       <Alert error={state.error} message={state.error ? undefined : state.message} />
@@ -193,7 +182,7 @@ export function CharitySettingsForm({
         <label className="label" htmlFor="c-charity">Your charity</label>
         <select id="c-charity" name="charity_id" defaultValue={currentCharityId} required className="input">
           {charities.map((c) => (
-            <option key={c.id} value={c.id}>{c.name} — {c.category}</option>
+            <option key={c.id} value={c.id}>{c.name} - {c.category}</option>
           ))}
         </select>
       </div>

@@ -45,7 +45,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
             <Logo href="/" size="sm" />
             <p>
-              © 2026 · Play with purpose. Demo build — payments run in test mode.
+              © 2026 · Play with purpose. Demo build - payments run in test mode.
             </p>
           </div>
           <div className="flex gap-5">

@@ -18,7 +18,8 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import postgres from "postgres";
-import { hashPassword, daysAgoStr } from "./_helpers.mts";
+import { hashPassword } from "../lib/hash";
+import { daysAgoStr } from "../lib/format";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const sql = postgres(process.env.DATABASE_URL ?? "postgres://postgres:postgres@127.0.0.1:54329/postgres", {
@@ -44,20 +45,20 @@ console.log("Seeding charities…");
 const charities = [
   ["Hope Foundation", "Children", "Safe homes and schooling for over a thousand children.", "Hope Foundation runs family shelters, after-school tutoring and holiday programmes across twelve cities. Every pound goes into keeping children housed, fed and in school.", "https://example.org/hope", true,
     [{ title: "Autumn Charity Golf Day", date: daysAgoStr(-20), location: "Maplewood Golf Club" }]],
-  ["Green Earth Trust", "Environment", "Rivers, woodland and coastline restoration.", "Green Earth Trust coordinates volunteer restoration projects — river clean-ups, tree planting and coastal dune repair — with published results for every project it funds.", "https://example.org/green-earth", true,
+  ["Green Earth Trust", "Environment", "Rivers, woodland and coastline restoration.", "Green Earth Trust coordinates volunteer restoration projects - river clean-ups, tree planting and coastal dune repair - with published results for every project it funds.", "https://example.org/green-earth", true,
     [{ title: "River Wensum Clean-Up", date: daysAgoStr(-9), location: "Norwich" }]],
   ["Mind & Body Wellness", "Health", "Community mental-health support, free at the point of need.", "Mind & Body Wellness funds counselling places, peer support groups and community exercise programmes for people who can't afford private care.", "https://example.org/mindbody", true,
     []],
-  ["Shelter Together", "Community", "Emergency housing and resettlement support.", "Shelter Together provides emergency beds, then walks alongside people through resettlement — deposits, furniture, and the boring paperwork that keeps a tenancy alive.", "https://example.org/shelter", false, []],
+  ["Shelter Together", "Community", "Emergency housing and resettlement support.", "Shelter Together provides emergency beds, then walks alongside people through resettlement - deposits, furniture, and the boring paperwork that keeps a tenancy alive.", "https://example.org/shelter", false, []],
   ["Bright Start Youth", "Children", "After-school programmes and holiday activity funds.", "Bright Start Youth runs after-school clubs and pays holiday activity fees for families on free-school-meals support, so the gap in the year doesn't become a gap in childhood.", "https://example.org/bright-start", false, []],
   ["Clean Rivers Initiative", "Environment", "A volunteer river-cleaning network with water-quality monitoring.", "Clean Rivers Initiative organises monthly river cleans and publishes open water-quality data from 40 monitoring stations.", "https://example.org/rivers", false, []],
   ["Cancer Care Allies", "Health", "Practical support for families facing cancer treatment.", "Cancer Care Allies covers travel to treatment, parking, and a week of meals when treatment knocks a family flat.", "https://example.org/allies", false, []],
   ["Neighbourhood Kitchen", "Community", "Community meals and food surplus redistribution.", "Neighbourhood Kitchen turns surplus food into shared meals and runs a pay-it-forward freezer for neighbours having a hard month.", "https://example.org/kitchen", false, []],
   ["Ocean Guardians", "Environment", "Plastic-free beaches and marine habitat protection.", "Ocean Guardians organises beach cleans, funds ghost-net recovery and backs junior marine-biology scholarships in coastal towns.", "https://example.org/ocean", true,
     [{ title: "Great Beach Clean", date: daysAgoStr(-30), location: "Brighton" }]],
-  ["City Mentors", "Community", "One-to-one mentoring for young jobseekers.", "City Mentors pairs 16–24 year olds with volunteer mentors for six months — CV help, mock interviews and a first foot in the door.", "https://example.org/mentors", false, []],
+  ["City Mentors", "Community", "One-to-one mentoring for young jobseekers.", "City Mentors pairs 16-24 year olds with volunteer mentors for six months - CV help, mock interviews and a first foot in the door.", "https://example.org/mentors", false, []],
   ["Family Health Fund", "Health", "Grants for families facing medical bills.", "Family Health Fund makes fast, no-forms grants for travel to hospital, prescriptions and time off work during treatment.", "https://example.org/family-health", false, []],
-  ["Little Readers", "Children", "Books and reading volunteers for primary schools.", "Little Readers stocks school libraries and trains reading volunteers — every child gets a book to keep each term.", "https://example.org/readers", false,
+  ["Little Readers", "Children", "Books and reading volunteers for primary schools.", "Little Readers stocks school libraries and trains reading volunteers - every child gets a book to keep each term.", "https://example.org/readers", false,
     [{ title: "Read-a-thon", date: daysAgoStr(-45), location: "Leeds" }]],
   ["Fair Play Sports", "Community", "Free weekend sports clubs for teenagers.", "Fair Play Sports runs free weekend football, cricket and athletics clubs with volunteer coaches in six boroughs.", "https://example.org/fair-play", true,
     [{ title: "Summer Tournament", date: daysAgoStr(-12), location: "Birmingham" }]],

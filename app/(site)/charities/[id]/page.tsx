@@ -59,7 +59,7 @@ export default async function CharityDetailPage({ params }: { params: Promise<{ 
 
           <div className="mt-8 border-t border-line pt-6">
             <p className="text-[14px] text-muted">
-              Support {charity.name} by directing part of your subscription to it — you choose the share.
+              Support {charity.name} by directing part of your subscription to it - you choose the share.
             </p>
             <div className="mt-3 flex flex-wrap gap-3">
               <Link href="/signup" className="btn btn-primary">Choose this charity</Link>

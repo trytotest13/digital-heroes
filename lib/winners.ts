@@ -1,6 +1,4 @@
 import sql from "./db";
-import { TIER_LABEL } from "./format";
-import { DEMO_WINNERS, DEMO_PLAYER_WINNERS, DEMO_PLAYER_SUMMARY } from "./demo-data";
 
 /**
  * Winner verification: winners upload a screenshot of their scores as
@@ -38,9 +36,6 @@ export async function myWinners(userId: string) {
   } catch (err) {
     console.error("myWinners DB error:", err);
   }
-  if (userId === "demo-player-id" || userId.startsWith("demo-")) {
-    return DEMO_PLAYER_WINNERS as unknown as WinnerRow[];
-  }
   return [];
 }
 
@@ -56,7 +51,7 @@ export async function listWinnersAdmin() {
       order by w.created_at desc`;
   } catch (err) {
     console.error("listWinnersAdmin DB error:", err);
-    return DEMO_WINNERS;
+    return [];
   }
 }
 
@@ -115,12 +110,11 @@ export async function winningsSummary(userId: string) {
   } catch (err) {
     console.error("winningsSummary DB error:", err);
   }
-  if (userId === "demo-player-id" || userId.startsWith("demo-")) {
-    return DEMO_PLAYER_SUMMARY;
-  }
   return { total: 0, pending: 0, paid: 0 };
 }
 
+const TIER_LABELS: Record<number, string> = { 5: "5-number match", 4: "4-number match", 3: "3-number match" };
+
 export function tierLabel(tier: number): string {
-  return TIER_LABEL[tier] ?? `${tier}-number match`;
+  return TIER_LABELS[tier] ?? `${tier}-number match`;
 }

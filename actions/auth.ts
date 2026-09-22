@@ -1,9 +1,12 @@
 "use server";
 
 import sql from "@/lib/db";
-import { hashPassword, setSessionCookie, clearSessionCookie, verifyPassword } from "@/lib/auth";
+import { setSessionCookie, clearSessionCookie } from "@/lib/auth";
+import { hashPassword, verifyPassword } from "@/lib/hash";
 import { setUserCharity } from "@/lib/charity-user";
 import type { ActionState } from "@/lib/types";
+
+import { redirect } from "next/navigation";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -22,7 +25,7 @@ export async function signupAction(_prev: ActionState, formData: FormData): Prom
   if (!charityId) return { error: "Choose the cause you'd like to support." };
 
   const existing = await sql`select 1 from users where email = ${email} limit 1`;
-  if (existing.length) return { error: "An account with this email already exists — sign in instead." };
+  if (existing.length) return { error: "An account with this email already exists - sign in instead." };
 
   const [user] = await sql<{ id: string }[]>`
     insert into users (email, password_hash, full_name)
@@ -31,7 +34,7 @@ export async function signupAction(_prev: ActionState, formData: FormData): Prom
 
   await setUserCharity(user.id, charityId, pct);
   await setSessionCookie(user.id);
-  return { message: "ok" };
+  redirect("/subscribe");
 }
 
 export async function loginAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -46,20 +49,10 @@ export async function loginAction(_prev: ActionState, formData: FormData): Promi
     if (user && verifyPassword(password, user.password_hash)) {
       if (!user.active) return { error: "This account has been suspended. Contact support." };
       await setSessionCookie(user.id);
-      return { message: user.role === "admin" ? "admin" : "ok" };
+      redirect(user.role === "admin" ? "/admin" : "/dashboard");
     }
   } catch (err) {
     console.error("Login database query failed:", err);
-  }
-
-  // Fallback demo credentials if database is still initializing
-  if (email === "admin@digitalheroes.test" && password === "Admin#2026") {
-    await setSessionCookie("demo-admin-id");
-    return { message: "admin" };
-  }
-  if (email === "player@digitalheroes.test" && password === "Player#2026") {
-    await setSessionCookie("demo-player-id");
-    return { message: "ok" };
   }
 
   return { error: "Email or password is incorrect." };

@@ -1,7 +1,6 @@
 import sql from "./db";
-import { addMonths, addYears, todayStr } from "./format";
+import { addMonths, todayStr } from "./format";
 import { getSettings } from "./settings";
-import { DEMO_USERS } from "./demo-data";
 
 /**
  * Subscription lifecycle: activation, renewal dates, cancellation and the
@@ -32,17 +31,6 @@ export async function getSubscription(userId: string): Promise<Subscription | un
   } catch (err) {
     console.error("getSubscription DB error:", err);
   }
-  if (userId.startsWith("demo-")) {
-    return {
-      id: "demo-sub-1",
-      user_id: userId,
-      plan: "yearly",
-      status: "active",
-      price_pence: 499900,
-      renewal_date: "2027-09-21",
-      stripe_subscription_id: null,
-    };
-  }
   return undefined;
 }
 
@@ -58,7 +46,7 @@ export function effectiveStatus(sub: Subscription | undefined | null): Effective
 export async function activateSubscription(userId: string, plan: "monthly" | "yearly") {
   const settings = await getSettings();
   const price = plan === "monthly" ? settings.monthly_price_pence : settings.yearly_price_pence;
-  const renewal = plan === "monthly" ? addMonths(todayStr(), 1) : addYears(todayStr(), 1);
+  const renewal = plan === "monthly" ? addMonths(todayStr(), 1) : addMonths(todayStr(), 12);
   await sql`
     insert into subscriptions (user_id, plan, status, price_pence, renewal_date)
     values (${userId}, ${plan}, 'active', ${price}, ${renewal})
@@ -87,11 +75,7 @@ export async function activeSubscribers() {
       order by u.created_at`;
   } catch (err) {
     console.error("activeSubscribers DB error:", err);
-    return DEMO_USERS.filter((u) => u.status === "active" && u.active).map((u) => ({
-      id: u.id,
-      full_name: u.full_name,
-      email: u.email,
-    }));
+    return [];
   }
 }
 
@@ -111,6 +95,6 @@ export async function monthlyPoolContributionPence(): Promise<number> {
     return Math.round((row?.total ?? 0) * (settings.prize_pool_percent / 100));
   } catch (err) {
     console.error("monthlyPoolContributionPence DB error:", err);
-    return 3360000;
+    return 0;
   }
 }

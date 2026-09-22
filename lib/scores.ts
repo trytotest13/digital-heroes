@@ -1,6 +1,5 @@
 import sql from "./db";
 import { todayStr } from "./format";
-import { DEMO_PLAYER_SCORES } from "./demo-data";
 
 /**
  * Score management — the rules the PRD is strictest about:
@@ -20,9 +19,6 @@ export async function listScores(userId: string): Promise<ScoreRow[]> {
     if (rows && rows.length > 0) return rows;
   } catch (err) {
     console.error("listScores DB error:", err);
-  }
-  if (userId === "demo-player-id" || userId.startsWith("demo-")) {
-    return DEMO_PLAYER_SCORES;
   }
   return [];
 }
@@ -59,7 +55,7 @@ export async function addScore(
 
   const dup = await sql`select 1 from scores where user_id = ${userId} and played_at = ${date} limit 1`;
   if (dup.length) {
-    return { error: "You already have a score for this date — edit the existing entry instead." };
+    return { error: "You already have a score for this date - edit the existing entry instead." };
   }
 
   const existing = await listScores(userId);
@@ -87,7 +83,7 @@ export async function updateScore(
   const dup = await sql`
     select 1 from scores where user_id = ${userId} and played_at = ${date} and id <> ${id} limit 1`;
   if (dup.length) {
-    return { error: "You already have a score for this date — edit that entry instead." };
+    return { error: "You already have a score for this date - edit that entry instead." };
   }
 
   await sql`update scores set score = ${score}, played_at = ${date} where id = ${id}`;
@@ -97,11 +93,4 @@ export async function updateScore(
 
 export async function deleteScore(userId: string, id: string) {
   await sql`delete from scores where id = ${id} and user_id = ${userId}`;
-}
-
-/** Count of stored scores — used for the "still need X scores" nudge. */
-export async function scoreCount(userId: string): Promise<number> {
-  const [row] = await sql<{ count: number }[]>`
-    select count(*)::int as count from scores where user_id = ${userId}`;
-  return row?.count ?? 0;
 }

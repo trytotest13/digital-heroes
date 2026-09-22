@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
-import { getSettings, updateSettings } from "@/lib/settings";
-import { activateSubscription } from "@/lib/subscriptions";
+import { getSettings } from "@/lib/settings";
 import sql from "@/lib/db";
 
 /**
@@ -62,7 +61,6 @@ export async function POST(req: Request) {
       });
       priceId = price.id;
     }
-    await updateSettings({});
     await sql`
       insert into settings (key, value) values ('stripe', ${sql.json({ ...cache, [`${plan}_price_id`]: priceId })}::jsonb)
       on conflict (key) do update set value = excluded.value`;
@@ -81,17 +79,4 @@ export async function POST(req: Request) {
 
   if (session.url) return NextResponse.json({ url: session.url });
   return NextResponse.json({ error: "Checkout session failed." }, { status: 500 });
-}
-
-/** Kept for parity: demo-mode activation when Stripe isn't configured. */
-export async function PUT(req: Request) {
-  const user = await getCurrentUser();
-  if (!user) return NextResponse.json({ error: "Sign in first." }, { status: 401 });
-  const form = await req.formData();
-  const plan = String(form.get("plan") ?? "");
-  if (plan !== "monthly" && plan !== "yearly") {
-    return NextResponse.json({ error: "Pick a plan first." }, { status: 400 });
-  }
-  await activateSubscription(user.id, plan);
-  return NextResponse.json({ ok: true });
 }

@@ -47,7 +47,7 @@ export default async function SubscribeSuccessPage({
       <p className="animate-fade-up [animation-delay:160ms] mt-3 text-[15px] leading-relaxed text-muted">
         {status === "active"
           ? "Your subscription is active and you'll be entered into the next draw automatically."
-          : "We couldn't confirm your payment yet. If you completed checkout, give it a moment and refresh — or contact support."}
+          : "We couldn't confirm your payment yet. If you completed checkout, give it a moment and refresh - or contact support."}
       </p>
       <div className="animate-fade-up [animation-delay:260ms]">
         <Link href="/dashboard" className="btn btn-primary mt-8 h-12 px-8 text-[15px]">Go to dashboard</Link>

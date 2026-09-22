@@ -3,7 +3,7 @@
  * Run with the local dev database up:  npm run db:local &  npm test
  */
 import postgres from "postgres";
-import { hashPassword } from "./_helpers.mts";
+import { hashPassword } from "../lib/hash";
 import { addScore, listScores, updateScore, deleteScore } from "../lib/scores";
 import {
   activateSubscription,

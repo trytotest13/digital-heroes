@@ -36,7 +36,7 @@ export default async function AdminCharitiesPage() {
             </thead>
             <tbody>
               {charities.length === 0 ? (
-                <tr><td colSpan={6} className="td text-center text-muted">No charities yet — add the first one.</td></tr>
+                <tr><td colSpan={6} className="td text-center text-muted">No charities yet - add the first one.</td></tr>
               ) : (
                 charities.map((c) => (
                   <CharityEditRow

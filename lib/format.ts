@@ -1,23 +1,16 @@
 /** Shared formatting helpers + domain constants. */
 
 export const TIER_PCT: Record<number, number> = { 5: 0.4, 4: 0.35, 3: 0.25 };
-export const TIER_LABEL: Record<number, string> = {
-  5: "5-number match",
-  4: "4-number match",
-  3: "3-number match",
-};
 export const CONTRIBUTION_STEPS = [10, 15, 20, 25, 30];
 export const CHARITY_CATEGORIES = ["Health", "Children", "Environment", "Community"] as const;
 
-export function formatCurrency(amount: number): string {
+export function inr(amount: number): string {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
     maximumFractionDigits: 2,
   }).format(amount / 100);
 }
-
-export const inr = formatCurrency;
 
 export function fmtDate(value: string | Date | null | undefined): string {
   if (!value) return "—";
@@ -38,6 +31,12 @@ export function todayStr(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
+export function daysAgoStr(days: number): string {
+  const d = new Date();
+  d.setUTCDate(d.getUTCDate() - days);
+  return d.toISOString().slice(0, 10);
+}
+
 export function currentPeriod(): string {
   return new Date().toISOString().slice(0, 7);
 }
@@ -46,10 +45,6 @@ export function addMonths(dateStr: string, months: number): string {
   const d = new Date(dateStr + "T00:00:00Z");
   d.setUTCMonth(d.getUTCMonth() + months);
   return d.toISOString().slice(0, 10);
-}
-
-export function addYears(dateStr: string, years: number): string {
-  return addMonths(dateStr, years * 12);
 }
 
 /** Draws are entered with five numbers between 1 and 45. */

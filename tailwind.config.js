@@ -20,32 +20,18 @@ module.exports = {
         
         // Accent — warm gold (more luminous)
         gold: "#c9952a",
-        "gold-light": "#dbab4a",
         "gold-pale": "#f0dfa8",
         amber: "#c9952a",
         sage: "#2d5e4a",
         
-        // Secondary — slate blue (for contrast categories)
-        ocean: "#2a5a7a",
-        "ocean-light": "#3a7a9f",
-        "ocean-pale": "#d4e8f0",
-        
-        // Tertiary — warm terracotta
-        clay: "#a0523e",
-        "clay-light": "#b86852",
-        "clay-pale": "#e8d0c8",
-        
         // Neutral text scale
         ink: "#141816",
         body: "#2a3330",
-        "body-light": "#4a5650",
         muted: "#6e7a74",
-        "muted-light": "#93a09a",
         
         // Surface/border tokens
         mist: "#dfe9e1",
         line: "#d8ddd4",
-        "line-light": "#e5e9e2",
         white: "#ffffff",
         
         // Status colors
@@ -53,8 +39,6 @@ module.exports = {
         "success-pale": "#d4eddf",
         danger: "#b84c4c",
         "danger-pale": "#f0d8d8",
-        warning: "#b8860b",
-        "warning-pale": "#f5ecd0",
         
         // Admin dark surfaces
         "ink-surface": "#111916",

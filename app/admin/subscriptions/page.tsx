@@ -3,7 +3,6 @@ import sql from "@/lib/db";
 import { fmtDate, inr } from "@/lib/format";
 import { SubStatusForm } from "@/components/admin-forms";
 import { BackButton } from "@/components/back-button";
-import { DEMO_SUBSCRIPTIONS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · Subscriptions" };
 
@@ -24,7 +23,6 @@ export default async function AdminSubscriptionsPage() {
       order by s.updated_at desc`;
   } catch (err) {
     console.error("AdminSubscriptionsPage DB error:", err);
-    subs = DEMO_SUBSCRIPTIONS;
   }
 
   const counts = {

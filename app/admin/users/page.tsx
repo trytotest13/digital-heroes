@@ -4,7 +4,6 @@ import sql from "@/lib/db";
 import { fmtDate } from "@/lib/format";
 import { SuspendButton } from "@/components/admin-forms";
 import { BackButton } from "@/components/back-button";
-import { DEMO_USERS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · Users" };
 
@@ -30,7 +29,6 @@ export default async function AdminUsersPage() {
       order by u.created_at desc`;
   } catch (err) {
     console.error("AdminUsersPage DB error:", err);
-    users = DEMO_USERS;
   }
 
   return (

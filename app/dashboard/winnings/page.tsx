@@ -74,8 +74,8 @@ export default async function WinningsPage() {
               <div className="mt-4 max-w-md rounded-2xl bg-cream/70 p-4">
                 <p className="text-[13px] font-semibold text-body">
                   {w.verification === "rejected"
-                    ? "Your proof wasn't accepted — upload a clearer screenshot to try again."
-                    : "Verification required — upload a screenshot of your scores from your golf platform."}
+                    ? "Your proof wasn't accepted - upload a clearer screenshot to try again."
+                    : "Verification required - upload a screenshot of your scores from your golf platform."}
                 </p>
                 <div className="mt-3">
                   <ProofUploadForm winnerId={w.id} />

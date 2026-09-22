@@ -12,11 +12,8 @@ const verificationBadge: Record<string, string> = {
   rejected: "badge-red",
 };
 
-import { DEMO_WINNERS } from "@/lib/demo-data";
-
 export default async function AdminWinnersPage() {
-  const winnersRes = await listWinnersAdmin();
-  const winners = winnersRes.length > 0 ? winnersRes : DEMO_WINNERS;
+  const winners = await listWinnersAdmin();
 
   return (
     <div className="space-y-4">
@@ -24,7 +21,7 @@ export default async function AdminWinnersPage() {
         <BackButton href="/admin" label="Back to overview" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Winners</h1>
         <p className="mt-1 text-[14px] text-muted">
-          Review proof screenshots, then approve — payouts can only be marked paid once a winner is approved.
+          Review proof screenshots, then approve - payouts can only be marked paid once a winner is approved.
         </p>
       </div>
 
@@ -46,7 +43,7 @@ export default async function AdminWinnersPage() {
               {winners.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="td text-center text-muted">
-                    No winners yet — winners appear here automatically after a draw is published.
+                    No winners yet - winners appear here automatically after a draw is published.
                   </td>
                 </tr>
               ) : (

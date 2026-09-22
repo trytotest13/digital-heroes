@@ -27,7 +27,7 @@ export default async function CharityPage() {
         <BackButton href="/dashboard" label="Back to overview" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Your charity</h1>
         <p className="mt-1 text-[14px] text-muted">
-          Direct part of your subscription to a cause you choose — minimum 10%, yours to raise.
+          Direct part of your subscription to a cause you choose - minimum 10%, yours to raise.
         </p>
       </div>
 

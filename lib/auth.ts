@@ -16,20 +16,6 @@ function secret(): string {
   return process.env.SESSION_SECRET || "dev-only-secret-change-me";
 }
 
-export function hashPassword(password: string): string {
-  const salt = crypto.randomBytes(16).toString("hex");
-  const hash = crypto.scryptSync(password, salt, 64).toString("hex");
-  return `scrypt$${salt}$${hash}`;
-}
-
-export function verifyPassword(password: string, stored: string): boolean {
-  const [, salt, hash] = stored.split("$");
-  if (!salt || !hash) return false;
-  const candidate = crypto.scryptSync(password, salt, 64);
-  const original = Buffer.from(hash, "hex");
-  return candidate.length === original.length && crypto.timingSafeEqual(candidate, original);
-}
-
 function sign(body: string): string {
   return crypto.createHmac("sha256", secret()).update(body).digest("base64url");
 }
@@ -83,13 +69,6 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
     const token = (await cookies()).get(COOKIE_NAME)?.value;
     const uid = readToken(token);
     if (!uid) return null;
-
-    if (uid === "demo-admin-id") {
-      return { id: "demo-admin-id", email: "admin@digitalheroes.test", full_name: "Demo Admin", role: "admin" };
-    }
-    if (uid === "demo-player-id") {
-      return { id: "demo-player-id", email: "player@digitalheroes.test", full_name: "Demo Player", role: "user" };
-    }
 
     const [row] = await sql<{ id: string; email: string; full_name: string; role: "user" | "admin"; active: boolean }[]>`
       select id, email, full_name, role, active from users where id = ${uid} limit 1`;

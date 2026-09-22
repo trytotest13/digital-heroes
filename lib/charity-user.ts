@@ -1,7 +1,6 @@
 import sql from "./db";
 import { getCharity } from "./charities";
 import { CONTRIBUTION_STEPS, inr } from "./format";
-import { DEMO_PLAYER_DONATIONS } from "./demo-data";
 
 /**
  * Charity contribution logic: every subscriber directs at least 10% of
@@ -26,15 +25,6 @@ export async function getUserCharity(userId: string): Promise<UserCharity | unde
     if (row) return row;
   } catch (err) {
     console.error("getUserCharity DB error:", err);
-  }
-  if (userId.startsWith("demo-")) {
-    return {
-      charity_id: "demo-green",
-      contribution_pct: 15,
-      name: "Green Earth Trust",
-      category: "Environment",
-      tagline: "Rivers, woodland and coastline restoration.",
-    };
   }
   return undefined;
 }
@@ -79,7 +69,7 @@ export async function recordDonation(userId: string, charityId: string | null, a
   await sql`
     insert into donations (user_id, charity_id, amount_pence)
     values (${userId}, ${charityId}, ${pence})`;
-  return { message: `Thank you — a ${inr(pence)} donation was recorded (test mode).` };
+  return { message: `Thank you - a ${inr(pence)} donation was recorded (test mode).` };
 }
 
 export async function listDonations(userId: string) {
@@ -91,9 +81,6 @@ export async function listDonations(userId: string) {
     if (rows && rows.length > 0) return rows;
   } catch (err) {
     console.error("listDonations DB error:", err);
-  }
-  if (userId === "demo-player-id" || userId.startsWith("demo-")) {
-    return DEMO_PLAYER_DONATIONS;
   }
   return [];
 }
@@ -112,10 +99,10 @@ export async function charityTotals() {
       from subscriptions s
       join user_charities uc on uc.user_id = s.user_id
       where s.status = 'active'`;
-    return row ?? { estimated_monthly: 1540000, donations_total: 4850000, donations_count: 18 };
+    return row ?? { estimated_monthly: 0, donations_total: 0, donations_count: 0 };
   } catch (err) {
     console.error("charityTotals DB error:", err);
-    return { estimated_monthly: 1540000, donations_total: 4850000, donations_count: 18 };
+    return { estimated_monthly: 0, donations_total: 0, donations_count: 0 };
   }
 }
 
@@ -134,12 +121,6 @@ export async function givingByCharity() {
       group by c.name order by monthly_pence desc`;
   } catch (err) {
     console.error("givingByCharity DB error:", err);
-    return [
-      { name: "Green Earth Trust", supporters: 5, monthly_pence: 425000 },
-      { name: "Hope Foundation", supporters: 4, monthly_pence: 380000 },
-      { name: "Girls Into Golf", supporters: 3, monthly_pence: 290000 },
-      { name: "Fair Play Sports", supporters: 3, monthly_pence: 245000 },
-      { name: "Wildlife Corridors", supporters: 2, monthly_pence: 200000 },
-    ];
+    return [];
   }
 }
