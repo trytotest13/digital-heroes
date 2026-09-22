@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { LogoutButton } from "@/components/user-forms";
 import { PageFade } from "@/components/page-fade";
+import { MobileNav } from "@/components/mobile-nav";
 
 /**
  * Shared chrome for all public pages. The wordmark intentionally echoes
@@ -34,6 +35,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
                 <Link href="/signup" className="btn btn-primary btn-sm">Subscribe</Link>
               </>
             )}
+            <MobileNav user={user ? { role: user.role } : null} />
           </div>
         </div>
       </header>

@@ -61,7 +61,7 @@ export function CharityFilters({ q = "", category = "" }: { q?: string; category
         className="input sm:max-w-xs"
         aria-label="Search charities"
       />
-      <div className="flex gap-2 overflow-x-auto pb-1" role="group" aria-label="Filter by category">
+      <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar scroll-smooth" role="group" aria-label="Filter by category">
         <button
           type="button"
           onClick={() => applyFilters("", search)}

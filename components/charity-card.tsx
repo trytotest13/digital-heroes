@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BorderBeam } from "@/components/lightswind/border-beam";
 
 /**
  * Charity card used across home, directory and admin previews.
@@ -9,6 +10,7 @@ const categoryStyle: Record<string, { bg: string; fg: string }> = {
   Children: { bg: "bg-mist", fg: "text-pine" },
   Environment: { bg: "bg-[#dfe6d3]", fg: "text-[#3d5231]" },
   Community: { bg: "bg-[#e9dfe0]", fg: "text-[#7a3d44]" },
+  Sports: { bg: "bg-[#e2eaf5]", fg: "text-[#284a75]" },
 };
 
 export function CharityCard({
@@ -28,8 +30,9 @@ export function CharityCard({
   return (
     <Link
       href={`/charities/${id}`}
-      className="card card-hover group block h-full overflow-hidden"
+      className="card card-hover group relative block h-full overflow-hidden"
     >
+      {featured && <BorderBeam size={130} duration={9} colorFrom="#173d35" colorTo="#d8a15d" />}
       <div className={`relative flex h-28 items-center justify-center overflow-hidden ${style.bg}`}>
         <span className={`font-display text-[34px] font-bold transition-transform duration-300 ease-out group-hover:scale-110 ${style.fg}`}>
           {name.slice(0, 1)}

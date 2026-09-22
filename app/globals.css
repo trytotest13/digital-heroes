@@ -116,6 +116,15 @@
   progress, [role="progressbar"] > * {
     transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
+
+  /* Touch-friendly horizontal scroll without ugly scrollbars on mobile */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Anyone who prefers reduced motion gets the content, instantly. */

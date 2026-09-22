@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 export function DashNav({ items }: { items: { href: string; label: string }[] }) {
   const pathname = usePathname();
   return (
-    <nav className="flex gap-1 overflow-x-auto lg:flex-col">
+    <nav className="flex gap-1.5 overflow-x-auto pb-2 pt-0.5 no-scrollbar lg:flex-col lg:pb-0">
       {items.map((item) => {
         const active = pathname === item.href;
         return (
