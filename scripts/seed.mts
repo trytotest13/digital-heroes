@@ -2,17 +2,18 @@
  * Seed script — idempotent. Safe to run against the local dev database or a
  * fresh Supabase project (it also applies the schema first).
  *
- * Creates: 18 demo charities, an admin account, 24 demo players
+ * Creates: 30 demo charities, two admin accounts, 60 demo players
  * (mixed plans and statuses, with scores and charity selections),
- * independent donations, four published historical draws
+ * ~50 independent donations, six published historical draws
  * (with entries + winners in every verification state), and opens the
  * current month's draw.
  *
  * Test credentials created here:
- *   admin@digitalheroes.test  / Admin#2026
+ *   admin@digitalheroes.test / Admin#2026
+ *   ops@digitalheroes.test   / Admin#2026
  *   player@digitalheroes.test / Player#2026
  *   player2@digitalheroes.test / Player#2026
- *   player3@digitalheroes.test … player24@digitalheroes.test / Player#2026
+ *   player3@digitalheroes.test … player60@digitalheroes.test / Player#2026
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -68,6 +69,21 @@ const charities = [
   ["Girls Into Golf", "Children", "Clubs, coaching and kit for junior girls.", "Girls Into Golf pays club memberships, lessons and second-hand kit so cost is never the reason a girl stops playing.", "https://example.org/girls-golf", true,
     [{ title: "Junior Open Day", date: daysAgoStr(-5), location: "St Andrews" }]],
   ["Night Shelter Network", "Community", "Beds and breakfast all winter.", "Night Shelter Network coordinates church-hall shelters, hot meals and morning casework every winter night.", "https://example.org/night-shelter", false, []],
+  ["Books For All", "Children", "Free books and libraries for every child.", "Books For All restocks school libraries, runs mobile book vans and gifts every child three books a year to keep.", "https://example.org/books-for-all", true,
+    [{ title: "Book Van Tour", date: daysAgoStr(-14), location: "Manchester" }]],
+  ["Healthy Minds Alliance", "Health", "Counselling grants and crisis helplines.", "Healthy Minds Alliance funds counselling grants, trains helpline volunteers and keeps a 24-hour crisis line staffed.", "https://example.org/healthy-minds", false, []],
+  ["Riverbank Trust", "Environment", "Wetland reserves and floodplain meadows.", "Riverbank Trust buys and restores floodplain meadows, creating wetland reserves that hold floodwater and shelter wading birds.", "https://example.org/riverbank", false, []],
+  ["Street Kitchen Collective", "Community", "Hot meals and supper clubs on every high street.", "Street Kitchen Collective turns empty shop units into supper clubs where volunteers cook surplus food for anyone who walks in.", "https://example.org/street-kitchen", false, []],
+  ["Sunrise Education", "Children", "Scholarships and uniforms for first-generation learners.", "Sunrise Education pays school fees, uniforms and exam costs for first-generation learners, then mentors them into work.", "https://example.org/sunrise", false, []],
+  ["Coral Reef Fund", "Environment", "Reef nurseries and coastal ranger jobs.", "Coral Reef Fund grows coral fragments in ocean nurseries and employs coastal rangers to guard recovering reefs.", "https://example.org/coral", true,
+    [{ title: "Reef Planting Weekend", date: daysAgoStr(-22), location: "Cornwall" }]],
+  ["Senior Care Circle", "Health", "Befrienders and home help for older neighbours.", "Senior Care Circle matches isolated older people with weekly befrienders and pays for small home-help tasks that keep them independent.", "https://example.org/senior-care", false, []],
+  ["Playgrounds Project", "Children", "Safe play spaces on every estate.", "Playgrounds Project rebuilds tired estate playgrounds with local families designing every slide, swing and quiet corner.", "https://example.org/playgrounds", false, []],
+  ["Urban Forest Crew", "Environment", "Street trees planted and cared for by residents.", "Urban Forest Crew funds street-tree planting and trains resident crews to water, mulch and monitor young trees.", "https://example.org/urban-forest", false, []],
+  ["Food Bank Friends", "Community", "Weekly parcels plus debt and benefits advice.", "Food Bank Friends pairs weekly food parcels with debt advice and benefits checks so fewer families need a parcel twice.", "https://example.org/food-bank", false, []],
+  ["Rural Health Wheels", "Health", "Mobile clinics for remote villages.", "Rural Health Wheels runs mobile clinics - vaccinations, screenings and prescriptions - to villages hours from the nearest surgery.", "https://example.org/health-wheels", false, []],
+  ["Youth Code Club", "Community", "Free coding clubs and laptops for teenagers.", "Youth Code Club runs free evening coding clubs and lends laptops so any teenager can learn to build, not just use, technology.", "https://example.org/code-club", true,
+    [{ title: "Hack Day", date: daysAgoStr(-7), location: "Bristol" }]],
 ] as const;
 
 for (const [name, category, tagline, description, website, featured, events] of charities) {
@@ -88,6 +104,7 @@ async function upsertUser(email: string, password: string, fullName: string, rol
 
 console.log("Seeding accounts…");
 await upsertUser("admin@digitalheroes.test", "Admin#2026", "Platform Admin", "admin");
+await upsertUser("ops@digitalheroes.test", "Admin#2026", "Operations Admin", "admin");
 
 const player = await upsertUser("player@digitalheroes.test", "Player#2026", "Sam Carter", "user");
 const player2 = await upsertUser("player2@digitalheroes.test", "Player#2026", "Jordan Lee", "user");
@@ -115,6 +132,42 @@ for (const [email, name] of [
   ["player22@digitalheroes.test", "Kwame Mensah"],
   ["player23@digitalheroes.test", "Lucia Ferrari"],
   ["player24@digitalheroes.test", "Noah Williams"],
+  ["player25@digitalheroes.test", "Aarohi Sharma"],
+  ["player26@digitalheroes.test", "Rohan Verma"],
+  ["player27@digitalheroes.test", "Sneha Iyer"],
+  ["player28@digitalheroes.test", "Arjun Nair"],
+  ["player29@digitalheroes.test", "Kavya Reddy"],
+  ["player30@digitalheroes.test", "Ishaan Kapoor"],
+  ["player31@digitalheroes.test", "Meera Joshi"],
+  ["player32@digitalheroes.test", "Aditya Rao"],
+  ["player33@digitalheroes.test", "Divya Menon"],
+  ["player34@digitalheroes.test", "Karan Malhotra"],
+  ["player35@digitalheroes.test", "Ananya Das"],
+  ["player36@digitalheroes.test", "Vikash Yadav"],
+  ["player37@digitalheroes.test", "Neha Kulkarni"],
+  ["player38@digitalheroes.test", "Suresh Pillai"],
+  ["player39@digitalheroes.test", "Pooja Bhatt"],
+  ["player40@digitalheroes.test", "Rahul Chopra"],
+  ["player41@digitalheroes.test", "Emily Clarke"],
+  ["player42@digitalheroes.test", "James Wilson"],
+  ["player43@digitalheroes.test", "Olivia Brown"],
+  ["player44@digitalheroes.test", "Daniel Smith"],
+  ["player45@digitalheroes.test", "Sophia Garcia"],
+  ["player46@digitalheroes.test", "Lucas Muller"],
+  ["player47@digitalheroes.test", "Emma Wilson"],
+  ["player48@digitalheroes.test", "Alexander Petrov"],
+  ["player49@digitalheroes.test", "Mia Chen"],
+  ["player50@digitalheroes.test", "Ethan Wright"],
+  ["player51@digitalheroes.test", "Ava Thompson"],
+  ["player52@digitalheroes.test", "Mohammed Sheikh"],
+  ["player53@digitalheroes.test", "Grace Okafor"],
+  ["player54@digitalheroes.test", "Liam O'Connor"],
+  ["player55@digitalheroes.test", "Isabella Rossi"],
+  ["player56@digitalheroes.test", "Jonas Weber"],
+  ["player57@digitalheroes.test", "Zara Ahmed"],
+  ["player58@digitalheroes.test", "Felix Laurent"],
+  ["player59@digitalheroes.test", "Nina Petrova"],
+  ["player60@digitalheroes.test", "Oliver Bennett"],
 ] as const) {
   extraPlayers[email] = await upsertUser(email, "Player#2026", name, "user");
 }
@@ -140,6 +193,7 @@ const p21 = extraPlayers["player21@digitalheroes.test"];
 const p22 = extraPlayers["player22@digitalheroes.test"];
 const p23 = extraPlayers["player23@digitalheroes.test"];
 const p24 = extraPlayers["player24@digitalheroes.test"];
+const idOf = (n: number) => extraPlayers[`player${n}@digitalheroes.test`];
 
 async function ensureSubscribed(
   userId: string,
@@ -181,6 +235,20 @@ await ensureSubscribed(p21, "monthly", 1);
 await ensureSubscribed(p22, "monthly", -2, "cancelled");
 await ensureSubscribed(p23, "monthly", 0, "past_due");
 // p24 never subscribes — second "no plan" dashboard case.
+// Players 25–60: mostly active, a few cancelled / past_due, two never subscribe.
+for (let n = 25; n <= 60; n++) {
+  if (n === 30 || n === 45) continue; // no-plan dashboard cases
+  const plan = n % 3 === 0 ? "yearly" : "monthly";
+  if (n % 11 === 0) {
+    await ensureSubscribed(idOf(n), plan, -1, "cancelled");
+    continue;
+  }
+  if (n % 13 === 0) {
+    await ensureSubscribed(idOf(n), plan, 0, "past_due");
+    continue;
+  }
+  await ensureSubscribed(idOf(n), plan, plan === "monthly" ? 1 + (n % 3) : 6 + (n % 7));
+}
 
 async function setCharity(userId: string, charityName: string, pct: number) {
   await sql`
@@ -215,6 +283,16 @@ await setCharity(p22, "City Mentors", 10);
 await setCharity(p23, "Clean Rivers Initiative", 20);
 await setCharity(p24, "Fair Play Sports", 10);
 
+const charityCycle = [
+  "Hope Foundation", "Green Earth Trust", "Ocean Guardians", "Girls Into Golf",
+  "Fair Play Sports", "Books For All", "Riverbank Trust", "Senior Care Circle",
+  "Food Bank Friends", "Rural Health Wheels", "Youth Code Club", "Sunrise Education",
+];
+const pctCycle = [10, 15, 20, 25, 30];
+for (let n = 25; n <= 60; n++) {
+  await setCharity(idOf(n), charityCycle[(n - 25) % charityCycle.length], pctCycle[n % pctCycle.length]);
+}
+
 async function ensureScores(userId: string, scores: number[]) {
   for (let i = 0; i < scores.length; i++) {
     const date = daysAgoStr(2 + i * 4);
@@ -248,10 +326,15 @@ await ensureScores(p21, [8, 18, 27, 35, 45]);
 await ensureScores(p22, [5, 15, 26, 33, 41]);
 await ensureScores(p23, [7, 14, 24, 32, 40]);
 await ensureScores(p24, [11, 20, 28, 36, 44]);
+for (let n = 25; n <= 60; n++) {
+  // Deterministic per-player spread across 1–45 so leaderboards look lived-in.
+  const scores = [0, 1, 2, 3, 4].map((k) => 1 + ((n * 31 + k * 17 + n * k) % 45));
+  await ensureScores(idOf(n), scores);
+}
 
 console.log("Seeding donations…");
 const [{ count: donationCount }] = await sql<{ count: string }[]>`select count(*)::text as count from donations`;
-if (Number(donationCount) < 16) {
+if (Number(donationCount) < 50) {
   const donations: [string, string, number, number][] = [
     // [userId, charityName, amountPence, daysAgo]
     [p3, "Shelter Together", 2500, 6],
@@ -278,9 +361,19 @@ if (Number(donationCount) < 16) {
       insert into donations (user_id, charity_id, amount_pence, created_at)
       select ${userId}, c.id, ${pence}, ${d.toISOString()} from charities c where c.name = ${charityName}`;
   }
+  // One donation per newer player against their own selected charity.
+  for (let n = 25; n <= 60; n++) {
+    const charityName = charityCycle[(n - 25) % charityCycle.length];
+    const pence = 500 + ((n * 733) % 4500);
+    const d = new Date();
+    d.setUTCDate(d.getUTCDate() - (((n * 7) % 28) + 1));
+    await sql`
+      insert into donations (user_id, charity_id, amount_pence, created_at)
+      select ${idOf(n)}, c.id, ${pence}, ${d.toISOString()} from charities c where c.name = ${charityName}`;
+  }
 }
 
-// Four published historical draws so reports, winners and draw history
+// Six published historical draws so reports, winners and draw history
 // have something to show. Amounts follow the fixed tier split
 // (40/35/25) with equal sharing inside each tier.
 console.log("Seeding historical draws…");
@@ -317,6 +410,51 @@ async function ensurePublishedDraw(
   }
 }
 
+// Six months ago: full house, every tier claimed.
+await ensurePublishedDraw(
+  monthStr(6), "random", [3, 9, 17, 26, 38], 40000, 0, 0,
+  [
+    { userId: idOf(57), numbers: [3, 9, 17, 26, 38], matches: 5 },
+    { userId: idOf(58), numbers: [3, 9, 17, 26, 37], matches: 4 },
+    { userId: idOf(59), numbers: [3, 9, 16, 25, 38], matches: 3 },
+    { userId: idOf(25), numbers: [1, 2, 4, 5, 6], matches: 0 },
+    { userId: idOf(33), numbers: [10, 11, 12, 13, 14], matches: 0 },
+    { userId: idOf(41), numbers: [18, 19, 20, 21, 22], matches: 0 },
+    { userId: idOf(49), numbers: [27, 28, 29, 30, 31], matches: 0 },
+    { userId: idOf(26), numbers: [39, 40, 41, 42, 43], matches: 0 },
+    { userId: idOf(34), numbers: [4, 6, 8, 10, 12], matches: 0 },
+    { userId: idOf(42), numbers: [19, 21, 23, 24, 27], matches: 0 },
+  ],
+  [
+    { userId: idOf(57), tier: 5, amount: 16000, verification: "approved", paid: true, proof: true },
+    { userId: idOf(58), tier: 4, amount: 14000, verification: "approved", paid: true, proof: true },
+    { userId: idOf(59), tier: 3, amount: 10000, verification: "pending", paid: false, proof: false },
+  ],
+);
+
+// Five months ago: shared tier-3 pot, one rejected claim.
+await ensurePublishedDraw(
+  monthStr(5), "algorithmic", [6, 14, 22, 30, 39], 42000, 0, 0,
+  [
+    { userId: idOf(60), numbers: [6, 14, 22, 30, 39], matches: 5 },
+    { userId: idOf(27), numbers: [6, 14, 22, 30, 38], matches: 4 },
+    { userId: idOf(35), numbers: [6, 14, 22, 29, 38], matches: 3 },
+    { userId: idOf(43), numbers: [6, 14, 21, 29, 39], matches: 3 },
+    { userId: idOf(28), numbers: [1, 2, 3, 4, 5], matches: 0 },
+    { userId: idOf(36), numbers: [7, 8, 9, 10, 11], matches: 0 },
+    { userId: idOf(44), numbers: [12, 13, 15, 16, 17], matches: 0 },
+    { userId: idOf(52), numbers: [18, 19, 20, 23, 24], matches: 0 },
+    { userId: idOf(29), numbers: [25, 26, 27, 31, 32], matches: 0 },
+    { userId: idOf(37), numbers: [33, 34, 35, 40, 41], matches: 0 },
+  ],
+  [
+    { userId: idOf(60), tier: 5, amount: 16800, verification: "approved", paid: true, proof: true },
+    { userId: idOf(27), tier: 4, amount: 14700, verification: "approved", paid: true, proof: true },
+    { userId: idOf(35), tier: 3, amount: 5250, verification: "pending", paid: false, proof: false },
+    { userId: idOf(43), tier: 3, amount: 5250, verification: "rejected", paid: false, proof: true },
+  ],
+);
+
 // Four months ago: clean jackpot claim, small field.
 await ensurePublishedDraw(
   monthStr(4), "random", [2, 11, 21, 29, 37], 44000, 0, 0,
@@ -327,6 +465,14 @@ await ensurePublishedDraw(
     { userId: p13, numbers: [1, 3, 5, 7, 9], matches: 0 },
     { userId: p17, numbers: [12, 13, 14, 15, 16], matches: 0 },
     { userId: p18, numbers: [18, 19, 20, 22, 24], matches: 0 },
+    { userId: idOf(25), numbers: [1, 3, 4, 5, 6], matches: 0 },
+    { userId: idOf(26), numbers: [7, 8, 9, 10, 12], matches: 0 },
+    { userId: idOf(27), numbers: [13, 14, 15, 16, 17], matches: 0 },
+    { userId: idOf(28), numbers: [18, 19, 20, 22, 23], matches: 0 },
+    { userId: idOf(29), numbers: [24, 25, 26, 27, 28], matches: 0 },
+    { userId: idOf(30), numbers: [31, 32, 33, 34, 35], matches: 0 },
+    { userId: idOf(31), numbers: [38, 39, 40, 41, 42], matches: 0 },
+    { userId: idOf(32), numbers: [4, 8, 12, 16, 20], matches: 0 },
   ],
   [
     { userId: p14, tier: 5, amount: 17600, verification: "approved", paid: true, proof: true },
@@ -345,6 +491,14 @@ await ensurePublishedDraw(
     { userId: p21, numbers: [8, 18, 27, 35, 45], matches: 0 },
     { userId: p13, numbers: [10, 19, 26, 33, 41], matches: 0 },
     { userId: p22, numbers: [5, 15, 26, 33, 41], matches: 0 },
+    { userId: idOf(33), numbers: [1, 2, 3, 5, 6], matches: 0 },
+    { userId: idOf(34), numbers: [7, 8, 9, 10, 11], matches: 0 },
+    { userId: idOf(35), numbers: [13, 14, 15, 16, 17], matches: 0 },
+    { userId: idOf(36), numbers: [18, 19, 21, 22, 23], matches: 0 },
+    { userId: idOf(37), numbers: [24, 25, 26, 27, 29], matches: 0 },
+    { userId: idOf(38), numbers: [30, 31, 32, 33, 34], matches: 0 },
+    { userId: idOf(39), numbers: [37, 38, 39, 40, 41], matches: 0 },
+    { userId: idOf(40), numbers: [5, 9, 13, 17, 21], matches: 0 },
   ],
   [
     { userId: p17, tier: 4, amount: 16100, verification: "approved", paid: true, proof: true },
@@ -365,6 +519,14 @@ await ensurePublishedDraw(
     { userId: p7, numbers: [7, 8, 9, 10, 11], matches: 0 },
     { userId: p8, numbers: [13, 14, 15, 16, 17], matches: 0 },
     { userId: p9, numbers: [18, 19, 20, 21, 22], matches: 0 },
+    { userId: idOf(41), numbers: [1, 2, 3, 4, 6], matches: 0 },
+    { userId: idOf(42), numbers: [7, 8, 9, 10, 11], matches: 0 },
+    { userId: idOf(43), numbers: [13, 14, 15, 16, 17], matches: 0 },
+    { userId: idOf(44), numbers: [18, 19, 20, 21, 22], matches: 0 },
+    { userId: idOf(45), numbers: [24, 25, 26, 27, 28], matches: 0 },
+    { userId: idOf(46), numbers: [29, 30, 32, 33, 34], matches: 0 },
+    { userId: idOf(47), numbers: [35, 36, 37, 38, 39], matches: 0 },
+    { userId: idOf(48), numbers: [41, 42, 43, 44, 45], matches: 0 },
   ],
   [
     { userId: p4, tier: 5, amount: 19200, verification: "approved", paid: true, proof: true },
@@ -388,6 +550,14 @@ await ensurePublishedDraw(
     { userId: p4, numbers: [23, 24, 25, 26, 27], matches: 0 },
     { userId: p5, numbers: [30, 31, 32, 33, 34], matches: 0 },
     { userId: p6, numbers: [37, 38, 39, 40, 41], matches: 0 },
+    { userId: idOf(49), numbers: [1, 2, 3, 4, 5], matches: 0 },
+    { userId: idOf(50), numbers: [6, 8, 9, 10, 11], matches: 0 },
+    { userId: idOf(51), numbers: [12, 13, 14, 16, 17], matches: 0 },
+    { userId: idOf(52), numbers: [18, 19, 20, 22, 23], matches: 0 },
+    { userId: idOf(53), numbers: [24, 25, 26, 27, 29], matches: 0 },
+    { userId: idOf(54), numbers: [30, 31, 32, 33, 34], matches: 0 },
+    { userId: idOf(55), numbers: [35, 37, 38, 39, 40], matches: 0 },
+    { userId: idOf(56), numbers: [41, 42, 43, 44, 45], matches: 0 },
   ],
   [
     { userId: p9, tier: 4, amount: 18200, verification: "approved", paid: true, proof: true },
