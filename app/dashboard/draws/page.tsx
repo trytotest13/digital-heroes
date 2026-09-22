@@ -3,7 +3,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { effectiveStatus, getSubscription } from "@/lib/subscriptions";
 import { currentJackpotPence, listDrawsWithEntry } from "@/lib/draws";
-import { fmtMonth, gbp, TIER_LABEL, TIER_PCT } from "@/lib/format";
+import { fmtMonth, inr, TIER_LABEL, TIER_PCT } from "@/lib/format";
 
 export const metadata = { title: "Your draws" };
 
@@ -24,7 +24,7 @@ export default async function DrawsPage() {
         <h1 className="font-display text-[26px] font-bold">Your draws</h1>
         <p className="mt-1 text-[14px] text-muted">
           Every monthly draw, your numbers and your results.
-          {jackpot > 0 && ` Current rollover jackpot: ${gbp(jackpot)}.`}
+          {jackpot > 0 && ` Current rollover jackpot: ${inr(jackpot)}.`}
         </p>
       </div>
 
@@ -38,8 +38,8 @@ export default async function DrawsPage() {
           </div>
           <p className="mt-2 font-display text-[22px] font-bold">{fmtMonth(current.draw.period)}</p>
           <p className="mt-1 text-[13px] text-muted">
-            Pool {gbp(current.draw.pool_pence + current.draw.jackpot_in_pence)}
-            {current.draw.jackpot_in_pence > 0 && ` (includes ${gbp(current.draw.jackpot_in_pence)} rollover)`}
+            Pool {inr(current.draw.pool_pence + current.draw.jackpot_in_pence)}
+            {current.draw.jackpot_in_pence > 0 && ` (includes ${inr(current.draw.jackpot_in_pence)} rollover)`}
             {" · "}{current.draw.draw_type === "random" ? "Random draw" : "Weighted by score frequency"}
           </p>
 
@@ -115,7 +115,7 @@ export default async function DrawsPage() {
                 {winner && (
                   <div className="ml-auto text-right">
                     <p className="kicker mb-1.5">{TIER_LABEL[winner.tier]} prize</p>
-                    <p className="font-display text-[18px] font-bold text-pine">{gbp(winner.amount_pence)}</p>
+                    <p className="font-display text-[18px] font-bold text-pine">{inr(winner.amount_pence)}</p>
                     <p className="text-[12px] text-muted">
                       {winner.payment_status === "paid" ? "Paid" : `Payment ${winner.payment_status}`}
                     </p>

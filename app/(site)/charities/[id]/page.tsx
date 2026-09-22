@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCharity } from "@/lib/charities";
 import { fmtDate } from "@/lib/format";
+import { Reveal } from "@/components/reveal";
 
 export default async function CharityDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -17,11 +18,12 @@ export default async function CharityDetailPage({ params }: { params: Promise<{ 
         ← All charities
       </Link>
 
-      <div className="card mt-6 overflow-hidden">
-        <div className="flex h-40 items-center justify-center bg-mist">
-          <span className="font-display text-[56px] font-bold text-pine">{charity.name.slice(0, 1)}</span>
-          <span className="ml-4 badge bg-white/70 text-pine">{charity.category}</span>
-        </div>
+      <Reveal>
+        <div className="card mt-6 overflow-hidden">
+          <div className="flex h-40 items-center justify-center bg-mist">
+            <span className="font-display text-[56px] font-bold text-pine">{charity.name.slice(0, 1)}</span>
+            <span className="ml-4 badge bg-white/70 text-pine">{charity.category}</span>
+          </div>
         <div className="p-6 sm:p-8">
           <h1 className="font-display text-[30px] font-bold sm:text-[38px]">{charity.name}</h1>
           <p className="mt-1 text-[15px] font-medium text-[#8a5f27]">{charity.tagline}</p>
@@ -67,6 +69,7 @@ export default async function CharityDetailPage({ params }: { params: Promise<{ 
           </div>
         </div>
       </div>
+      </Reveal>
     </div>
   );
 }

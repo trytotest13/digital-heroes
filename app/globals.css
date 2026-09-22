@@ -4,9 +4,9 @@
 
 /*
   Digital Heroes design tokens.
-  Deliberately not a "golf course" palette — warm paper, deep pine green
-  and a single warm amber accent, echoing the PRD's own editorial style.
-  Colors and fonts are defined in tailwind.config.js.
+  Warm paper, deep pine green and a single warm amber accent.
+  Colors and fonts are defined in tailwind.config.js; the motion system
+  (load sequence, scroll reveals, micro-interactions) lives here.
 */
 
 @layer base {
@@ -23,6 +23,11 @@
   ::selection {
     background: #dce7df;
   }
+  :focus-visible {
+    outline: 2px solid #173d35;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 }
 
 @layer components {
@@ -31,13 +36,17 @@
     @apply inline-flex h-10 cursor-pointer select-none items-center justify-center gap-2 rounded-[10px] px-4 text-[14px] font-semibold transition duration-200 ease-out disabled:pointer-events-none disabled:opacity-50;
   }
   .btn-sm { @apply h-8 px-3 text-[13px]; }
-  .btn-primary { @apply bg-pine text-cream hover:bg-pine-deep active:translate-y-px; }
-  .btn-amber { @apply bg-amber text-ink hover:brightness-95 active:translate-y-px; }
+  .btn-primary { @apply bg-pine text-cream shadow-[0_1px_2px_rgba(16,21,20,0.12)] hover:-translate-y-px hover:bg-pine-deep hover:shadow-[0_6px_16px_-6px_rgba(16,43,37,0.45)] active:translate-y-0 active:shadow-none; }
+  .btn-amber { @apply bg-amber text-ink hover:-translate-y-px hover:brightness-95 active:translate-y-0; }
   .btn-outline { @apply border border-line bg-transparent text-body hover:border-pine hover:text-pine; }
   .btn-ghost { @apply text-pine hover:bg-mist/70; }
   .btn-danger { @apply bg-danger text-white hover:brightness-95; }
 
   .card { @apply rounded-2xl border border-line bg-white; }
+  /* Shared hover lift for interactive cards. */
+  .card-hover {
+    @apply transition duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_16px_36px_-16px_rgba(16,21,20,0.22)];
+  }
   .input {
     @apply h-10 w-full rounded-[10px] border border-line bg-white px-3 text-[15px] outline-none transition focus:border-pine focus:ring-4 focus:ring-pine/10;
   }
@@ -52,4 +61,51 @@
   .th { @apply px-4 py-3 text-left font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-muted; }
   .td { @apply px-4 py-3 align-middle text-[14px]; }
   .chip { @apply inline-flex h-9 w-9 items-center justify-center rounded-[10px] bg-mist font-display text-[15px] font-bold text-pine; }
+
+  /* Header nav links — underline slides in from the left. */
+  .nav-link {
+    @apply relative;
+  }
+  .nav-link::after {
+    content: "";
+    @apply absolute -bottom-1 left-0 h-[2px] w-full origin-left scale-x-0 rounded-full bg-pine transition-transform duration-300 ease-out;
+  }
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    @apply scale-x-100;
+  }
+
+  /* Scroll-triggered reveals (driven by components/reveal.tsx). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Anyone who prefers reduced motion gets the content, instantly. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

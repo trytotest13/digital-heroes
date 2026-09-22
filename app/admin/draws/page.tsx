@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import sql from "@/lib/db";
 import { listDraws, entryCount } from "@/lib/draws";
-import { fmtMonth, gbp, TIER_PCT } from "@/lib/format";
+import { fmtMonth, inr, TIER_PCT } from "@/lib/format";
 import { DrawCreateForm, DrawSimPanel } from "@/components/admin-forms";
 import { adminRefreshEntriesAction } from "@/actions/admin";
 import { SubmitButton } from "@/components/bits";
@@ -48,8 +48,8 @@ export default async function AdminDrawsPage() {
                 <div>
                   <p className="font-display text-[18px] font-bold">{fmtMonth(draw.period)}</p>
                   <p className="text-[13px] text-muted">
-                    {draw.draw_type} logic · pool {gbp(draw.pool_pence + draw.jackpot_in_pence)}
-                    {draw.jackpot_in_pence > 0 && ` (rollover ${gbp(draw.jackpot_in_pence)})`} · {counts[i] ?? 0} entries
+                    {draw.draw_type} logic · pool {inr(draw.pool_pence + draw.jackpot_in_pence)}
+                    {draw.jackpot_in_pence > 0 && ` (rollover ${inr(draw.jackpot_in_pence)})`} · {counts[i] ?? 0} entries
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -72,8 +72,8 @@ export default async function AdminDrawsPage() {
                     ))}
                   </div>
                   <p className="mt-2 text-[13px] text-muted">
-                    {winners?.count ?? 0} winner(s) · {gbp(winners?.paid ?? 0)} paid out
-                    {draw.jackpot_out_pence > 0 && ` · ${gbp(draw.jackpot_out_pence)} rolled to next jackpot`}
+                    {winners?.count ?? 0} winner(s) · {inr(winners?.paid ?? 0)} paid out
+                    {draw.jackpot_out_pence > 0 && ` · ${inr(draw.jackpot_out_pence)} rolled to next jackpot`}
                   </p>
                 </div>
               )}

@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import { listWinnersAdmin, tierLabel } from "@/lib/winners";
-import { fmtMonth, gbp } from "@/lib/format";
+import { fmtMonth, inr } from "@/lib/format";
 import { MarkPaidButton, VerifyButtons } from "@/components/admin-forms";
 
 export const metadata = { title: "Admin · Winners" };
@@ -53,7 +53,7 @@ export default async function AdminWinnersPage() {
                     </td>
                     <td className="td">{fmtMonth(w.period)}</td>
                     <td className="td">{tierLabel(w.tier)}</td>
-                    <td className="td font-semibold">{gbp(w.amount_pence)}</td>
+                    <td className="td font-semibold">{inr(w.amount_pence)}</td>
                     <td className="td">
                       {w.has_proof ? (
                         <a href={`/api/proof/${w.id}`} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">

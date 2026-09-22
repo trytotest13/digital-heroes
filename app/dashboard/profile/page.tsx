@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth";
 import { effectiveStatus, getSubscription } from "@/lib/subscriptions";
-import { fmtDate, gbp } from "@/lib/format";
+import { fmtDate, inr } from "@/lib/format";
 import { CancelSubButton, ProfileNameForm } from "@/components/user-forms";
 import Link from "next/link";
 
@@ -35,7 +35,7 @@ export default async function ProfilePage() {
             <>
               <div className="flex items-center justify-between">
                 <p className="font-display text-[18px] font-bold">
-                  {sub.plan === "monthly" ? "Monthly plan" : "Yearly plan"} · {gbp(sub.price_pence)}
+                  {sub.plan === "monthly" ? "Monthly plan" : "Yearly plan"} · {inr(sub.price_pence)}
                 </p>
                 <span className={status === "active" ? "badge-green" : "badge-amber"}>{status}</span>
               </div>

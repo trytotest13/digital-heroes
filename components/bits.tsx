@@ -14,7 +14,17 @@ export function SubmitButton({
   const { pending } = useFormStatus();
   return (
     <button type="submit" className={className} disabled={pending}>
-      {pending ? pendingLabel : children}
+      {pending ? (
+        <span className="inline-flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent"
+          />
+          {pendingLabel}
+        </span>
+      ) : (
+        children
+      )}
     </button>
   );
 }
@@ -24,7 +34,7 @@ export function Alert({ error, message }: { error?: string; message?: string }) 
   return (
     <p
       role="status"
-      className={`rounded-[10px] px-3 py-2 text-[13px] font-medium ${
+      className={`animate-alert-in rounded-[10px] px-3 py-2 text-[13px] font-medium ${
         error ? "bg-danger/10 text-danger" : "bg-mist text-pine"
       }`}
     >

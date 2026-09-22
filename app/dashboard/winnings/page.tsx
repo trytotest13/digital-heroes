@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { requireUser } from "@/lib/auth";
 import { myWinners, tierLabel, winningsSummary } from "@/lib/winners";
-import { fmtDate, fmtMonth, gbp } from "@/lib/format";
+import { fmtDate, fmtMonth, inr } from "@/lib/format";
 import { ProofUploadForm } from "@/components/user-forms";
 
 export const metadata = { title: "Winnings" };
@@ -25,15 +25,15 @@ export default async function WinningsPage() {
 
       <div className="grid grid-cols-3 gap-4">
         <div className="card p-5">
-          <p className="font-display text-[24px] font-bold">{gbp(summary.total)}</p>
+          <p className="font-display text-[24px] font-bold">{inr(summary.total)}</p>
           <p className="text-[12px] text-muted">Total won</p>
         </div>
         <div className="card p-5">
-          <p className="font-display text-[24px] font-bold text-[#8a5f27]">{gbp(summary.pending)}</p>
+          <p className="font-display text-[24px] font-bold text-[#8a5f27]">{inr(summary.pending)}</p>
           <p className="text-[12px] text-muted">Awaiting payout</p>
         </div>
         <div className="card p-5">
-          <p className="font-display text-[24px] font-bold text-pine">{gbp(summary.paid)}</p>
+          <p className="font-display text-[24px] font-bold text-pine">{inr(summary.paid)}</p>
           <p className="text-[12px] text-muted">Paid</p>
         </div>
       </div>
@@ -56,7 +56,7 @@ export default async function WinningsPage() {
                 </p>
               </div>
               <div className="text-right">
-                <p className="font-display text-[24px] font-bold text-pine">{gbp(w.amount_pence)}</p>
+                <p className="font-display text-[24px] font-bold text-pine">{inr(w.amount_pence)}</p>
                 <p className="text-[12px] text-muted">Payment: {w.payment_status}</p>
               </div>
             </div>

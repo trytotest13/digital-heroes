@@ -7,7 +7,7 @@ import { getUserCharity, monthlyContributionPence } from "@/lib/charity-user";
 import { currentJackpotPence, getDrawByPeriod } from "@/lib/draws";
 import { winningsSummary } from "@/lib/winners";
 import { getSettings } from "@/lib/settings";
-import { currentPeriod, fmtDate, fmtMonth, gbp, TIER_LABEL } from "@/lib/format";
+import { currentPeriod, fmtDate, fmtMonth, inr, TIER_LABEL } from "@/lib/format";
 
 export const metadata = { title: "Dashboard" };
 
@@ -94,7 +94,7 @@ export default async function DashboardPage() {
               <p className="mt-3 font-display text-[20px] font-bold">{charity.name}</p>
               <p className="mt-1 text-[13px] text-muted">
                 {charity.contribution_pct}% contribution
-                {giving > 0 && ` · about ${gbp(giving)} a month`}
+                {giving > 0 && ` · about ${inr(giving)} a month`}
               </p>
             </>
           ) : (
@@ -112,12 +112,12 @@ export default async function DashboardPage() {
             <>
               <p className="mt-3 font-display text-[20px] font-bold">{fmtMonth(draw.period)}</p>
               <p className="mt-1 text-[13px] text-muted">
-                {status === "active" ? `You're entered · jackpot ${gbp(draw.jackpot_in_pence + draw.pool_pence)}` : `Jackpot ${gbp(draw.jackpot_in_pence + draw.pool_pence)} — subscribe to enter`}
+                {status === "active" ? `You're entered · jackpot ${inr(draw.jackpot_in_pence + draw.pool_pence)}` : `Jackpot ${inr(draw.jackpot_in_pence + draw.pool_pence)} — subscribe to enter`}
               </p>
             </>
           ) : (
             <p className="mt-3 text-[13px] text-muted">
-              Next draw opens soon{jackpot > 0 && ` · rollover jackpot ${gbp(jackpot)}`}.
+              Next draw opens soon{jackpot > 0 && ` · rollover jackpot ${inr(jackpot)}`}.
             </p>
           )}
         </div>
@@ -131,15 +131,15 @@ export default async function DashboardPage() {
         </div>
         <div className="mt-3 grid grid-cols-3 gap-3 text-center sm:max-w-md sm:text-left">
           <div>
-            <p className="font-display text-[22px] font-bold">{gbp(summary.total)}</p>
+            <p className="font-display text-[22px] font-bold">{inr(summary.total)}</p>
             <p className="text-[12px] text-muted">Total won</p>
           </div>
           <div>
-            <p className="font-display text-[22px] font-bold text-[#8a5f27]">{gbp(summary.pending)}</p>
+            <p className="font-display text-[22px] font-bold text-[#8a5f27]">{inr(summary.pending)}</p>
             <p className="text-[12px] text-muted">Pending payout</p>
           </div>
           <div>
-            <p className="font-display text-[22px] font-bold text-pine">{gbp(summary.paid)}</p>
+            <p className="font-display text-[22px] font-bold text-pine">{inr(summary.paid)}</p>
             <p className="text-[12px] text-muted">Paid out</p>
           </div>
         </div>

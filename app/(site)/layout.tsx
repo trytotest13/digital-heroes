@@ -16,8 +16,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
             digital.<span className="text-pine">HEROES.</span>
           </Link>
           <nav className="hidden items-center gap-6 text-[14px] font-medium text-body md:flex">
-            <Link href="/how-it-works" className="transition hover:text-pine">How it works</Link>
-            <Link href="/charities" className="transition hover:text-pine">Charities</Link>
+            <Link href="/how-it-works" className="nav-link transition-colors hover:text-pine">How it works</Link>
+            <Link href="/charities" className="nav-link transition-colors hover:text-pine">Charities</Link>
           </nav>
           <div className="flex items-center gap-2">
             {user ? (
@@ -43,12 +43,12 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 text-[13px] text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <p>
             <span className="font-display font-bold text-ink">digital.HEROES.</span>{" "}
-            Built for the Digital Heroes selection process. Demo data · payments run in test mode.
+            © 2026 · Play with purpose. Demo build — payments run in test mode.
           </p>
           <div className="flex gap-5">
-            <Link href="/how-it-works" className="transition hover:text-pine">How it works</Link>
-            <Link href="/charities" className="transition hover:text-pine">Charities</Link>
-            <Link href="/login" className="transition hover:text-pine">Sign in</Link>
+            <Link href="/how-it-works" className="nav-link transition-colors hover:text-pine">How it works</Link>
+            <Link href="/charities" className="nav-link transition-colors hover:text-pine">Charities</Link>
+            <Link href="/login" className="nav-link transition-colors hover:text-pine">Sign in</Link>
           </div>
         </div>
       </footer>

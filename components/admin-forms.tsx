@@ -15,7 +15,7 @@ import {
   suspendUserAction,
 } from "@/actions/admin";
 import { Alert, SubmitButton } from "./bits";
-import { CHARITY_CATEGORIES, fmtDate, gbp } from "@/lib/format";
+import { CHARITY_CATEGORIES, fmtDate, inr } from "@/lib/format";
 import type { ActionState } from "@/lib/types";
 
 const initial: ActionState = {};
@@ -276,15 +276,15 @@ export function DrawSimPanel({ drawId, status }: { drawId: string; status: strin
                 <tr key={t.tier} className="border-t border-line">
                   <td className="td">{t.label}</td>
                   <td className="td">{t.winners}</td>
-                  <td className="td">{gbp(t.tierTotalPence)}</td>
-                  <td className="td">{t.winners ? gbp(t.eachPence) : "—"}</td>
+                  <td className="td">{inr(t.tierTotalPence)}</td>
+                  <td className="td">{t.winners ? inr(t.eachPence) : "—"}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           {(result.jackpotOutPence ?? 0) > 0 && (
             <p className="mt-2 text-[13px] font-medium text-[#8a5f27]">
-              No 5-number winner — {gbp(result.jackpotOutPence ?? 0)} rolls into the next jackpot.
+              No 5-number winner — {inr(result.jackpotOutPence ?? 0)} rolls into the next jackpot.
             </p>
           )}
         </div>

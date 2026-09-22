@@ -4,7 +4,7 @@ import { listCharities } from "@/lib/charities";
 import { getUserCharity, listDonations, monthlyContributionPence } from "@/lib/charity-user";
 import { getSubscription } from "@/lib/subscriptions";
 import { effectiveStatus } from "@/lib/subscriptions";
-import { fmtDate, gbp } from "@/lib/format";
+import { fmtDate, inr } from "@/lib/format";
 import { CharitySettingsForm, DonationForm } from "@/components/user-forms";
 
 export const metadata = { title: "Your charity" };
@@ -40,7 +40,7 @@ export default async function CharityPage() {
           {current && status === "active" && (
             <p className="mt-4 rounded-[10px] bg-mist/60 px-3 py-2 text-[13px] text-pine">
               With your current plan, {current.contribution_pct}% works out to about{" "}
-              <span className="font-semibold">{gbp(giving)} a month</span> for {current.name}.
+              <span className="font-semibold">{inr(giving)} a month</span> for {current.name}.
             </p>
           )}
         </div>
@@ -63,7 +63,7 @@ export default async function CharityPage() {
                       {d.charity_name ?? "General fund"}
                       <span className="text-muted"> · {fmtDate(d.created_at)}</span>
                     </span>
-                    <span className="font-semibold text-pine">{gbp(d.amount_pence)}</span>
+                    <span className="font-semibold text-pine">{inr(d.amount_pence)}</span>
                   </li>
                 ))}
               </ul>

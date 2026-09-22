@@ -1,6 +1,6 @@
 import sql from "./db";
 import { getCharity } from "./charities";
-import { CONTRIBUTION_STEPS, gbp } from "./format";
+import { CONTRIBUTION_STEPS, inr } from "./format";
 
 /**
  * Charity contribution logic: every subscriber directs at least 10% of
@@ -64,7 +64,7 @@ export async function recordDonation(userId: string, charityId: string | null, a
   await sql`
     insert into donations (user_id, charity_id, amount_pence)
     values (${userId}, ${charityId}, ${pence})`;
-  return { message: `Thank you — a ${gbp(pence)} donation was recorded (test mode).` };
+  return { message: `Thank you — a ${inr(pence)} donation was recorded (test mode).` };
 }
 
 export async function listDonations(userId: string) {

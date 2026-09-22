@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import sql from "@/lib/db";
 import { charityTotals, givingByCharity } from "@/lib/charity-user";
 import { drawStatistics } from "@/lib/draws";
-import { fmtMonth, gbp } from "@/lib/format";
+import { fmtMonth, inr } from "@/lib/format";
 
 export const metadata = { title: "Admin · Reports" };
 
@@ -48,11 +48,11 @@ export default async function AdminReportsPage() {
           <p className="text-[12px] text-muted">Total users</p>
         </div>
         <div className="card p-5">
-          <p className="font-display text-[26px] font-bold text-pine">{gbp(prizeTotals[0]?.awarded ?? 0)}</p>
+          <p className="font-display text-[26px] font-bold text-pine">{inr(prizeTotals[0]?.awarded ?? 0)}</p>
           <p className="text-[12px] text-muted">Prize money paid</p>
         </div>
         <div className="card p-5">
-          <p className="font-display text-[26px] font-bold text-[#8a5f27]">{gbp(charity.estimated_monthly)}</p>
+          <p className="font-display text-[26px] font-bold text-[#8a5f27]">{inr(charity.estimated_monthly)}</p>
           <p className="text-[12px] text-muted">Est. monthly charity giving</p>
         </div>
         <div className="card p-5">
@@ -70,11 +70,11 @@ export default async function AdminReportsPage() {
             <div className="flex h-40 items-end gap-3">
               {[...stats].reverse().map((s) => (
                 <div key={s.period} className="flex flex-1 flex-col items-center gap-1">
-                  <span className="text-[11px] font-semibold text-body">{gbp(s.pool)}</span>
+                  <span className="text-[11px] font-semibold text-body">{inr(s.pool)}</span>
                   <div
                     className="w-full rounded-t-md bg-pine transition-all"
                     style={{ height: `${Math.max(4, (s.pool / maxPool) * 100)}%` }}
-                    title={`${fmtMonth(s.period)} — ${gbp(s.pool)}`}
+                    title={`${fmtMonth(s.period)} — ${inr(s.pool)}`}
                   />
                   <span className="text-[11px] text-muted">{s.period.slice(5)}/{s.period.slice(2, 4)}</span>
                 </div>
@@ -93,7 +93,7 @@ export default async function AdminReportsPage() {
                 <li key={c.name}>
                   <div className="flex items-baseline justify-between text-[13px]">
                     <span className="font-medium">{c.name}</span>
-                    <span className="font-semibold text-pine">{gbp(c.monthly_pence)}/mo · {c.supporters} supporter{c.supporters === 1 ? "" : "s"}</span>
+                    <span className="font-semibold text-pine">{inr(c.monthly_pence)}/mo · {c.supporters} supporter{c.supporters === 1 ? "" : "s"}</span>
                   </div>
                   <div className="mt-1 h-1.5 rounded bg-cream">
                     <div
@@ -134,8 +134,8 @@ export default async function AdminReportsPage() {
                     <td className="td capitalize">{s.status}</td>
                     <td className="td">{s.entries}</td>
                     <td className="td">{s.winners}</td>
-                    <td className="td">{gbp(s.pool)}</td>
-                    <td className="td">{gbp(s.paid)}</td>
+                    <td className="td">{inr(s.pool)}</td>
+                    <td className="td">{inr(s.paid)}</td>
                   </tr>
                 ))
               )}
@@ -145,7 +145,7 @@ export default async function AdminReportsPage() {
       </div>
 
       <p className="text-[12px] text-muted">
-        Outstanding prizes: {gbp(prizeTotals[0]?.outstanding ?? 0)} · independent donations: {gbp(charity.donations_total)} across {charity.donations_count} gift(s).
+        Outstanding prizes: {inr(prizeTotals[0]?.outstanding ?? 0)} · independent donations: {inr(charity.donations_total)} across {charity.donations_count} gift(s).
       </p>
     </div>
   );

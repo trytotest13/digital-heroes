@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
+import { Reveal } from "@/components/reveal";
 
 export const metadata = { title: "How it works" };
 
@@ -39,37 +40,43 @@ const steps = [
 export default function HowItWorksPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-      <p className="kicker mb-3">§ Guide</p>
-      <h1 className="font-display text-[36px] font-bold sm:text-[48px]">How it works</h1>
-      <p className="mt-3 max-w-2xl text-[16px] leading-relaxed text-muted">
+      <p className="kicker animate-fade-up mb-3">Guide</p>
+      <h1 className="animate-fade-up [animation-delay:80ms] font-display text-[36px] font-bold sm:text-[48px]">How it works</h1>
+      <p className="animate-fade-up [animation-delay:160ms] mt-3 max-w-2xl text-[16px] leading-relaxed text-muted">
         Six steps from signup to payout. The short version: play golf, log five scores,
         and your subscription funds both the prize pool and a cause you chose.
       </p>
 
       <ol className="mt-12 space-y-4">
-        {steps.map((s) => (
-          <li key={s.n} className="card flex gap-5 p-6">
-            <span className="font-mono text-[13px] font-semibold text-[#8a5f27]">{s.n}</span>
-            <div>
-              <h2 className="font-display text-[19px] font-bold">{s.title}</h2>
-              <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{s.body}</p>
-            </div>
+        {steps.map((s, i) => (
+          <li key={s.n}>
+            <Reveal delay={Math.min(i, 3) * 60}>
+              <div className="card card-hover flex gap-5 p-6">
+                <span className="font-mono text-[13px] font-semibold text-[#8a5f27]">{s.n}</span>
+                <div>
+                  <h2 className="font-display text-[19px] font-bold">{s.title}</h2>
+                  <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{s.body}</p>
+                </div>
+              </div>
+            </Reveal>
           </li>
         ))}
       </ol>
 
-      <div className="mt-10 rounded-2xl bg-ink p-6 text-cream">
-        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage">Prize tiers</p>
-        <div className="mt-3 grid gap-2 text-[14px] sm:grid-cols-3">
-          <p><span className="font-display font-bold">40%</span> · 5-number match</p>
-          <p><span className="font-display font-bold">35%</span> · 4-number match</p>
-          <p><span className="font-display font-bold">25%</span> · 3-number match</p>
+      <Reveal>
+        <div className="mt-10 rounded-2xl bg-ink p-6 text-cream">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage">Prize tiers</p>
+          <div className="mt-3 grid gap-2 text-[14px] sm:grid-cols-3">
+            <p><span className="font-display font-bold">40%</span> · 5-number match</p>
+            <p><span className="font-display font-bold">35%</span> · 4-number match</p>
+            <p><span className="font-display font-bold">25%</span> · 3-number match</p>
+          </div>
+          <p className="mt-3 text-[13px] text-[#a9b3ae]">
+            A fixed portion of every subscription funds the pool. Prizes split equally within a tier,
+            and an unclaimed jackpot rolls into the next draw.
+          </p>
         </div>
-        <p className="mt-3 text-[13px] text-[#a9b3ae]">
-          A fixed portion of every subscription funds the pool. Prizes split equally within a tier,
-          and an unclaimed jackpot rolls into the next draw.
-        </p>
-      </div>
+      </Reveal>
 
       <div className="mt-10 text-center">
         <Link href="/signup" className="btn btn-primary h-12 px-8 text-[15px]">Start playing</Link>

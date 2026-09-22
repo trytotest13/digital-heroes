@@ -5,7 +5,7 @@ import { currentJackpotPence, getDrawByPeriod } from "@/lib/draws";
 import { monthlyPoolContributionPence } from "@/lib/subscriptions";
 import { charityTotals } from "@/lib/charity-user";
 import { listWinnersAdmin, tierLabel } from "@/lib/winners";
-import { currentPeriod, fmtDate, fmtMonth, gbp, TIER_PCT } from "@/lib/format";
+import { currentPeriod, fmtDate, fmtMonth, inr, TIER_PCT } from "@/lib/format";
 
 export const metadata = { title: "Admin overview" };
 
@@ -59,11 +59,11 @@ export default async function AdminOverviewPage() {
           <p className="text-[12px] text-muted">Active subscribers</p>
         </div>
         <div className="card p-5">
-          <p className="font-display text-[26px] font-bold text-pine">{gbp(pool + jackpot)}</p>
+          <p className="font-display text-[26px] font-bold text-pine">{inr(pool + jackpot)}</p>
           <p className="text-[12px] text-muted">Current prize pool incl. rollover</p>
         </div>
         <div className="card p-5">
-          <p className="font-display text-[26px] font-bold text-[#8a5f27]">{gbp(charity.estimated_monthly)}</p>
+          <p className="font-display text-[26px] font-bold text-[#8a5f27]">{inr(charity.estimated_monthly)}</p>
           <p className="text-[12px] text-muted">Est. monthly charity giving</p>
         </div>
       </div>
@@ -78,7 +78,7 @@ export default async function AdminOverviewPage() {
             <>
               <p className="mt-3 font-display text-[20px] font-bold">{fmtMonth(draw.period)}</p>
               <p className="mt-1 text-[13px] text-muted">
-                {draw.status} · pool {gbp(draw.pool_pence + draw.jackpot_in_pence)} · {draw.draw_type} logic
+                {draw.status} · pool {inr(draw.pool_pence + draw.jackpot_in_pence)} · {draw.draw_type} logic
               </p>
               {draw.status === "published" && draw.winning_numbers && (
                 <div className="mt-3 flex gap-2">
@@ -110,7 +110,7 @@ export default async function AdminOverviewPage() {
                     {w.full_name}
                     <span className="text-muted"> · {fmtMonth(w.period)} · {tierLabel(w.tier)}</span>
                   </span>
-                  <span className="font-semibold text-pine">{gbp(w.amount_pence)}</span>
+                  <span className="font-semibold text-pine">{inr(w.amount_pence)}</span>
                 </li>
               ))}
             </ul>

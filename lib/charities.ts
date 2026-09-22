@@ -66,24 +66,24 @@ export const FALLBACK_CHARITIES: Charity[] = [
 
 export async function listCharities(opts: { search?: string; category?: string } = {}) {
   try {
-    const search = opts.search?.trim();
-    if (search && opts.category) {
-      const rows = await sql<Charity[]>`select * from charities where active = true and category = ${opts.category}
-        and (name ilike ${"%" + search + "%"} or tagline ilike ${"%" + search + "%"})
-        order by featured desc, name`;
-      if (rows && rows.length > 0) return rows;
-    } else if (search) {
-      const rows = await sql<Charity[]>`select * from charities where active = true
-        and (name ilike ${"%" + search + "%"} or tagline ilike ${"%" + search + "%"})
-        order by featured desc, name`;
-      if (rows && rows.length > 0) return rows;
-    } else if (opts.category) {
-      const rows = await sql<Charity[]>`select * from charities where active = true and category = ${opts.category}
-        order by featured desc, name`;
-      if (rows && rows.length > 0) return rows;
-    } else {
-      const rows = await sql<Charity[]>`select * from charities where active = true order by featured desc, name`;
-      if (rows && rows.length > 0) return rows;
+    const countCheck = await sql`select count(*) as c from charities where active = true`;
+    const total = Number(countCheck[0]?.c ?? 0);
+    if (total > 0) {
+      const search = opts.search?.trim();
+      if (search && opts.category) {
+        return await sql<Charity[]>`select * from charities where active = true and category = ${opts.category}
+          and (name ilike ${"%" + search + "%"} or tagline ilike ${"%" + search + "%"})
+          order by featured desc, name`;
+      } else if (search) {
+        return await sql<Charity[]>`select * from charities where active = true
+          and (name ilike ${"%" + search + "%"} or tagline ilike ${"%" + search + "%"})
+          order by featured desc, name`;
+      } else if (opts.category) {
+        return await sql<Charity[]>`select * from charities where active = true and category = ${opts.category}
+          order by featured desc, name`;
+      } else {
+        return await sql<Charity[]>`select * from charities where active = true order by featured desc, name`;
+      }
     }
   } catch (err) {
     console.error("Database query failed in listCharities:", err);

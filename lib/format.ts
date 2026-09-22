@@ -18,7 +18,6 @@ export function formatCurrency(amount: number): string {
 }
 
 export const inr = formatCurrency;
-export const gbp = formatCurrency;
 
 export function fmtDate(value: string | Date | null | undefined): string {
   if (!value) return "—";
