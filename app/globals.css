@@ -38,9 +38,9 @@
 @layer components {
   /* Buttons — refined, tactile, premium SaaS feel (Linear / Stripe inspired) */
   .btn {
-    @apply inline-flex h-9.5 cursor-pointer select-none items-center justify-center gap-2 rounded-lg px-4 text-[13.5px] font-semibold transition-all duration-150 ease-out disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex h-9 cursor-pointer select-none items-center justify-center gap-2 rounded-lg px-4 text-[13.5px] font-semibold transition-all duration-150 ease-out disabled:pointer-events-none disabled:opacity-50;
   }
-  .btn-sm { @apply h-7.5 px-3 text-[12.5px] rounded-md; }
+  .btn-sm { @apply h-8 px-3 text-[12.5px] rounded-md; }
   .btn-primary {
     @apply bg-[#11382B] text-white border border-[#0A241C] shadow-[0_1px_2px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.12)] hover:bg-[#184D3C] hover:shadow-[0_4px_12px_-2px_rgba(17,56,43,0.3)] active:bg-[#0A241C] active:translate-y-0;
   }
@@ -76,7 +76,7 @@
 
   /* Badges — modern micro-tag with subtle tone-on-tone borders */
   .badge {
-    @apply inline-flex h-5.5 items-center gap-1 rounded-full px-2.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider;
+    @apply inline-flex h-6 items-center gap-1 rounded-full px-2.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider;
   }
   .badge-success, .badge-green {
     @apply badge bg-emerald-50 text-emerald-800 border border-emerald-200/80;
