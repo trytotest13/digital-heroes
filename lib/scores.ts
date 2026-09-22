@@ -1,5 +1,6 @@
 import sql from "./db";
 import { todayStr } from "./format";
+import { DEMO_PLAYER_SCORES } from "./demo-data";
 
 /**
  * Score management — the rules the PRD is strictest about:
@@ -12,20 +13,18 @@ export type ScoreRow = { id: string; score: number; played_at: string };
 
 export async function listScores(userId: string): Promise<ScoreRow[]> {
   try {
-    return await sql<ScoreRow[]>`
+    const rows = await sql<ScoreRow[]>`
       select id, score, played_at::text as played_at
       from scores where user_id = ${userId}
       order by played_at desc, created_at desc`;
+    if (rows && rows.length > 0) return rows;
   } catch (err) {
     console.error("listScores DB error:", err);
-    return [
-      { id: "s1", score: 38, played_at: "2026-09-15" },
-      { id: "s2", score: 34, played_at: "2026-09-10" },
-      { id: "s3", score: 41, played_at: "2026-09-03" },
-      { id: "s4", score: 29, played_at: "2026-08-28" },
-      { id: "s5", score: 36, played_at: "2026-08-20" },
-    ];
   }
+  if (userId === "demo-player-id" || userId.startsWith("demo-")) {
+    return DEMO_PLAYER_SCORES;
+  }
+  return [];
 }
 
 function validate(scoreInput: unknown, dateStr: unknown): string | null {

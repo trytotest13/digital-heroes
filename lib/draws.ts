@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import sql from "./db";
 import { currentPeriod, randomDrawNumbers, TIER_LABEL, TIER_PCT } from "./format";
 import { activeSubscribers, monthlyPoolContributionPence } from "./subscriptions";
-import { DEMO_DRAWS } from "./demo-data";
+import { DEMO_DRAWS, DEMO_PLAYER_DRAWS_WITH_ENTRY } from "./demo-data";
 
 /**
  * Draw engine.
@@ -357,7 +357,12 @@ export async function refreshEntriesSafe(drawId: string) {
 export async function listDrawsWithEntry(userId: string) {
   try {
     const draws = await listDraws();
-    if (draws.length === 0) return [];
+    if (draws.length === 0) {
+      if (userId === "demo-player-id" || userId.startsWith("demo-")) {
+        return DEMO_PLAYER_DRAWS_WITH_ENTRY;
+      }
+      return [];
+    }
     const ids = draws.map((d) => d.id);
     const entries = await sql<DrawEntry[]>`
       select * from draw_entries where user_id = ${userId} and draw_id = any(${ids})`;
@@ -365,13 +370,20 @@ export async function listDrawsWithEntry(userId: string) {
     const winnerRows = await sql<{ draw_id: string; tier: number; amount_pence: number; verification: string; payment_status: string }[]>`
       select draw_id, tier, amount_pence, verification, payment_status from winners where user_id = ${userId}`;
     const winnersByDraw = new Map(winnerRows.map((w) => [w.draw_id, w]));
-    return draws.map((draw) => ({
+    const result = draws.map((draw) => ({
       draw,
       entry: byDraw.get(draw.id),
       winner: winnersByDraw.get(draw.id),
     }));
+    if ((userId === "demo-player-id" || userId.startsWith("demo-")) && entries.length === 0) {
+      return DEMO_PLAYER_DRAWS_WITH_ENTRY;
+    }
+    return result;
   } catch (err) {
     console.error("listDrawsWithEntry DB error:", err);
+    if (userId === "demo-player-id" || userId.startsWith("demo-")) {
+      return DEMO_PLAYER_DRAWS_WITH_ENTRY;
+    }
     return [];
   }
 }

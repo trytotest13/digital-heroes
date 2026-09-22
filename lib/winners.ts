@@ -1,6 +1,6 @@
 import sql from "./db";
 import { TIER_LABEL } from "./format";
-import { DEMO_WINNERS } from "./demo-data";
+import { DEMO_WINNERS, DEMO_PLAYER_WINNERS, DEMO_PLAYER_SUMMARY } from "./demo-data";
 
 /**
  * Winner verification: winners upload a screenshot of their scores as
@@ -25,7 +25,7 @@ export type WinnerRow = {
 
 export async function myWinners(userId: string) {
   try {
-    return await sql<WinnerRow[]>`
+    const rows = await sql<WinnerRow[]>`
       select w.id, w.draw_id, w.user_id, w.tier, w.amount_pence, w.verification,
              w.payment_status, w.proof_name, (w.proof is not null) as has_proof, w.created_at,
              d.period, u.full_name, u.email
@@ -34,10 +34,14 @@ export async function myWinners(userId: string) {
       join users u on u.id = w.user_id
       where w.user_id = ${userId}
       order by d.period desc`;
+    if (rows && rows.length > 0) return rows;
   } catch (err) {
     console.error("myWinners DB error:", err);
-    return [];
   }
+  if (userId === "demo-player-id" || userId.startsWith("demo-")) {
+    return DEMO_PLAYER_WINNERS as unknown as WinnerRow[];
+  }
+  return [];
 }
 
 export async function listWinnersAdmin() {
@@ -107,11 +111,14 @@ export async function winningsSummary(userId: string) {
         coalesce(sum(case when payment_status = 'pending' then amount_pence else 0 end), 0)::int as pending,
         coalesce(sum(case when payment_status = 'paid' then amount_pence else 0 end), 0)::int as paid
       from winners where user_id = ${userId}`;
-    return row ?? { total: 0, pending: 0, paid: 0 };
+    if (row && row.total > 0) return row;
   } catch (err) {
     console.error("winningsSummary DB error:", err);
-    return { total: 0, pending: 0, paid: 0 };
   }
+  if (userId === "demo-player-id" || userId.startsWith("demo-")) {
+    return DEMO_PLAYER_SUMMARY;
+  }
+  return { total: 0, pending: 0, paid: 0 };
 }
 
 export function tierLabel(tier: number): string {

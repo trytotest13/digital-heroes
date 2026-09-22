@@ -1,6 +1,7 @@
 import sql from "./db";
 import { getCharity } from "./charities";
 import { CONTRIBUTION_STEPS, inr } from "./format";
+import { DEMO_PLAYER_DONATIONS } from "./demo-data";
 
 /**
  * Charity contribution logic: every subscriber directs at least 10% of
@@ -22,9 +23,11 @@ export async function getUserCharity(userId: string): Promise<UserCharity | unde
       select uc.charity_id, uc.contribution_pct, c.name, c.category, c.tagline
       from user_charities uc join charities c on c.id = uc.charity_id
       where uc.user_id = ${userId} limit 1`;
-    return row;
+    if (row) return row;
   } catch (err) {
     console.error("getUserCharity DB error:", err);
+  }
+  if (userId.startsWith("demo-")) {
     return {
       charity_id: "demo-green",
       contribution_pct: 15,
@@ -33,6 +36,7 @@ export async function getUserCharity(userId: string): Promise<UserCharity | unde
       tagline: "Rivers, woodland and coastline restoration.",
     };
   }
+  return undefined;
 }
 
 export async function setUserCharity(userId: string, charityId: string, pctInput: unknown) {
@@ -80,14 +84,18 @@ export async function recordDonation(userId: string, charityId: string | null, a
 
 export async function listDonations(userId: string) {
   try {
-    return await sql<{ id: string; amount_pence: number; created_at: Date; charity_name: string | null }[]>`
+    const rows = await sql<{ id: string; amount_pence: number; created_at: Date; charity_name: string | null }[]>`
       select d.id, d.amount_pence, d.created_at, c.name as charity_name
       from donations d left join charities c on c.id = d.charity_id
       where d.user_id = ${userId} order by d.created_at desc limit 10`;
+    if (rows && rows.length > 0) return rows;
   } catch (err) {
     console.error("listDonations DB error:", err);
-    return [];
   }
+  if (userId === "demo-player-id" || userId.startsWith("demo-")) {
+    return DEMO_PLAYER_DONATIONS;
+  }
+  return [];
 }
 
 /** Platform-wide charity totals for admin reporting. */

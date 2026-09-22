@@ -28,22 +28,22 @@ export async function getSubscription(userId: string): Promise<Subscription | un
       select id, user_id, plan, status, price_pence,
              renewal_date::text as renewal_date, stripe_subscription_id
       from subscriptions where user_id = ${userId} limit 1`;
-    return row;
+    if (row) return row;
   } catch (err) {
     console.error("getSubscription DB error:", err);
-    if (userId.startsWith("demo-")) {
-      return {
-        id: "demo-sub-1",
-        user_id: userId,
-        plan: "yearly",
-        status: "active",
-        price_pence: 9999,
-        renewal_date: "2027-09-21",
-        stripe_subscription_id: null,
-      };
-    }
-    return undefined;
   }
+  if (userId.startsWith("demo-")) {
+    return {
+      id: "demo-sub-1",
+      user_id: userId,
+      plan: "yearly",
+      status: "active",
+      price_pence: 499900,
+      renewal_date: "2027-09-21",
+      stripe_subscription_id: null,
+    };
+  }
+  return undefined;
 }
 
 export function effectiveStatus(sub: Subscription | undefined | null): EffectiveStatus {

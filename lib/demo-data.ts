@@ -719,3 +719,174 @@ export const DEMO_REPORTS_STATS = [
   { period: "2026-07", pool: 4400000, winners: 3, paid: 4400000 },
   { period: "2026-06", pool: 4200000, winners: 4, paid: 4200000 },
 ];
+
+export const DEMO_PLAYER_SCORES = [
+  { id: "score-p1", score: 41, played_at: "2026-09-18" },
+  { id: "score-p2", score: 38, played_at: "2026-09-14" },
+  { id: "score-p3", score: 36, played_at: "2026-09-10" },
+  { id: "score-p4", score: 34, played_at: "2026-09-05" },
+  { id: "score-p5", score: 29, played_at: "2026-09-01" },
+];
+
+export const DEMO_PLAYER_SUMMARY = {
+  total: 2880000,
+  pending: 1200000,
+  paid: 1680000,
+};
+
+export const DEMO_PLAYER_WINNERS = [
+  {
+    id: "demo-win-1",
+    draw_id: "draw-2026-09",
+    user_id: "demo-player-id",
+    tier: 3,
+    amount_pence: 1200000,
+    verification: "pending" as const,
+    payment_status: "pending" as const,
+    proof_name: "scoresheet_september.png",
+    has_proof: true,
+    created_at: new Date("2026-09-20"),
+    period: "2026-09",
+    full_name: "Demo Player",
+    email: "player@digitalheroes.test",
+  },
+  {
+    id: "demo-win-2",
+    draw_id: "draw-2026-08",
+    user_id: "demo-player-id",
+    tier: 4,
+    amount_pence: 1680000,
+    verification: "approved" as const,
+    payment_status: "paid" as const,
+    proof_name: "verified_round_august.png",
+    has_proof: true,
+    created_at: new Date("2026-08-22"),
+    period: "2026-08",
+    full_name: "Demo Player",
+    email: "player@digitalheroes.test",
+  },
+];
+
+export const DEMO_PLAYER_DONATIONS = [
+  {
+    id: "don-p1",
+    amount_pence: 250000,
+    created_at: new Date("2026-09-12"),
+    charity_name: "Green Earth Trust",
+  },
+  {
+    id: "don-p2",
+    amount_pence: 100000,
+    created_at: new Date("2026-08-15"),
+    charity_name: "Hope Foundation",
+  },
+  {
+    id: "don-p3",
+    amount_pence: 150000,
+    created_at: new Date("2026-07-20"),
+    charity_name: "Girls Into Golf",
+  },
+];
+
+export const DEMO_PLAYER_DRAWS_WITH_ENTRY = [
+  {
+    draw: {
+      id: "draw-2026-10",
+      period: "2026-10",
+      draw_type: "algorithmic" as const,
+      status: "draft" as const,
+      winning_numbers: null,
+      pool_pence: 7040000,
+      jackpot_in_pence: 1840000,
+      jackpot_out_pence: 0,
+      published_at: null,
+      created_at: new Date("2026-09-01"),
+    },
+    entry: {
+      id: "entry-p-10",
+      draw_id: "draw-2026-10",
+      user_id: "demo-player-id",
+      numbers: [29, 34, 36, 38, 41],
+      match_count: null,
+    },
+    winner: undefined,
+  },
+  {
+    draw: {
+      id: "draw-2026-09",
+      period: "2026-09",
+      draw_type: "random" as const,
+      status: "published" as const,
+      winning_numbers: [17, 22, 29, 34, 41],
+      pool_pence: 4800000,
+      jackpot_in_pence: 0,
+      jackpot_out_pence: 1920000,
+      published_at: new Date("2026-09-19"),
+      created_at: new Date("2026-08-01"),
+    },
+    entry: {
+      id: "entry-p-09",
+      draw_id: "draw-2026-09",
+      user_id: "demo-player-id",
+      numbers: [17, 29, 34, 38, 41],
+      match_count: 4,
+    },
+    winner: {
+      draw_id: "draw-2026-09",
+      tier: 3,
+      amount_pence: 1200000,
+      verification: "pending",
+      payment_status: "pending",
+    },
+  },
+  {
+    draw: {
+      id: "draw-2026-08",
+      period: "2026-08",
+      draw_type: "algorithmic" as const,
+      status: "published" as const,
+      winning_numbers: [14, 22, 29, 36, 38],
+      pool_pence: 4600000,
+      jackpot_in_pence: 0,
+      jackpot_out_pence: 1840000,
+      published_at: new Date("2026-08-20"),
+      created_at: new Date("2026-07-01"),
+    },
+    entry: {
+      id: "entry-p-08",
+      draw_id: "draw-2026-08",
+      user_id: "demo-player-id",
+      numbers: [14, 22, 29, 36, 42],
+      match_count: 4,
+    },
+    winner: {
+      draw_id: "draw-2026-08",
+      tier: 4,
+      amount_pence: 1680000,
+      verification: "approved",
+      payment_status: "paid",
+    },
+  },
+  {
+    draw: {
+      id: "draw-2026-07",
+      period: "2026-07",
+      draw_type: "random" as const,
+      status: "published" as const,
+      winning_numbers: [5, 12, 21, 33, 44],
+      pool_pence: 4400000,
+      jackpot_in_pence: 0,
+      jackpot_out_pence: 0,
+      published_at: new Date("2026-07-18"),
+      created_at: new Date("2026-06-01"),
+    },
+    entry: {
+      id: "entry-p-07",
+      draw_id: "draw-2026-07",
+      user_id: "demo-player-id",
+      numbers: [8, 19, 27, 35, 41],
+      match_count: 0,
+    },
+    winner: undefined,
+  },
+];
