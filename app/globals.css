@@ -89,6 +89,33 @@
     opacity: 1;
     transform: none;
   }
+
+  /* Route + interactive transitions (PageFade replays fade-up per page). */
+  table tbody tr {
+    transition: background-color 0.2s ease-out;
+  }
+  table tbody tr:hover {
+    background-color: rgb(220 231 223 / 0.4);
+  }
+  details > summary {
+    @apply cursor-pointer list-none transition-colors duration-200 hover:text-pine;
+  }
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+  details[open] > summary ~ * {
+    animation: fade-up 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  dialog {
+    animation: fade-up 0.25s ease-out both;
+  }
+  dialog::backdrop {
+    animation: fade-in 0.25s ease-out both;
+    background: rgb(16 21 20 / 0.45);
+  }
+  progress, [role="progressbar"] > * {
+    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }
 
 /* Anyone who prefers reduced motion gets the content, instantly. */

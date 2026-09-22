@@ -1,6 +1,7 @@
 import { requireUser } from "@/lib/auth";
 import { DashNav } from "@/components/dash-nav";
 import { LogoutButton } from "@/components/user-forms";
+import { PageFade } from "@/components/page-fade";
 
 const items = [
   { href: "/dashboard", label: "Overview" },
@@ -32,7 +33,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <aside className="lg:sticky lg:top-8 lg:self-start">
           <DashNav items={items} />
         </aside>
-        <div className="min-w-0">{children}</div>
+        <div className="min-w-0"><PageFade>{children}</PageFade></div>
       </div>
     </div>
   );

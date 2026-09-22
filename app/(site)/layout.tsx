@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { LogoutButton } from "@/components/user-forms";
+import { PageFade } from "@/components/page-fade";
 
 /**
  * Shared chrome for all public pages. The wordmark intentionally echoes
@@ -37,7 +38,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         </div>
       </header>
 
-      <main className="flex-1">{children}</main>
+      <main className="flex-1"><PageFade>{children}</PageFade></main>
 
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 text-[13px] text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6">
