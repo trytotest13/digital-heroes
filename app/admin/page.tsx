@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import sql from "@/lib/db";
+import { BackButton } from "@/components/back-button";
 import { currentJackpotPence, getDrawByPeriod } from "@/lib/draws";
 import { monthlyPoolContributionPence } from "@/lib/subscriptions";
 import { charityTotals } from "@/lib/charity-user";
@@ -46,6 +47,7 @@ export default async function AdminOverviewPage() {
   return (
     <div className="space-y-4">
       <div>
+        <BackButton href="/" label="Back to site" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Overview</h1>
         <p className="mt-1 text-[14px] text-muted">Live platform numbers — all figures come from the database.</p>
       </div>
@@ -60,11 +62,11 @@ export default async function AdminOverviewPage() {
           <p className="text-[12px] text-muted">Active subscribers</p>
         </div>
         <div className="card p-5">
-          <p className="font-display text-[26px] font-bold text-pine">{inr(pool + jackpot)}</p>
+          <p className="font-display text-[26px] font-bold text-pine-light">{inr(pool + jackpot)}</p>
           <p className="text-[12px] text-muted">Current prize pool incl. rollover</p>
         </div>
         <div className="card p-5">
-          <p className="font-display text-[26px] font-bold text-[#8a5f27]">{inr(charity.estimated_monthly)}</p>
+          <p className="font-display text-[26px] font-bold text-gold">{inr(charity.estimated_monthly)}</p>
           <p className="text-[12px] text-muted">Est. monthly charity giving</p>
         </div>
       </div>

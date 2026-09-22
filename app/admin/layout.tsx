@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { DashNav } from "@/components/dash-nav";
 import { LogoutButton } from "@/components/user-forms";
 import { PageFade } from "@/components/page-fade";
+import { BackButton } from "@/components/back-button";
 
 const items = [
   { href: "/admin", label: "Overview" },
@@ -22,12 +24,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <header className="border-b border-line bg-ink">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-3">
-            <span className="font-display text-[15px] font-bold text-cream">
-              digital.<span className="text-sage">HEROES.</span>
-            </span>
+            <Link href="/" className="font-display text-[15px] font-bold text-cream transition hover:opacity-90">
+              digital.<span className="text-pine-muted">HEROES.</span>
+            </Link>
             <span className="badge-amber">Admin</span>
           </div>
-          <LogoutButton className="btn btn-ghost btn-sm text-cream hover:bg-[#1c2624]" />
+          <div className="flex items-center gap-2">
+            <BackButton href="/" label="Back to site" variant="header" />
+            <LogoutButton className="btn btn-ghost btn-sm text-cream hover:bg-ink-border" />
+          </div>
         </div>
       </header>
 

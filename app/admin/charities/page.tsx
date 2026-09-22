@@ -3,6 +3,7 @@ import { listAllCharitiesAdmin } from "@/lib/charities";
 import { CharityAddForm, CharityEditRow } from "@/components/admin-forms";
 import { adminDeleteCharityAction } from "@/actions/admin";
 import { SubmitButton } from "@/components/bits";
+import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Admin · Charities" };
 
@@ -13,6 +14,7 @@ export default async function AdminCharitiesPage() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
+          <BackButton href="/admin" label="Back to overview" className="mb-2" />
           <h1 className="font-display text-[26px] font-bold">Charities</h1>
           <p className="mt-1 text-[14px] text-muted">{charities.length} records · deleting hides a charity but keeps contribution history intact.</p>
         </div>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { effectiveStatus, getSubscription } from "@/lib/subscriptions";
+import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Subscription confirmed" };
 
@@ -36,6 +37,9 @@ export default async function SubscribeSuccessPage({
 
   return (
     <div className="mx-auto max-w-md px-4 py-24 text-center">
+      <div className="mb-6 text-left">
+        <BackButton href="/dashboard" label="Back to dashboard" />
+      </div>
       <p className="kicker animate-fade-up mb-3">You&apos;re in</p>
       <h1 className="animate-fade-up [animation-delay:80ms] font-display text-[32px] font-bold">
         {status === "active" ? "Welcome to Digital Heroes." : "Almost there."}

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { LoginForm } from "@/components/user-forms";
 import { Reveal } from "@/components/reveal";
+import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Sign in" };
 
@@ -13,6 +14,7 @@ export default async function LoginPage() {
 
   return (
     <div className="mx-auto flex max-w-md flex-col px-4 py-20">
+      <BackButton href="/" label="Back to home" className="mb-6 self-start" />
       <p className="kicker animate-fade-up mb-3 text-center">Welcome back</p>
       <h1 className="animate-fade-up [animation-delay:80ms] text-center font-display text-[30px] font-bold">Sign in</h1>
       <Reveal delay={140}>

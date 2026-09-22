@@ -5,6 +5,7 @@ import { fmtMonth, inr, TIER_PCT } from "@/lib/format";
 import { DrawCreateForm, DrawSimPanel } from "@/components/admin-forms";
 import { adminRefreshEntriesAction } from "@/actions/admin";
 import { SubmitButton } from "@/components/bits";
+import { BackButton } from "@/components/back-button";
 import { DEMO_DRAWS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · Draws" };
@@ -38,6 +39,7 @@ export default async function AdminDrawsPage() {
   return (
     <div className="space-y-4">
       <div>
+        <BackButton href="/admin" label="Back to overview" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Draw management</h1>
         <p className="mt-1 text-[14px] text-muted">
           Open a draw, simulate it, then publish. Simulation never writes results — publishing does.

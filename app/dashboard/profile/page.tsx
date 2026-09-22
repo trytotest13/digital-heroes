@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/auth";
 import { effectiveStatus, getSubscription } from "@/lib/subscriptions";
 import { fmtDate, inr } from "@/lib/format";
 import { CancelSubButton, ProfileNameForm } from "@/components/user-forms";
+import { BackButton } from "@/components/back-button";
 import Link from "next/link";
 
 export const metadata = { title: "Profile" };
@@ -14,7 +15,10 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="font-display text-[26px] font-bold">Profile</h1>
+      <div>
+        <BackButton href="/dashboard" label="Back to overview" className="mb-2" />
+        <h1 className="font-display text-[26px] font-bold">Profile</h1>
+      </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="card p-5">

@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import sql from "@/lib/db";
+import { BackButton } from "@/components/back-button";
 import { effectiveStatus, getSubscription } from "@/lib/subscriptions";
 import { listScores } from "@/lib/scores";
 import { getUserCharity } from "@/lib/charity-user";
@@ -45,7 +46,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <Link href="/admin/users" className="text-[13px] font-semibold text-muted hover:text-pine">← All users</Link>
+          <BackButton href="/admin/users" label="Back to users" className="mb-2" />
           <h1 className="mt-1 font-display text-[24px] font-bold">{user.full_name}</h1>
           <p className="text-[13px] text-muted">
             {user.email} · joined {fmtDate(user.created_at)} · {user.active ? "active" : "suspended"}

@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { effectiveStatus, getSubscription } from "@/lib/subscriptions";
 import { currentJackpotPence, listDrawsWithEntry } from "@/lib/draws";
 import { fmtMonth, inr, TIER_LABEL, TIER_PCT } from "@/lib/format";
+import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Your draws" };
 
@@ -21,6 +22,7 @@ export default async function DrawsPage() {
   return (
     <div className="space-y-4">
       <div>
+        <BackButton href="/dashboard" label="Back to overview" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Your draws</h1>
         <p className="mt-1 text-[14px] text-muted">
           Every monthly draw, your numbers and your results.

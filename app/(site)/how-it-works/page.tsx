@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { Reveal } from "@/components/reveal";
+import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "How it works" };
 
@@ -40,6 +41,7 @@ const steps = [
 export default function HowItWorksPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+      <BackButton href="/" label="Back to home" className="mb-4" />
       <p className="kicker animate-fade-up mb-3">Guide</p>
       <h1 className="animate-fade-up [animation-delay:80ms] font-display text-[36px] font-bold sm:text-[48px]">How it works</h1>
       <p className="animate-fade-up [animation-delay:160ms] mt-3 max-w-2xl text-[16px] leading-relaxed text-muted">
@@ -52,7 +54,7 @@ export default function HowItWorksPage() {
           <li key={s.n}>
             <Reveal delay={Math.min(i, 3) * 60}>
               <div className="card card-hover flex gap-5 p-6">
-                <span className="font-mono text-[13px] font-semibold text-[#8a5f27]">{s.n}</span>
+                <span className="font-mono text-[13px] font-semibold text-gold">{s.n}</span>
                 <div>
                   <h2 className="font-display text-[19px] font-bold">{s.title}</h2>
                   <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{s.body}</p>
@@ -64,14 +66,14 @@ export default function HowItWorksPage() {
       </ol>
 
       <Reveal>
-        <div className="mt-10 rounded-2xl bg-ink p-6 text-cream">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage">Prize tiers</p>
+        <div className="mt-10 rounded-2xl bg-ink-surface border border-ink-border p-6 text-cream">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-pine-muted">Prize tiers</p>
           <div className="mt-3 grid gap-2 text-[14px] sm:grid-cols-3">
             <p><span className="font-display font-bold">40%</span> · 5-number match</p>
             <p><span className="font-display font-bold">35%</span> · 4-number match</p>
             <p><span className="font-display font-bold">25%</span> · 3-number match</p>
           </div>
-          <p className="mt-3 text-[13px] text-[#a9b3ae]">
+          <p className="mt-3 text-[13px] text-ink-muted">
             A fixed portion of every subscription funds the pool. Prizes split equally within a tier,
             and an unclaimed jackpot rolls into the next draw.
           </p>

@@ -2,6 +2,7 @@ import { requireUser } from "@/lib/auth";
 import { DashNav } from "@/components/dash-nav";
 import { LogoutButton } from "@/components/user-forms";
 import { PageFade } from "@/components/page-fade";
+import { BackButton } from "@/components/back-button";
 
 const items = [
   { href: "/dashboard", label: "Overview" },
@@ -24,7 +25,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <p className="mt-1 font-display text-[18px] font-bold text-ink">{user.full_name}</p>
         </div>
         <div className="flex items-center gap-2">
-          <a href="/" className="btn btn-ghost btn-sm">Site</a>
+          <BackButton href="/" label="Back to site" variant="button" />
           <LogoutButton />
         </div>
       </div>

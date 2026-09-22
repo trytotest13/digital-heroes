@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 import sql from "@/lib/db";
 import { fmtDate, inr } from "@/lib/format";
 import { SubStatusForm } from "@/components/admin-forms";
+import { BackButton } from "@/components/back-button";
 import { DEMO_SUBSCRIPTIONS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · Subscriptions" };
@@ -36,6 +37,7 @@ export default async function AdminSubscriptionsPage() {
   return (
     <div className="space-y-4">
       <div>
+        <BackButton href="/admin" label="Back to overview" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Subscriptions</h1>
         <p className="mt-1 text-[14px] text-muted">
           Lifecycle states across the platform. Lapsed renewal dates surface as "lapsed" on the user side.

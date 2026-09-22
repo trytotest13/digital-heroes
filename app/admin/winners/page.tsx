@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 import { listWinnersAdmin, tierLabel } from "@/lib/winners";
 import { fmtMonth, inr } from "@/lib/format";
 import { MarkPaidButton, VerifyButtons } from "@/components/admin-forms";
+import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Admin · Winners" };
 
@@ -20,6 +21,7 @@ export default async function AdminWinnersPage() {
   return (
     <div className="space-y-4">
       <div>
+        <BackButton href="/admin" label="Back to overview" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Winners</h1>
         <p className="mt-1 text-[14px] text-muted">
           Review proof screenshots, then approve — payouts can only be marked paid once a winner is approved.

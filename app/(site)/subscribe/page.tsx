@@ -7,6 +7,7 @@ import { effectiveStatus, getSubscription } from "@/lib/subscriptions";
 import { inr } from "@/lib/format";
 import { SubscribeButtons } from "@/components/user-forms";
 import { Reveal } from "@/components/reveal";
+import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Subscribe" };
 
@@ -20,6 +21,7 @@ export default async function SubscribePage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+      <BackButton href="/dashboard" label="Back to dashboard" className="mb-4" />
       <p className="kicker animate-fade-up mb-3 text-center">Step 2 of 2</p>
       <h1 className="animate-fade-up [animation-delay:80ms] text-center font-display text-[32px] font-bold">Pick your plan</h1>
       <p className="animate-fade-up [animation-delay:160ms] mx-auto mt-2 max-w-lg text-center text-[15px] text-muted">

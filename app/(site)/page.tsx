@@ -38,7 +38,7 @@ export default async function HomePage() {
             </div>
             <h1 className="animate-fade-up [animation-delay:80ms] mt-4 font-display text-[38px] font-bold leading-[1.06] text-ink sm:text-[54px] lg:text-[62px]">
               Play with<br />
-              <span className="bg-gradient-to-r from-pine via-pine to-[#2a6b5d] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-pine via-pine to-pine-light bg-clip-text text-transparent">
                 purpose.
               </span>
             </h1>
@@ -99,7 +99,7 @@ export default async function HomePage() {
       </section>
 
       {/* Live Animated Platform Metrics */}
-      <section className="border-y border-line bg-white/60 py-6">
+      <section className="border-y border-line bg-white/70 py-6">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4 px-4 sm:grid-cols-4 sm:px-6">
           <div className="text-center sm:text-left">
             <p className="font-display text-[26px] font-bold text-pine sm:text-[32px]">
@@ -114,13 +114,13 @@ export default async function HomePage() {
             <p className="text-[12px] font-medium text-muted">Active Golfers</p>
           </div>
           <div className="text-center sm:text-left">
-            <p className="font-display text-[26px] font-bold text-[#8a5f27] sm:text-[32px]">
+            <p className="font-display text-[26px] font-bold text-gold sm:text-[32px]">
               <NumberTicker value={10} suffix=" Causes" />
             </p>
             <p className="text-[12px] font-medium text-muted">Partner Charities</p>
           </div>
           <div className="text-center sm:text-left">
-            <p className="font-display text-[26px] font-bold text-pine sm:text-[32px]">
+            <p className="font-display text-[26px] font-bold text-success sm:text-[32px]">
               <NumberTicker value={100} suffix="%" />
             </p>
             <p className="text-[12px] font-medium text-muted">Verified Payouts</p>
@@ -129,7 +129,7 @@ export default async function HomePage() {
       </section>
 
       {/* Marquee Ticker: Featured Causes Across India */}
-      <section className="overflow-hidden border-b border-line bg-cream/40 py-4">
+      <section className="overflow-hidden border-b border-line bg-paper/60 py-4">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <p className="kicker mb-2 text-center text-muted">Supported Causes &amp; Partners</p>
         </div>
@@ -204,7 +204,7 @@ export default async function HomePage() {
           <div className="mt-8 overflow-hidden rounded-3xl border border-line">
             <div className="flex h-16 font-display text-[14px] font-bold">
               <div className="flex w-2/5 items-center justify-center bg-pine text-cream">Prize pool · 40%</div>
-              <div className="flex w-[30%] items-center justify-center bg-amber text-ink">Your charity · 10%+</div>
+              <div className="flex w-[30%] items-center justify-center bg-gold text-ink">Your charity · 10%+</div>
               <div className="flex flex-1 items-center justify-center bg-mist text-pine">Platform · the rest</div>
             </div>
           </div>
@@ -259,12 +259,12 @@ export default async function HomePage() {
       </section>
 
       {/* Draw mechanics — dark section for contrast */}
-      <section className="bg-ink text-cream">
+      <section className="bg-ink-surface text-cream">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <Reveal>
-            <p className="kicker mb-3 text-sage">The draw</p>
+            <p className="kicker mb-3 text-pine-muted">The draw</p>
             <h2 className="font-display text-[28px] font-bold text-cream sm:text-[36px]">One draw. Every month.</h2>
-            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#a9b3ae]">
+            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
               A fixed portion of every subscription feeds the prize pool. The split between tiers
               is fixed and enforced automatically — and if nobody claims the jackpot, it rolls over.
             </p>
@@ -272,16 +272,16 @@ export default async function HomePage() {
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             {tiers.map((t, i) => (
               <Reveal key={t.match} delay={i * 90}>
-                <div className="h-full rounded-2xl border border-[#2a3432] bg-[#161d1c] p-6">
-                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage">{t.match}</p>
+                <div className="h-full rounded-2xl border border-ink-border bg-ink-surface p-6">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-pine-muted">{t.match}</p>
                   <p className="mt-3 font-display text-[40px] font-bold text-cream">{Math.round(t.pct * 100)}%</p>
-                  <p className="mt-1 text-[13px] text-[#a9b3ae]">{t.note}</p>
+                  <p className="mt-1 text-[13px] text-ink-muted">{t.note}</p>
                 </div>
               </Reveal>
             ))}
           </div>
           <Reveal delay={200}>
-            <div className="mt-8 rounded-2xl border border-[#2a3432] bg-[#161d1c] p-5 text-[14px] text-[#a9b3ae]">
+            <div className="mt-8 rounded-2xl border border-ink-border bg-ink-surface p-5 text-[14px] text-ink-muted">
               <span className="font-semibold text-cream">Prize splitting:</span> multiple winners in the
               same tier share it equally. Entry, draws and payouts are tracked in your dashboard.
             </div>

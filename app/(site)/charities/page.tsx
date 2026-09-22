@@ -4,6 +4,7 @@ import { listCharities } from "@/lib/charities";
 import { CharityCard } from "@/components/charity-card";
 import { Reveal } from "@/components/reveal";
 import { CharityFilters } from "@/components/charity-filters";
+import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Charities" };
 
@@ -17,6 +18,7 @@ export default async function CharitiesPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <BackButton href="/" label="Back to home" className="mb-4" />
       <p className="kicker animate-fade-up mb-3">Directory</p>
       <h1 className="animate-fade-up [animation-delay:80ms] font-display text-[36px] font-bold sm:text-[48px]">Causes worth playing for.</h1>
       <p className="animate-fade-up [animation-delay:160ms] mt-3 max-w-2xl text-[16px] leading-relaxed text-muted">

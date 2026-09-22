@@ -283,7 +283,7 @@ export function DrawSimPanel({ drawId, status }: { drawId: string; status: strin
             </tbody>
           </table>
           {(result.jackpotOutPence ?? 0) > 0 && (
-            <p className="mt-2 text-[13px] font-medium text-[#8a5f27]">
+            <p className="mt-2 text-[13px] font-medium text-[text-gold]">
               No 5-number winner — {inr(result.jackpotOutPence ?? 0)} rolls into the next jackpot.
             </p>
           )}

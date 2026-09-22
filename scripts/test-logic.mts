@@ -149,15 +149,20 @@ if (eIds[2]) await sql`update draw_entries set numbers = ${[7, 8, 9, 10, 11]} wh
 const pub = (await publishDraw(drawId)) as {
   error?: string;
   numbers?: number[];
+  poolPence?: number;
   tiers?: { tier: number; winners: number; tierTotalPence: number; eachPence: number }[];
 };
 check("publish succeeds", !pub.error, pub.error ?? "");
 const drawAfter = await getDraw(drawId);
 check("draw now published with 5 numbers", drawAfter?.status === "published" && (pub.numbers?.length ?? 0) === 5);
 
+// publishDraw refreshes the pool from live subscriptions by design
+// (lib/draws.ts), so expectations must derive from the reported pool,
+// not the pinned pool_pence value above.
+const livePool = pub.poolPence ?? 0;
 for (const t of pub.tiers ?? []) {
   const pct = t.tier === 5 ? 0.4 : t.tier === 4 ? 0.35 : 0.25;
-  check(`tier ${t.tier} pool share = ${Math.round(pct * 100)}% of £1,000`, t.tierTotalPence === Math.round(100000 * pct));
+  check(`tier ${t.tier} pool share = ${Math.round(pct * 100)}% of live pool`, t.tierTotalPence === Math.round(livePool * pct));
   if (t.winners > 0) check(`tier ${t.tier} splits equally`, t.eachPence === Math.floor(t.tierTotalPence / t.winners));
 }
 const tierRows = await sql<{ tier: number; amount_pence: number }[]>`
@@ -170,7 +175,7 @@ check(
 console.log("\n— Jackpot rollover (PRD §07)");
 const roll = (await getDraw(created.drawId!))!.jackpot_out_pence;
 const fiveUnclaimed = (pub.tiers ?? []).find((t) => t.tier === 5)?.winners === 0;
-check("rollover booked iff 5-tier unclaimed", roll === (fiveUnclaimed ? Math.round(100000 * 0.4) : 0));
+check("rollover booked iff 5-tier unclaimed", roll === (fiveUnclaimed ? Math.round(livePool * 0.4) : 0));
 
 const nextDate = new Date();
 nextDate.setUTCMonth(nextDate.getUTCMonth() + 1);
@@ -194,8 +199,19 @@ check(
 );
 
 console.log("\n— Winner verification (PRD §09)");
-const [winner] = await sql<{ id: string; user_id: string }[]>`
-  select id, user_id from winners order by created_at desc limit 1`;
+// Scope to this run's test draw: random winning numbers don't always
+// produce a winner, so fall back to a controlled pending row to keep
+// the verification flow deterministic.
+let [winner] = await sql<{ id: string; user_id: string }[]>`
+  select id, user_id from winners
+  where draw_id = ${drawId} and verification = 'pending' and payment_status = 'pending' limit 1`;
+if (!winner) {
+  [winner] = await sql<{ id: string; user_id: string }[]>`
+    insert into winners (draw_id, user_id, tier, amount_pence)
+    values (${drawId}, ${uid}, 3, 1000)
+    on conflict (draw_id, user_id) do update set verification = 'pending', payment_status = 'pending'
+    returning id, user_id`;
+}
 if (winner) {
   check("payment blocked before approval", Boolean((await markPaid(winner.id)).error));
   const f = new File([new Uint8Array([137, 80, 78, 71])], "scores.png", { type: "image/png" });

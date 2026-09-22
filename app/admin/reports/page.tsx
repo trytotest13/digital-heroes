@@ -3,6 +3,7 @@ import sql from "@/lib/db";
 import { charityTotals, givingByCharity } from "@/lib/charity-user";
 import { drawStatistics } from "@/lib/draws";
 import { fmtMonth, inr } from "@/lib/format";
+import { BackButton } from "@/components/back-button";
 import { DEMO_USERS, DEMO_CHARITY_GIVING, DEMO_REPORTS_STATS } from "@/lib/demo-data";
 
 export const metadata = { title: "Admin · Reports" };
@@ -39,6 +40,7 @@ export default async function AdminReportsPage() {
   return (
     <div className="space-y-4">
       <div>
+        <BackButton href="/admin" label="Back to overview" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Reports &amp; analytics</h1>
         <p className="mt-1 text-[14px] text-muted">Platform-wide figures computed from live data.</p>
       </div>

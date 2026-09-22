@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { effectiveStatus, getSubscription } from "@/lib/subscriptions";
 import { listScores } from "@/lib/scores";
 import { ScoreAddForm, ScoreRow } from "@/components/user-forms";
+import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Your scores" };
 
@@ -16,6 +17,7 @@ export default async function ScoresPage() {
   return (
     <div className="space-y-4">
       <div>
+        <BackButton href="/dashboard" label="Back to overview" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Your scores</h1>
         <p className="mt-1 text-[14px] text-muted">
           Stableford format · one score per date · your latest five are kept and used as draw numbers.

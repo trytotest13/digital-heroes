@@ -7,17 +7,57 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        cream: "#f5f3ec",
-        ink: "#101514",
-        pine: "#173d35",
-        "pine-deep": "#102b25",
-        sage: "#8fae9b",
-        mist: "#dce7df",
-        amber: "#d8a15d",
-        body: "#18201d",
-        muted: "#6b746f",
-        line: "#d7dad4",
+        // Core surface palette — warm paper with richer warmth
+        cream: "#faf8f1",
+        paper: "#f5f2ea",
+        sand: "#e8e2d6",
+        
+        // Primary — deep forest green (richer, more saturated)
+        pine: "#1a4d3e",
+        "pine-light": "#246350",
+        "pine-deep": "#0f3328",
+        "pine-muted": "#2d5e4a",
+        
+        // Accent — warm gold (more luminous)
+        gold: "#c9952a",
+        "gold-light": "#dbab4a",
+        "gold-pale": "#f0dfa8",
+        
+        // Secondary — slate blue (for contrast categories)
+        ocean: "#2a5a7a",
+        "ocean-light": "#3a7a9f",
+        "ocean-pale": "#d4e8f0",
+        
+        // Tertiary — warm terracotta
+        clay: "#a0523e",
+        "clay-light": "#b86852",
+        "clay-pale": "#e8d0c8",
+        
+        // Neutral text scale
+        ink: "#141816",
+        body: "#2a3330",
+        "body-light": "#4a5650",
+        muted: "#6e7a74",
+        "muted-light": "#93a09a",
+        
+        // Surface/border tokens
+        mist: "#dfe9e1",
+        line: "#d8ddd4",
+        "line-light": "#e5e9e2",
+        white: "#ffffff",
+        
+        // Status colors
+        success: "#2d7a4f",
+        "success-pale": "#d4eddf",
         danger: "#b84c4c",
+        "danger-pale": "#f0d8d8",
+        warning: "#b8860b",
+        "warning-pale": "#f5ecd0",
+        
+        // Admin dark surfaces
+        "ink-surface": "#111916",
+        "ink-border": "#1e332a",
+        "ink-muted": "#7a8a82",
       },
       fontFamily: {
         display: ['"DM Sans"', '"Inter"', "ui-sans-serif", "system-ui", "sans-serif"],

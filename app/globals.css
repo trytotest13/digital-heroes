@@ -15,16 +15,21 @@
   }
   body {
     @apply bg-cream font-sans text-body antialiased;
+    background-image:
+      radial-gradient(at 0% 0%, rgb(26 77 62 / 0.04) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgb(201 149 42 / 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
   }
   h1, h2, h3, h4 {
     @apply font-display text-ink;
     letter-spacing: -0.02em;
   }
   ::selection {
-    background: #dce7df;
+    background: #dfe9e1;
+    color: #0f3328;
   }
   :focus-visible {
-    outline: 2px solid #173d35;
+    outline: 2px solid #1a4d3e;
     outline-offset: 2px;
     border-radius: 2px;
   }
@@ -36,16 +41,16 @@
     @apply inline-flex h-10 cursor-pointer select-none items-center justify-center gap-2 rounded-[10px] px-4 text-[14px] font-semibold transition duration-200 ease-out disabled:pointer-events-none disabled:opacity-50;
   }
   .btn-sm { @apply h-8 px-3 text-[13px]; }
-  .btn-primary { @apply bg-pine text-cream shadow-[0_1px_2px_rgba(16,21,20,0.12)] hover:-translate-y-px hover:bg-pine-deep hover:shadow-[0_6px_16px_-6px_rgba(16,43,37,0.45)] active:translate-y-0 active:shadow-none; }
-  .btn-amber { @apply bg-amber text-ink hover:-translate-y-px hover:brightness-95 active:translate-y-0; }
+  .btn-primary { @apply bg-pine text-cream shadow-[0_1px_2px_rgba(16,21,20,0.12)] hover:-translate-y-px hover:bg-pine-deep hover:shadow-[0_8px_20px_-6px_rgba(15,51,40,0.5)]; }
+  .btn-amber { @apply bg-gold text-ink hover:-translate-y-px hover:brightness-95 hover:shadow-[0_6px_16px_-6px_rgba(201,149,42,0.45)]; }
   .btn-outline { @apply border border-line bg-transparent text-body hover:border-pine hover:text-pine; }
   .btn-ghost { @apply text-pine hover:bg-mist/70; }
   .btn-danger { @apply bg-danger text-white hover:brightness-95; }
 
-  .card { @apply rounded-2xl border border-line bg-white; }
+  .card { @apply rounded-2xl border border-line bg-white shadow-[0_1px_3px_rgba(20,24,22,0.04)]; }
   /* Shared hover lift for interactive cards. */
   .card-hover {
-    @apply transition duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_16px_36px_-16px_rgba(16,21,20,0.22)];
+    @apply transition duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-16px_rgba(15,51,40,0.25)];
   }
   .input {
     @apply h-10 w-full rounded-[10px] border border-line bg-white px-3 text-[15px] outline-none transition focus:border-pine focus:ring-4 focus:ring-pine/10;
@@ -53,10 +58,10 @@
   .label { @apply mb-1.5 block text-[13px] font-semibold text-body; }
   .kicker { @apply font-mono text-[11px] uppercase tracking-[0.18em] text-muted; }
   .badge { @apply inline-flex h-6 items-center rounded-md px-2 font-mono text-[11px] uppercase tracking-wide; }
-  .badge-green { @apply badge bg-mist text-pine; }
-  .badge-amber { @apply badge bg-amber/20 text-[#8a5f27]; }
-  .badge-red { @apply badge bg-danger/10 text-danger; }
-  .badge-gray { @apply badge bg-[#edebe3] text-muted; }
+  .badge-green { @apply badge bg-success-pale text-success; }
+  .badge-amber { @apply badge bg-gold-pale text-gold; }
+  .badge-red { @apply badge bg-danger-pale text-danger; }
+  .badge-gray { @apply badge bg-sand text-muted; }
 
   .th { @apply px-4 py-3 text-left font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-muted; }
   .td { @apply px-4 py-3 align-middle text-[14px]; }
@@ -91,11 +96,8 @@
   }
 
   /* Route + interactive transitions (PageFade replays fade-up per page). */
-  table tbody tr {
-    transition: background-color 0.2s ease-out;
-  }
   table tbody tr:hover {
-    background-color: rgb(220 231 223 / 0.4);
+    background-color: rgb(223 233 225 / 0.5);
   }
   details > summary {
     @apply cursor-pointer list-none transition-colors duration-200 hover:text-pine;
@@ -111,7 +113,8 @@
   }
   dialog::backdrop {
     animation: fade-in 0.25s ease-out both;
-    background: rgb(16 21 20 / 0.45);
+    background: rgb(20 24 22 / 0.5);
+    backdrop-filter: blur(4px);
   }
   progress, [role="progressbar"] > * {
     transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);

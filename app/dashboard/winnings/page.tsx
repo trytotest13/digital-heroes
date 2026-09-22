@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/auth";
 import { myWinners, tierLabel, winningsSummary } from "@/lib/winners";
 import { fmtDate, fmtMonth, inr } from "@/lib/format";
 import { ProofUploadForm } from "@/components/user-forms";
+import { BackButton } from "@/components/back-button";
 
 export const metadata = { title: "Winnings" };
 
@@ -19,6 +20,7 @@ export default async function WinningsPage() {
   return (
     <div className="space-y-4">
       <div>
+        <BackButton href="/dashboard" label="Back to overview" className="mb-2" />
         <h1 className="font-display text-[26px] font-bold">Winnings</h1>
         <p className="mt-1 text-[14px] text-muted">Prizes, proof verification and payout status.</p>
       </div>

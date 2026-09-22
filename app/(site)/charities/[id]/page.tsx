@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getCharity } from "@/lib/charities";
 import { fmtDate } from "@/lib/format";
 import { Reveal } from "@/components/reveal";
+import { BackButton } from "@/components/back-button";
 
 export default async function CharityDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -14,9 +15,7 @@ export default async function CharityDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-      <Link href="/charities" className="text-[13px] font-semibold text-muted transition hover:text-pine">
-        ← All charities
-      </Link>
+      <BackButton href="/charities" label="Back to charities" className="mb-4" />
 
       <Reveal>
         <div className="card mt-6 overflow-hidden">
