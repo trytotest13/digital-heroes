@@ -1,5 +1,6 @@
 -- Digital Heroes — schema (plain Postgres, runs as-is in the Supabase SQL editor)
 -- gen_random_uuid() is native in Postgres 13+; no extensions required.
+-- Idempotent: safe to re-run (dev-db.mjs re-applies this on every start).
 
 create table if not exists users (
   id uuid primary key default gen_random_uuid(),
@@ -115,3 +116,174 @@ create table if not exists settings (
 insert into settings (key, value)
 values ('app', '{"monthly_price_pence":999,"yearly_price_pence":9999,"prize_pool_percent":40}')
 on conflict (key) do nothing;
+
+-- ============================================
+-- ROW LEVEL SECURITY (after tables exist)
+-- Every user can only access their own data.
+-- ============================================
+
+-- Supabase provides the auth schema and auth.uid(); plain Postgres (local
+-- dev) does not. Create a compatible fallback so the policies below work
+-- in both. On Supabase this replaces auth.uid() with the same definition
+-- (reads the JWT subject claim); if the replace is not permitted there,
+-- the exception is swallowed and Supabase's own function is used.
+do $$
+begin
+  create schema if not exists auth;
+  create or replace function auth.uid() returns uuid
+  language sql stable as $fn$
+    select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid
+  $fn$;
+exception when others then
+  null;
+end $$;
+
+-- Enable RLS on all tables (idempotent)
+alter table users enable row level security;
+alter table charities enable row level security;
+alter table subscriptions enable row level security;
+alter table user_charities enable row level security;
+alter table scores enable row level security;
+alter table draws enable row level security;
+alter table draw_entries enable row level security;
+alter table winners enable row level security;
+alter table donations enable row level security;
+alter table settings enable row level security;
+
+-- Policies: users can only see their own data
+drop policy if exists "Users view own profile" on users;
+create policy "Users view own profile" on users
+  for select using (auth.uid() = id);
+
+drop policy if exists "Users update own profile" on users;
+create policy "Users update own profile" on users
+  for update using (auth.uid() = id);
+
+drop policy if exists "Users view own scores" on scores;
+create policy "Users view own scores" on scores
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "Users insert own scores" on scores;
+create policy "Users insert own scores" on scores
+  for insert with check (auth.uid() = user_id);
+
+drop policy if exists "Users view own subscriptions" on subscriptions;
+create policy "Users view own subscriptions" on subscriptions
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "Users update own subscriptions" on subscriptions;
+create policy "Users update own subscriptions" on subscriptions
+  for update using (auth.uid() = user_id);
+
+drop policy if exists "Users manage own charity links" on user_charities;
+create policy "Users manage own charity links" on user_charities
+  for all using (auth.uid() = user_id);
+
+drop policy if exists "Users view own donations" on donations;
+create policy "Users view own donations" on donations
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "Users insert own donations" on donations;
+create policy "Users insert own donations" on donations
+  for insert with check (auth.uid() = user_id);
+
+drop policy if exists "Users view own winners" on winners;
+create policy "Users view own winners" on winners
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "Users insert own winners" on winners;
+create policy "Users insert own winners" on winners
+  for insert with check (auth.uid() = user_id);
+
+drop policy if exists "Users update own winners" on winners;
+create policy "Users update own winners" on winners
+  for update using (auth.uid() = user_id);
+
+drop policy if exists "Users view own draw entries" on draw_entries;
+create policy "Users view own draw entries" on draw_entries
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "Users insert own draw entries" on draw_entries;
+create policy "Users insert own draw entries" on draw_entries
+  for insert with check (auth.uid() = user_id);
+
+-- Public read for charities (anyone can browse)
+drop policy if exists "Public view charities" on charities;
+create policy "Public view charities" on charities
+  for select using (true);
+
+-- Public read for published draws
+drop policy if exists "Public view published draws" on draws;
+create policy "Public view published draws" on draws
+  for select using (status = 'published');
+
+-- Admin-only policies via a helper function
+create or replace function is_admin()
+returns boolean as $$
+  select exists (
+    select 1 from users where id = auth.uid() and role = 'admin'
+  );
+$$ language sql security definer;
+
+drop policy if exists "Admins view all winners" on winners;
+create policy "Admins view all winners" on winners
+  for select using (is_admin());
+
+drop policy if exists "Admins update all winners" on winners;
+create policy "Admins update all winners" on winners
+  for update using (is_admin());
+
+drop policy if exists "Admins view all users" on users;
+create policy "Admins view all users" on users
+  for select using (is_admin());
+
+drop policy if exists "Admins view all subscriptions" on subscriptions;
+create policy "Admins view all subscriptions" on subscriptions
+  for select using (is_admin());
+
+-- Settings: public read, admin write
+drop policy if exists "Public view settings" on settings;
+create policy "Public view settings" on settings
+  for select using (true);
+
+drop policy if exists "Admins update settings" on settings;
+create policy "Admins update settings" on settings
+  for update using (is_admin());
+
+-- Admin can insert/update charities
+drop policy if exists "Admins manage charities" on charities;
+create policy "Admins manage charities" on charities
+  for all using (is_admin());
+
+-- Admin can manage draws
+drop policy if exists "Admins manage draws" on draws;
+create policy "Admins manage draws" on draws
+  for all using (is_admin());
+
+-- Admin can manage draw entries
+drop policy if exists "Admins manage draw entries" on draw_entries;
+create policy "Admins manage draw entries" on draw_entries
+  for all using (is_admin());
+
+-- Admin can manage donations
+drop policy if exists "Admins manage donations" on donations;
+create policy "Admins manage donations" on donations
+  for all using (is_admin());
+
+-- Admin can manage user charity links
+drop policy if exists "Admins manage all charity links" on user_charities;
+create policy "Admins manage all charity links" on user_charities
+  for all using (is_admin());
+
+-- Disable all other default access
+drop policy if exists "No anonymous insert on users" on users;
+create policy "No anonymous insert on users" on users
+  for insert with check (false);
+
+drop policy if exists "No anonymous insert on scores" on scores;
+create policy "No anonymous insert on scores" on scores
+  for insert with check (false);
+
+drop policy if exists "No anonymous insert on donations" on donations;
+create policy "No anonymous insert on donations" on donations
+  for insert with check (false);

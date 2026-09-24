@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { addScoreAction, deleteScoreAction, updateScoreAction } from "@/actions/scores";
 import {
@@ -19,11 +19,29 @@ const initial: ActionState = {};
 
 /* ---------- auth ---------- */
 
+/** Hidden anti-bot fields: a honeypot address input plus a render timestamp. */
+function BotShield() {
+  const tsRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (tsRef.current) tsRef.current.value = String(Date.now());
+  }, []);
+  return (
+    <div aria-hidden="true" className="hidden">
+      <label>
+        Website
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+      </label>
+      <input ref={tsRef} type="hidden" name="form_ts" defaultValue="" />
+    </div>
+  );
+}
+
 export function LoginForm() {
   const [state, action] = useActionState(loginAction, initial);
 
   return (
     <form action={action} className="space-y-4">
+      <BotShield />
       <div>
         <label className="label" htmlFor="email">Email</label>
         <input id="email" name="email" type="email" required className="input" placeholder="you@example.com" />
@@ -43,6 +61,7 @@ export function SignupForm({ charities }: { charities: { id: string; name: strin
 
   return (
     <form action={action} className="space-y-4">
+      <BotShield />
       <div>
         <label className="label" htmlFor="full_name">Full name</label>
         <input id="full_name" name="full_name" required className="input" placeholder="Alex Morgan" />

@@ -23,7 +23,7 @@ await db.exec(readFileSync(schemaPath, "utf8"));
 console.log("Schema applied.");
 
 const port = Number(process.env.PGPORT || 54321);
-const server = new PGLiteSocketServer({ db, host: "127.0.0.1", port, maxConnections: 10 });
+const server = new PGLiteSocketServer({ db, host: "127.0.0.1", port, maxConnections: 100 });
 await server.start();
 console.log(`Postgres listening on postgres://postgres:postgres@127.0.0.1:${port}/postgres`);
 
