@@ -4,7 +4,6 @@ import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
 import { addScoreAction, deleteScoreAction, updateScoreAction } from "@/actions/scores";
 import {
-  activateSubscriptionAction,
   cancelSubscriptionAction,
   donateAction,
   setCharityAction,
@@ -252,18 +251,18 @@ export function CancelSubButton() {
 }
 
 export function SubscribeButtons({ stripeEnabled }: { stripeEnabled: boolean }) {
-  const [state, action] = useActionState(async (_prev: ActionState, fd: FormData) => {
-    if (stripeEnabled) {
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ plan: String(fd.get("plan")) }).toString(),
-      });
-      const data = (await res.json()) as { url?: string; error?: string };
-      if (data.url) window.location.href = data.url;
-      return { error: data.error ?? "Checkout failed." };
+  const [state, action] = useActionState(async (_prev: ActionState, fd: FormData): Promise<ActionState> => {
+    if (!stripeEnabled) {
+      return { error: "Payment gateway is not configured. Please ask the administrator to set up the STRIPE_SECRET_KEY." };
     }
-    return activateSubscriptionAction(fd);
+    const res = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ plan: String(fd.get("plan")) }).toString(),
+    });
+    const data = (await res.json()) as { url?: string; error?: string };
+    if (data.url) window.location.href = data.url;
+    return { error: data.error ?? "Checkout failed — please try again." };
   }, initial);
 
   return (

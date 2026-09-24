@@ -66,7 +66,42 @@ export async function activateSubscription(userId: string, plan: "monthly" | "ye
           renewal_date = excluded.renewal_date, updated_at = now()`;
 }
 
+/** Activate with Stripe IDs — called from the checkout success page and webhook. */
+export async function activateSubscriptionWithStripe(
+  userId: string,
+  plan: "monthly" | "yearly",
+  stripeSubscriptionId: string | null,
+  stripeCustomerId: string | null,
+) {
+  const settings = await getSettings();
+  const price = plan === "monthly" ? settings.monthly_price_pence : settings.yearly_price_pence;
+  const renewal = plan === "monthly" ? addMonths(todayStr(), 1) : addMonths(todayStr(), 12);
+  await sql`
+    insert into subscriptions (user_id, plan, status, price_pence, renewal_date, stripe_subscription_id, stripe_customer_id)
+    values (${userId}, ${plan}, 'active', ${price}, ${renewal}, ${stripeSubscriptionId}, ${stripeCustomerId})
+    on conflict (user_id) do update
+      set plan = excluded.plan, status = 'active', price_pence = excluded.price_pence,
+          renewal_date = excluded.renewal_date,
+          stripe_subscription_id = coalesce(excluded.stripe_subscription_id, subscriptions.stripe_subscription_id),
+          stripe_customer_id = coalesce(excluded.stripe_customer_id, subscriptions.stripe_customer_id),
+          updated_at = now()`;
+}
+
 export async function cancelSubscription(userId: string) {
+  // If there's a Stripe subscription, cancel it on Stripe's side too
+  const [sub] = await sql<{ stripe_subscription_id: string | null }[]>`
+    select stripe_subscription_id from subscriptions where user_id = ${userId} limit 1`;
+  if (sub?.stripe_subscription_id && process.env.STRIPE_SECRET_KEY) {
+    try {
+      const { default: Stripe } = await import("stripe");
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+      await stripe.subscriptions.update(sub.stripe_subscription_id, {
+        cancel_at_period_end: true,
+      });
+    } catch (err) {
+      console.error("Stripe cancel error (continuing locally):", err);
+    }
+  }
   await sql`
     update subscriptions set status = 'cancelled', updated_at = now() where user_id = ${userId}`;
 }

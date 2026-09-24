@@ -27,8 +27,16 @@ export default async function SubscribeSuccessPage({
     const session = await stripe.checkout.sessions.retrieve(session_id);
     if (session.payment_status === "paid" || session.status === "complete") {
       const plan = session.metadata?.plan === "yearly" ? "yearly" : "monthly";
-      const { activateSubscription } = await import("@/lib/subscriptions");
-      await activateSubscription(user.id, plan);
+      const stripeSubId =
+        typeof session.subscription === "string"
+          ? session.subscription
+          : session.subscription?.id ?? null;
+      const stripeCustId =
+        typeof session.customer === "string"
+          ? session.customer
+          : session.customer?.id ?? null;
+      const { activateSubscriptionWithStripe } = await import("@/lib/subscriptions");
+      await activateSubscriptionWithStripe(user.id, plan, stripeSubId, stripeCustId);
     }
   }
 

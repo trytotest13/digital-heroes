@@ -73,12 +73,12 @@ export default async function SubscribePage() {
 
       {status !== "active" && (
         <Reveal delay={380}>
-          <div className="mt-8">
+        <div className="mt-8">
             <SubscribeButtons stripeEnabled={Boolean(process.env.STRIPE_SECRET_KEY)} />
             <p className="mt-3 text-center text-[12px] text-muted">
               {process.env.STRIPE_SECRET_KEY
-                ? "Secure checkout via Stripe (test mode - use card 4242 4242 4242 4242)."
-                : "No Stripe key configured - checkout runs in clearly-labelled demo mode and activates your plan instantly."}
+                ? "Secure checkout via Stripe (test mode — use card 4242 4242 4242 4242)."
+                : "⚠️ Stripe is not configured. Add your STRIPE_SECRET_KEY to enable payments."}
             </p>
           </div>
         </Reveal>
